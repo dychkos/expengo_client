@@ -3,7 +3,7 @@ import { AiOutlineSetting, AiOutlineApi } from 'react-icons/ai'
 import { NavLink } from 'react-router-dom'
 const Header: FC = () => {
   return (
-    <header className="flex justify-between px-20 py-8">
+    <header className="fixed z-10 flex justify-between bg-white px-4 md:px-20 py-6 w-full">
       <NavLink to={'/'} className="font-default font-bold cursor-pointer">
         Expengo
       </NavLink>

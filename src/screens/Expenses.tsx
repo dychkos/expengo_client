@@ -1,11 +1,8 @@
-import React from 'react';
+import React from 'react'
+import Layout from '../components/Layout'
 
 const Expenses = () => {
-    return (
-        <div>
-            Expenses Page
-        </div>
-    );
-};
+  return <Layout className="w-full sm:w-1/4">Expenses Page</Layout>
+}
 
-export default Expenses;
+export default Expenses

@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom'
 import clsx from 'clsx'
 const NavBar = () => {
   return (
-    <nav className="flex justify-between backdrop-blur-md bg-slate-300 py-2 px-6 w-64 min-w-full rounded-2xl">
+    <nav className="flex justify-between backdrop-blur-md bg-slate-100 py-2 px-6 w-64 min-w-full rounded-2xl">
       <NavLink to={'/expenses'} className={NavItemClasses}>
         <AiOutlineUnorderedList />
       </NavLink>
