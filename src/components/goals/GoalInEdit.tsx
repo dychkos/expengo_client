@@ -1,21 +1,63 @@
-import React from 'react'
-import { Goal } from '../../types/goal'
+import React, { useCallback } from 'react'
+import { Goal, TimePeriod } from '../../types/goal'
 import { Icon } from '../Icon'
 import { AiOutlineArrowLeft, AiOutlineCheck } from 'react-icons/ai'
-import { useAppDispatch } from '../../store'
-import { selectGoal } from '../../store/goalsSlice'
-import EditableField from '../ui/EditableField'
+import { useAppDispatch, useAppSelector } from '../../store'
+import {
+  editSelectedGoal,
+  selectGoal,
+  updateGoalInList,
+} from '../../store/goalsSlice'
+import EditableField, { EditableFieldOptions } from '../ui/EditableField'
 import GoalProgress from '../GoalProgress'
+import { uiTransformPeriod } from '../../helper'
 
 interface EditGoalProps {
   goal: Goal
 }
+
 const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
   const dispatch = useAppDispatch()
+  const selectedGoal: Goal | null = useAppSelector(
+    state => state.goals.selected,
+  )
 
   const onBackClick = () => {
     dispatch(selectGoal(null))
   }
+
+  const onSaveClick = () => {
+    dispatch(updateGoalInList(selectedGoal as Goal))
+    dispatch(selectGoal(null))
+  }
+
+  const editGoal = useCallback(
+    (goal: Goal) => {
+      dispatch(editSelectedGoal(goal))
+    },
+    [dispatch],
+  )
+
+  const generatePeriodOptions = useCallback((): EditableFieldOptions => {
+    const editGoalPeriod = (period: TimePeriod) => {
+      editGoal({ ...(selectedGoal as Goal), period })
+    }
+
+    return [
+      {
+        title: 'тиждень',
+        value: 'week',
+        selected: goal.period === 'week',
+        onSelect: editGoalPeriod,
+      },
+      {
+        title: 'місяць',
+        value: 'month',
+        selected: goal.period === 'month',
+        onSelect: editGoalPeriod,
+      },
+    ]
+  }, [goal.period, selectedGoal, editGoal])
 
   return (
     <section>
@@ -26,7 +68,10 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
         >
           <AiOutlineArrowLeft size={'32px'} />
         </span>
-        <span className="p-2 rounded-full cursor-pointer hover:bg-slate-200 ease-linear">
+        <span
+          onClick={onSaveClick}
+          className="p-2 rounded-full cursor-pointer hover:bg-slate-200 ease-linear"
+        >
           <AiOutlineCheck size={'32px'} />
         </span>
       </nav>
@@ -35,7 +80,7 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
           <Icon nameIcon={goal.iconName} propsIcon={{ size: '74px' }} />
         </div>
         <div className="ml-3 md:ml-8">
-          <EditableField>
+          <EditableField type="text">
             <h1 className="font-bold text-2xl">{goal.category}</h1>
           </EditableField>
         </div>
@@ -46,12 +91,15 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
 
       <div className="flex w-full items-center gap-5 mt-5">
         <div>
-          <EditableField>
+          <EditableField type="select" options={generatePeriodOptions()}>
             <p>
-              Ліміт на <span className="font-medium underline">місяць</span>
+              Ліміт на{' '}
+              <span className="font-medium underline">
+                {uiTransformPeriod(goal.period)}
+              </span>
             </p>
           </EditableField>
-          <EditableField>
+          <EditableField type="text">
             <span className="text-2xl">3400 грн</span>
           </EditableField>
         </div>

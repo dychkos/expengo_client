@@ -1,9 +1,12 @@
 export interface Goal {
+  id: number
   iconName: string
-  period: string
+  period: TimePeriod
   category: string
   limit: number
   current: number
   about?: string
   createdAt?: string
 }
+
+export type TimePeriod = 'month' | 'week'
