@@ -1,22 +1,27 @@
-import React, { PropsWithChildren, useState } from 'react'
+import React, { FormEvent, PropsWithChildren, useState } from 'react'
 import { AiFillTool } from 'react-icons/ai'
 import clsx from 'clsx'
 import { useOutsideClick } from '../../hooks/useClickOutside'
+import EditableInput from './EditableInput'
 
 interface EditableFieldProps extends PropsWithChildren {
   type: 'text' | 'select'
+  innerText: string
+  onEdit?: Function
+  className?: string
   options?: EditableFieldOptions
 }
 
 export type EditableFieldOptions = Array<{
   title: string
   value: string
-  selected: boolean
   onSelect: Function
 }>
 
 const EditableField: React.FC<EditableFieldProps> = ({
-  children,
+  className,
+  innerText,
+  onEdit,
   type,
   options,
 }) => {
@@ -27,35 +32,46 @@ const EditableField: React.FC<EditableFieldProps> = ({
   })
 
   const enableEditing = () => {
-    if (type === 'select') {
-      setEditMode(true)
-    }
+    setEditMode(true)
+  }
+
+  const handleFieldEdit = (event: FormEvent<HTMLInputElement>) => {
+    onEdit && onEdit(event.currentTarget.value)
   }
 
   return (
     <div
       ref={ref}
-      className={clsx(
-        'relative w-max my-2 mr-2',
-        type === 'select' && 'cursor-pointer',
-      )}
+      className={clsx('relative w-max my-2 mr-2', 'cursor-pointer')}
       onClick={enableEditing}
     >
-      <span>{children}</span>
-      <span className="absolute flex justify-center items-center -top-1 -right-3  w-3 h-3 rounded-full bg-black">
+      <div className="w-max">
+        {editMode && type === 'text' && (
+          <EditableInput
+            value={innerText}
+            onInput={handleFieldEdit}
+            className={className}
+          />
+        )}
+        {(type === 'select' || (type === 'text' && !editMode)) && (
+          <span className={className}>{innerText}</span>
+        )}
+      </div>
+      <span className="absolute flex justify-center items-center -top-1 -right-3 w-3 h-3 rounded-full bg-black">
         <AiFillTool color="#fff" size="8px" />
       </span>
 
-      {editMode && (
+      {editMode && type === 'select' && (
         <ul className="absolute p-3 px-5 right-0 shadow-lg rounded-xl bg-white z-20">
           {options ? (
-            options.map(({ title, value, selected, onSelect }) => {
+            options.map(({ title, value, onSelect }) => {
               return (
                 <li
                   key={value}
                   className={clsx(
                     'hover:underline',
-                    selected && 'text-gray-300',
+                    innerText === title &&
+                      'text-gray-300 hover:no-underline cursor-default',
                   )}
                   onClick={() => onSelect(value)}
                 >

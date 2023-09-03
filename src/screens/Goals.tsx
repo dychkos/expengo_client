@@ -3,15 +3,28 @@ import Layout from '../components/Layout'
 import { GoalList } from '../components/goals/GoalList'
 import GoalInEdit from '../components/goals/GoalInEdit'
 import { useAppSelector } from '../store'
+import { GoalViewMode } from '../types/app.type'
+import { Goal } from '../types/goal'
 
 const Goals = () => {
-  const selectedGoal = useAppSelector(state => state.goals.selected)
-  const editMode = !selectedGoal
+  const [appMode, selectedGoal] = useAppSelector(state => [
+    state.app.goalViewMode,
+    state.goals.selected,
+  ])
 
-  return (
-    <Layout>
-      {editMode ? <GoalList /> : <GoalInEdit goal={selectedGoal} />}
-    </Layout>
-  )
+  const renderByMode = (mode: GoalViewMode) => {
+    switch (mode) {
+      case GoalViewMode.EDIT_GOAL:
+        return <GoalInEdit goal={selectedGoal as Goal} />
+      case GoalViewMode.CREATE_GOAL:
+        return <></>
+      case GoalViewMode.ADD_EXPENSE:
+        return <></>
+      default:
+        return <GoalList />
+    }
+  }
+
+  return <Layout>{renderByMode(appMode)}</Layout>
 }
 export default Goals

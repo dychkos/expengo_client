@@ -4,6 +4,8 @@ import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { Goal } from '../../types/goal'
 import { selectGoal } from '../../store/goalsSlice'
+import { switchMode } from '../../store/appSlice'
+import { GoalViewMode } from '../../types/app.type'
 
 export const GoalList = () => {
   const dispatch = useAppDispatch()
@@ -11,6 +13,7 @@ export const GoalList = () => {
 
   const onSelectGoal = (goal: Goal) => {
     dispatch(selectGoal(goal))
+    dispatch(switchMode(GoalViewMode.EDIT_GOAL))
   }
 
   return (

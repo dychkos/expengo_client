@@ -5,9 +5,11 @@ import {
   useSelector as useReduxSelector,
 } from 'react-redux'
 import GoalsReducer from './goalsSlice'
+import AppReducer from './appSlice'
 
 const store = configureStore({
   reducer: {
+    app: AppReducer,
     goals: GoalsReducer,
   },
 })
