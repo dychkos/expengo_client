@@ -1,4 +1,4 @@
-import { TimePeriod } from './types/goal'
+import { TimePeriod } from '../app/types/goal'
 
 export const uiTransformPeriod = (period: TimePeriod): string => {
   const periodMap = new Map([

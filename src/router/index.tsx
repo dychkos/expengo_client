@@ -5,7 +5,7 @@ import Stats from '../screens/Stats'
 import React, { FC, useEffect } from 'react'
 import { useAppDispatch } from '../store'
 import { switchMode } from '../store/appSlice'
-import { GoalViewMode } from '../types/app.type'
+import { GoalViewMode } from '../app/types/app.type'
 
 export const Routing: FC = () => {
   const location = useLocation()

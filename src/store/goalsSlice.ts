@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Goal } from '../types/goal'
+import { Goal } from '../app/types/goal'
 
 export interface GoalsState {
   list: Array<Goal>

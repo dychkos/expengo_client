@@ -1,4 +1,10 @@
-import React, { FormEvent, PropsWithChildren, useState } from 'react'
+import React, {
+  FormEvent,
+  PropsWithChildren,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { AiFillTool } from 'react-icons/ai'
 import clsx from 'clsx'
 import { useOutsideClick } from '../../hooks/useClickOutside'
@@ -7,6 +13,7 @@ import EditableInput from './EditableInput'
 interface EditableFieldProps extends PropsWithChildren {
   type: 'text' | 'select'
   innerText: string
+  error: boolean
   onEdit?: Function
   className?: string
   options?: EditableFieldOptions
@@ -21,15 +28,28 @@ export type EditableFieldOptions = Array<{
 const EditableField: React.FC<EditableFieldProps> = ({
   className,
   innerText,
+  error,
   onEdit,
   type,
   options,
 }) => {
   const [editMode, setEditMode] = useState<boolean>(false)
 
-  const ref = useOutsideClick(() => {
+  useEffect(() => {
+    focusChildInput()
+  }, [editMode])
+
+  const outsideRef = useOutsideClick(() => {
     setEditMode(false)
   })
+
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  const focusChildInput = () => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }
 
   const enableEditing = () => {
     setEditMode(true)
@@ -41,25 +61,30 @@ const EditableField: React.FC<EditableFieldProps> = ({
 
   return (
     <div
-      ref={ref}
+      ref={outsideRef}
       className={clsx('relative w-max my-2 mr-2', 'cursor-pointer')}
       onClick={enableEditing}
     >
       <div className="w-max">
         {editMode && type === 'text' && (
           <EditableInput
+            ref={inputRef}
             value={innerText}
             onInput={handleFieldEdit}
             className={className}
+            error={error}
           />
         )}
         {(type === 'select' || (type === 'text' && !editMode)) && (
           <span className={className}>{innerText}</span>
         )}
       </div>
-      <span className="absolute flex justify-center items-center -top-1 -right-3 w-3 h-3 rounded-full bg-black">
-        <AiFillTool color="#fff" size="8px" />
-      </span>
+
+      {!editMode && (
+        <span className="absolute flex justify-center items-center -top-1 -right-3 w-3 h-3 rounded-full bg-black">
+          <AiFillTool color="#fff" size="8px" />
+        </span>
+      )}
 
       {editMode && type === 'select' && (
         <ul className="absolute p-3 px-5 right-0 shadow-lg rounded-xl bg-white z-20">

@@ -2,10 +2,10 @@ import Button from '../ui/Button'
 import GoalItem from './GoalItem'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { Goal } from '../../types/goal'
+import { Goal } from '../../app/types/goal'
 import { selectGoal } from '../../store/goalsSlice'
 import { switchMode } from '../../store/appSlice'
-import { GoalViewMode } from '../../types/app.type'
+import { GoalViewMode } from '../../app/types/app.type'
 
 export const GoalList = () => {
   const dispatch = useAppDispatch()

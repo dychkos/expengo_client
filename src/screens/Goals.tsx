@@ -3,8 +3,8 @@ import Layout from '../components/Layout'
 import { GoalList } from '../components/goals/GoalList'
 import GoalInEdit from '../components/goals/GoalInEdit'
 import { useAppSelector } from '../store'
-import { GoalViewMode } from '../types/app.type'
-import { Goal } from '../types/goal'
+import { GoalViewMode } from '../app/types/app.type'
+import { Goal } from '../app/types/goal'
 
 const Goals = () => {
   const [appMode, selectedGoal] = useAppSelector(state => [

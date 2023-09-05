@@ -1,4 +1,4 @@
-import { GoalViewMode } from '../types/app.type'
+import { GoalViewMode } from '../app/types/app.type'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface AppState {
