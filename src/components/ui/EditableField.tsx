@@ -16,6 +16,7 @@ interface EditableFieldProps extends PropsWithChildren {
   error: boolean
   onEdit?: Function
   className?: string
+  placeholder?: string
   options?: EditableFieldOptions
 }
 
@@ -27,6 +28,7 @@ export type EditableFieldOptions = Array<{
 
 const EditableField: React.FC<EditableFieldProps> = ({
   className,
+  placeholder,
   innerText,
   error,
   onEdit,
@@ -40,7 +42,10 @@ const EditableField: React.FC<EditableFieldProps> = ({
   }, [editMode])
 
   const outsideRef = useOutsideClick(() => {
-    setEditMode(false)
+    if (innerText.length > 0) {
+      setEditMode(false)
+    }
+    console.log(innerText.length > 0)
   })
 
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -69,6 +74,7 @@ const EditableField: React.FC<EditableFieldProps> = ({
         {editMode && type === 'text' && (
           <EditableInput
             ref={inputRef}
+            placeholder={placeholder}
             value={innerText}
             onInput={handleFieldEdit}
             className={className}

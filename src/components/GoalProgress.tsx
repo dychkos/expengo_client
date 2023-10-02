@@ -15,7 +15,8 @@ const GoalProgress: React.FC<GoalProgressProps> = ({
   icon,
   size = 'default',
 }) => {
-  const progressPercent = (current / limit) * 100
+  const progressPercent =
+    (current / limit) * 100 > 100 ? 100 : (current / limit) * 100
 
   const calcProgressColor = (percent: number) => {
     if (percent <= 30) {

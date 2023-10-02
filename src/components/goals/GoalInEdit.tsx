@@ -9,21 +9,16 @@ import GoalProgress from '../GoalProgress'
 import { uiTransformPeriod } from '../../app/helper'
 import { switchMode } from '../../store/appSlice'
 import { GoalViewMode } from '../../app/types/app.type'
-import Validation from '../../app/validation/validation'
-import { GoalValidationRules } from '../../app/validation/goal.validation'
+import $v from '../../app/validation/validation'
+
+import { GoalInEditSchema } from '../../app/validation/schemas/goal.schema'
 
 interface EditGoalProps {
   goal: Goal
 }
 
-const clearErrors = {
-  category: '',
-  period: '',
-  limit: '',
-}
-
 const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
-  const [errors, setErrors] = useState<Record<string, string>>(clearErrors)
+  const [errors, setErrors] = useState<Array<string>>([])
 
   const dispatch = useAppDispatch()
   const selectedGoal: Goal | null = useAppSelector(
@@ -34,17 +29,19 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
     dispatch(switchMode(GoalViewMode.GOAL_LIST))
   }
 
-  const onSaveClick = () => {
-    const errors = new Validation(selectedGoal, GoalValidationRules).validate()
+  const checkError = (field: string) => errors.includes(field)
 
-    if (Object.keys(errors).length === 0) {
+  const onSaveClick = () => {
+    const errors = $v.validate(selectedGoal, GoalInEditSchema)
+    // const errors = new Validation(selectedGoal, GoalValidationRules).validate()
+
+    if (errors.length === 0) {
       dispatch(updateGoalInList(selectedGoal as Goal))
       dispatch(switchMode(GoalViewMode.GOAL_LIST))
-      setErrors(clearErrors)
-    } else {
-      console.log(errors)
-      setErrors(errors)
     }
+
+    console.log(errors)
+    setErrors(errors)
   }
 
   const editGoal = useCallback(
@@ -102,8 +99,9 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
             type="text"
             className="font-bold text-2xl"
             innerText={goal.category}
+            placeholder={'Назва категорії витрат'}
             onEdit={(val: string) => onEditField('category', val)}
-            error={!!errors['category']}
+            error={checkError('category')}
           />
         </div>
         <span className="font-bold text-zinc-500 text-sm md:text-md ml-auto">
@@ -120,7 +118,7 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
               className="font-medium underline"
               innerText={uiTransformPeriod(goal.period)}
               options={generatePeriodOptions()}
-              error={!!errors['period']}
+              error={checkError('period')}
             />
           </div>
 
@@ -130,7 +128,7 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
               className="text-2xl"
               innerText={`${goal.limit}`}
               onEdit={(val: string) => onEditField('limit', val)}
-              error={!!errors['limit']}
+              error={checkError('limit')}
             />
             грн
           </div>

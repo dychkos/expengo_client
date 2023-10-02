@@ -19,7 +19,7 @@ const mockGoals: Goal[] = [
   {
     id: 2,
     iconName: 'AiOutlineHome',
-    category: 'Дім',
+    category: 'Дім2',
     period: 'week',
     limit: 8_000,
     current: 4_900,

@@ -13,7 +13,7 @@ RUN npm install
 # Copy the entire project directory to the container
 COPY . .
 
-# Expose the development server port (typically 3000)
+# Expose the development server port (3000)
 EXPOSE 3000
 
 # Start the development server

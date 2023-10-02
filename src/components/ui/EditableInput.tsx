@@ -9,8 +9,8 @@ const EditableInput = forwardRef(
       className,
       onInput,
       onChange,
-      min = 1,
       error,
+      placeholder,
       ...props
     }: CustomInputProps & { error: Boolean },
     ref: ForwardedRef<HTMLInputElement>,
@@ -22,9 +22,6 @@ const EditableInput = forwardRef(
     }
 
     const handleInputUpdate = (event: ChangeEvent<HTMLInputElement>) => {
-      if (typeof value === 'string' && value.length < 2) {
-        return
-      }
       if (onInput) onInput(event)
     }
 
@@ -32,7 +29,7 @@ const EditableInput = forwardRef(
       <input
         value={value}
         ref={ref}
-        placeholder={initialValue}
+        placeholder={placeholder ?? initialValue}
         className={clsx(
           clearStyles,
           className,
@@ -40,7 +37,6 @@ const EditableInput = forwardRef(
         )}
         onChange={handleInputChange}
         onInput={handleInputUpdate}
-        minLength={3}
         {...props}
       />
     )

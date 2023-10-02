@@ -1,28 +1,18 @@
 class Validation {
-  private readonly fields: ValidationField | null
-  private readonly rules: Record<string, ValidationRule>
+  validate(data: any, schema: Schema) {
+    const errors = []
 
-  constructor(
-    fields: ValidationField | null,
-    rules: Record<string, ValidationRule>,
-  ) {
-    this.fields = fields
-    this.rules = rules
-  }
+    for (const field in data) {
+      const rules: Array<Rule> = schema[field]
 
-  validate(): Record<string, string> {
-    const errors: Record<string, string> = {}
+      if (!rules) {
+        throw new Error(`${field} is not present in Schema.`)
+      }
 
-    for (const field in this.fields) {
-      for (const ruleName in this.rules) {
-        const rule = this.rules[ruleName]
-        const fieldValue = this.fields[field]
-
-        // Check if the rule fails
-        if (!rule(fieldValue)) {
-          // Add an error message to the errors object
-          errors[field] = `${field} is invalid.`
-          break // Break out of the inner loop after the first failure
+      for (const rule of rules) {
+        const meta = rule.meta
+        if (!rule.func(data[field], meta)) {
+          errors.push(field)
         }
       }
     }
@@ -31,11 +21,14 @@ class Validation {
   }
 }
 
-export type ValidationRule = (val: any, meta?: ValidationMeta) => boolean
-export type ValidationField = { [key: string]: any }
-export type ValidationMeta = {
-  minLength?: number
-  maxLength?: number
+export interface Rule {
+  func: (val: any, meta?: any) => Boolean
+  meta?: any
 }
 
-export default Validation
+export type Schema = {
+  [key: string]: Array<Rule>
+}
+
+const validation = new Validation()
+export default validation

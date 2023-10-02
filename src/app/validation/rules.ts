@@ -1,15 +1,28 @@
-import { ValidationRule } from './validation'
+import { Rule } from './validation'
 
-export enum ValidationKey {
-  REQUIRED = 'required',
-  // MIN_LENGTH = 'min_length',
-  // MAX_LENGTH = 'max_length',
+export const greaterThenRule = (metaNum: number): Rule => {
+  return {
+    meta: metaNum,
+    func: (val, meta) => val > meta,
+  }
 }
 
-export const ValidationRules: Record<ValidationKey, ValidationRule> = {
-  [ValidationKey.REQUIRED]: val => !!val,
-  // [ValidationKey.MIN_LENGTH]: (val, meta) =>
-  //   !!val && val.length > meta.minLength,
-  // [ValidationKey.MAX_LENGTH]: (val, { maxLength }) =>
-  //   !!val && val.length > maxLength,
+export const requiredRule = (): Rule => {
+  return {
+    meta: null,
+    func: val => !!val,
+  }
 }
+
+export const oneOfRule = (meta: Array<string>): Rule => {
+  return {
+    meta: meta,
+    func: (val, meta) => meta.includes(val),
+  }
+}
+
+// data obj
+// {
+//      firstname: requiredRule(),
+//      age: greaterThanRule(3)
+// }
