@@ -14,6 +14,13 @@ export const requiredRule = (): Rule => {
   }
 }
 
+export const numberRule = (): Rule => {
+  return {
+    meta: null,
+    func: val => val.replace(/\D/g, '').length === val.length,
+  }
+}
+
 export const oneOfRule = (meta: Array<string>): Rule => {
   return {
     meta: meta,

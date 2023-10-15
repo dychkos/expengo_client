@@ -1,10 +1,4 @@
-import React, {
-  FormEvent,
-  PropsWithChildren,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import React, { FormEvent, PropsWithChildren, useEffect, useRef, useState } from 'react'
 import { AiFillTool } from 'react-icons/ai'
 import clsx from 'clsx'
 import { useOutsideClick } from '../../hooks/useClickOutside'
@@ -14,6 +8,7 @@ interface EditableFieldProps extends PropsWithChildren {
   type: 'text' | 'select'
   innerText: string
   error: boolean
+  tipPos?: 'left' | 'right'
   onEdit?: Function
   className?: string
   placeholder?: string
@@ -34,6 +29,7 @@ const EditableField: React.FC<EditableFieldProps> = ({
   onEdit,
   type,
   options,
+  tipPos = 'right',
 }) => {
   const [editMode, setEditMode] = useState<boolean>(false)
 
@@ -45,7 +41,6 @@ const EditableField: React.FC<EditableFieldProps> = ({
     if (innerText.length > 0) {
       setEditMode(false)
     }
-    console.log(innerText.length > 0)
   })
 
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -67,10 +62,10 @@ const EditableField: React.FC<EditableFieldProps> = ({
   return (
     <div
       ref={outsideRef}
-      className={clsx('relative w-max my-2 mr-2', 'cursor-pointer')}
+      className={clsx('relative my-2 mr-2', 'cursor-pointer')}
       onClick={enableEditing}
     >
-      <div className="w-max">
+      <div className="w-full">
         {editMode && type === 'text' && (
           <EditableInput
             ref={inputRef}
@@ -81,13 +76,27 @@ const EditableField: React.FC<EditableFieldProps> = ({
             error={error}
           />
         )}
+
         {(type === 'select' || (type === 'text' && !editMode)) && (
-          <span className={className}>{innerText}</span>
+          <p
+            className={clsx(
+              className,
+              error && 'text-red-500',
+              'text-clip overflow-hidden',
+            )}
+          >
+            {innerText}
+          </p>
         )}
       </div>
 
       {!editMode && (
-        <span className="absolute flex justify-center items-center -top-1 -right-3 w-3 h-3 rounded-full bg-black">
+        <span
+          className={clsx(
+            'absolute flex justify-center items-center -top-1 w-3 h-3 rounded-full bg-black',
+            tipPos === 'left' ? '-left-3' : '-right-3',
+          )}
+        >
           <AiFillTool color="#fff" size="8px" />
         </span>
       )}

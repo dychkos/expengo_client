@@ -13,12 +13,12 @@ export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    switchMode: (state, action: PayloadAction<GoalViewMode>) => {
+    switchGoalView: (state, action: PayloadAction<GoalViewMode>) => {
       state.goalViewMode = action.payload
     },
   },
 })
 
-export const { switchMode } = appSlice.actions
+export const { switchGoalView } = appSlice.actions
 
 export default appSlice.reducer

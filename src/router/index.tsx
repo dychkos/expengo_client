@@ -4,7 +4,7 @@ import Expenses from '../screens/Expenses'
 import Stats from '../screens/Stats'
 import React, { FC, useEffect } from 'react'
 import { useAppDispatch } from '../store'
-import { switchMode } from '../store/appSlice'
+import { switchGoalView } from '../store/appSlice'
 import { GoalViewMode } from '../app/types/app.type'
 
 export const Routing: FC = () => {
@@ -12,7 +12,7 @@ export const Routing: FC = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(switchMode(GoalViewMode.GOAL_LIST))
+    dispatch(switchGoalView(GoalViewMode.GOAL_LIST))
   }, [location, dispatch])
 
   return (

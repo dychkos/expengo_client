@@ -44,6 +44,6 @@ const EditableInput = forwardRef(
 )
 
 const clearStyles =
-  'appearance-none block w-auto bg-white border border-none placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:placeholder-gray-400 focus:text-gray-900'
+  'appearance-none w-full block w-auto bg-white border border-none placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:placeholder-gray-400 focus:text-gray-900'
 
 export default EditableInput

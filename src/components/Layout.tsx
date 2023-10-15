@@ -6,7 +6,9 @@ interface LayoutProps extends React.PropsWithChildren {
 }
 export const Layout: React.FC<LayoutProps> = ({ className, children }) => {
   return (
-    <main className={clsx(className, 'pt-20 m-auto w-full sm:w-3/4 xl:w-2/4')}>
+    <main
+      className={clsx(className, 'px-4 md:px-0 pt-20 m-auto w-full sm:w-3/4 xl:w-2/4')}
+    >
       {children}
     </main>
   )
