@@ -11,8 +11,9 @@ const EditableInput = forwardRef(
       onChange,
       error,
       placeholder,
+      regexMask,
       ...props
-    }: CustomInputProps & { error: Boolean },
+    }: CustomInputProps & { error: Boolean; regexMask?: RegExp },
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
     const [initialValue] = useState<string>(value ? value.toString() : '')
@@ -22,7 +23,11 @@ const EditableInput = forwardRef(
     }
 
     const handleInputUpdate = (event: ChangeEvent<HTMLInputElement>) => {
-      if (onInput) onInput(event)
+      if (onInput && !regexMask) {
+        onInput(event)
+      } else if (onInput && regexMask && regexMask.test(event.currentTarget.value)) {
+        onInput(event)
+      }
     }
 
     return (

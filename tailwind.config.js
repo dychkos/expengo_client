@@ -21,8 +21,11 @@ module.exports = {
       },
       gridTemplateColumns: {
         '3-one-two-one': '1fr 2fr 1fr',
+        '3-96-60-one': '96px 60% 1fr;',
+        '3-one-two-two': '1fr 2fr 2fr',
         '2-one-two': '1fr 2fr',
         '2-one-one': '1fr 1fr',
+        '2-80-one': '80px 1fr',
       },
     },
   },
@@ -31,6 +34,7 @@ module.exports = {
 
 /*
  * Supported breakpoints:
- * < md
- * > md
- * */
+ * sm
+ * md
+ *
+ *  * */

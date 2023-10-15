@@ -12,9 +12,14 @@ export const useValidator = () => {
     return errors.length === 0
   }
 
+  const clearError = (field: string) => {
+    setErrors([...errors.filter(v => v !== field)])
+  }
+
   return {
     errors,
     validate,
     checkError,
+    clearError,
   }
 }

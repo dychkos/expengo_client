@@ -20,7 +20,7 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
   const dispatch = useAppDispatch()
   const selectedGoal: Goal | null = useAppSelector(state => state.goals.selected)
 
-  const { checkError, validate } = useValidator()
+  const { validate, clearError, checkError } = useValidator()
 
   const toInitialView = () => {
     dispatch(switchGoalView(GoalViewMode.GOAL_LIST))
@@ -40,6 +40,7 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
   }
 
   const handleFieldUpdate = (field: keyof Goal, value: string) => {
+    clearError(field)
     editGoal({ ...goal, [field as string]: value })
   }
 
@@ -67,24 +68,24 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
           onClick={toInitialView}
           className="p-2 rounded-full cursor-pointer hover:bg-slate-200 ease-linear"
         >
-          <AiOutlineArrowLeft size={'32px'} />
+          <AiOutlineArrowLeft size={'24px'} />
         </span>
         <span
           onClick={onSaveClick}
           className="p-2 rounded-full cursor-pointer hover:bg-slate-200 ease-linear"
         >
-          <AiOutlineCheck size={'32px'} />
+          <AiOutlineCheck size={'24px'} />
         </span>
       </nav>
 
-      <div className="grid grid-cols-3-one-two-one">
-        <div className="w-auto">
-          <div className="flex w-12 h-12 md:w-24 md:h-24 items-center justify-center rounded-xl bg-primary">
+      <div className="grid grid-cols-2-80-one sm:grid-cols-3-96-60-one gap-0 sm:gap-4">
+        <div>
+          <div className="flex w-14 h-14 sm:w-24 sm:h-24 items-center justify-center rounded-xl bg-primary">
             <Icon nameIcon={goal.iconName} propsIcon={{ size: '64px' }} />
           </div>
         </div>
 
-        <div className="w-auto">
+        <div>
           <EditableField
             type="text"
             className="font-bold text-2xl"
@@ -96,8 +97,8 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
           />
         </div>
 
-        <div className="w-auto">
-          <span className="font-default font-bold leading-3 text-zinc-500 text-xs ml-auto">
+        <div>
+          <span className="hidden sm:block font-default font-bold leading-3 text-zinc-500 text-xs ml-auto">
             21 червня 2023
           </span>
         </div>
@@ -121,10 +122,13 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
               type="text"
               className="text-xl md:text-2xl"
               innerText={`${goal.limit}`}
+              regex={new RegExp('^[0-9]*$')}
+              maxLength={7}
               onEdit={(val: string) => handleFieldUpdate('limit', val)}
               error={checkError('limit')}
-            />
-            грн
+            >
+              грн
+            </EditableField>
           </div>
         </div>
 

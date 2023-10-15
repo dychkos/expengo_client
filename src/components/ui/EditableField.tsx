@@ -1,17 +1,21 @@
-import React, { FormEvent, PropsWithChildren, useEffect, useRef, useState } from 'react'
+import React, { FormEvent, useEffect, useRef, useState } from 'react'
 import { AiFillTool } from 'react-icons/ai'
 import clsx from 'clsx'
 import { useOutsideClick } from '../../hooks/useClickOutside'
 import EditableInput from './EditableInput'
 
-interface EditableFieldProps extends PropsWithChildren {
+interface EditableFieldProps {
   type: 'text' | 'select'
   innerText: string
   error: boolean
   tipPos?: 'left' | 'right'
+  inputMode?: 'none' | 'numeric'
+  regex?: RegExp
+  maxLength?: number
   onEdit?: Function
   className?: string
   placeholder?: string
+  children?: React.ReactNode
   options?: EditableFieldOptions
 }
 
@@ -29,7 +33,11 @@ const EditableField: React.FC<EditableFieldProps> = ({
   onEdit,
   type,
   options,
+  children,
+  regex = undefined,
+  inputMode = 'none',
   tipPos = 'right',
+  maxLength = 255,
 }) => {
   const [editMode, setEditMode] = useState<boolean>(false)
 
@@ -62,7 +70,7 @@ const EditableField: React.FC<EditableFieldProps> = ({
   return (
     <div
       ref={outsideRef}
-      className={clsx('relative my-2 mr-2', 'cursor-pointer')}
+      className={clsx('relative my-2 mr-2 flex gap-1', 'cursor-pointer')}
       onClick={enableEditing}
     >
       <div className="w-full">
@@ -73,7 +81,10 @@ const EditableField: React.FC<EditableFieldProps> = ({
             value={innerText}
             onInput={handleFieldEdit}
             className={className}
+            maxLength={maxLength}
             error={error}
+            inputMode={inputMode}
+            regexMask={regex}
           />
         )}
 
@@ -89,7 +100,6 @@ const EditableField: React.FC<EditableFieldProps> = ({
           </p>
         )}
       </div>
-
       {!editMode && (
         <span
           className={clsx(
@@ -100,7 +110,6 @@ const EditableField: React.FC<EditableFieldProps> = ({
           <AiFillTool color="#fff" size="8px" />
         </span>
       )}
-
       {editMode && type === 'select' && (
         <ul className="absolute p-3 px-5 right-0 shadow-lg rounded-xl bg-white z-20">
           {options ? (
@@ -124,6 +133,8 @@ const EditableField: React.FC<EditableFieldProps> = ({
           )}
         </ul>
       )}
+
+      {children && !editMode && <p className={className}>{children}</p>}
     </div>
   )
 }
