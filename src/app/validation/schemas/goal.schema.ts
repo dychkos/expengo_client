@@ -5,6 +5,6 @@ export const GoalInEditSchema = {
   iconName: [requiredRule()],
   category: [requiredRule()],
   period: [requiredRule(), oneOfRule(['month', 'week'])],
-  limit: [requiredRule(), numberRule(), greaterThenRule(1)],
+  limit: [requiredRule(), greaterThenRule(1)],
   current: [requiredRule(), greaterThenRule(1)],
 }

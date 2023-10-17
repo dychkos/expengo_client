@@ -14,7 +14,7 @@ function App() {
         <Routing />
       </Provider>
 
-      <div className="fixed z-50 bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="fixed z-20 bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <NavBar />
       </div>
     </div>
