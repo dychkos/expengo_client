@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Goal } from '../app/types/goal'
+import { GoalType } from '../app/types/goal.type'
 
 export interface GoalsState {
-  list: Array<Goal>
-  selected: Goal | null
+  list: Array<GoalType>
+  selected: GoalType | null
   error: string | null
   loading: boolean | null
 }
-const mockGoals: Goal[] = [
+const mockGoals: GoalType[] = [
   {
     id: 1,
     iconName: 'AiOutlineGift',
@@ -69,13 +69,13 @@ export const goalsSlice = createSlice({
   name: 'goals',
   initialState,
   reducers: {
-    selectGoal: (state, action: PayloadAction<Goal | null>) => {
+    selectGoal: (state, action: PayloadAction<GoalType | null>) => {
       state.selected = action.payload
     },
-    editSelectedGoal: (state, action: PayloadAction<Goal>) => {
+    editSelectedGoal: (state, action: PayloadAction<GoalType>) => {
       state.selected = { ...state.selected, ...action.payload }
     },
-    updateGoalInList: (state, action: PayloadAction<Goal>) => {
+    updateGoalInList: (state, action: PayloadAction<GoalType>) => {
       const index = state.list.findIndex(item => item.id === action.payload.id)
 
       if (index !== -1) {
@@ -85,6 +85,5 @@ export const goalsSlice = createSlice({
   },
 })
 
-export const { selectGoal, updateGoalInList, editSelectedGoal } =
-  goalsSlice.actions
+export const { selectGoal, updateGoalInList, editSelectedGoal } = goalsSlice.actions
 export default goalsSlice.reducer

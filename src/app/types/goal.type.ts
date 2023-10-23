@@ -1,4 +1,4 @@
-export interface Goal {
+export interface GoalType {
   id: number
   iconName: string
   period: TimePeriod

@@ -2,7 +2,7 @@ import Button from '../ui/Button'
 import GoalItem from './GoalItem'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { Goal } from '../../app/types/goal'
+import { GoalType } from '../../app/types/goal.type'
 import { selectGoal } from '../../store/goalsSlice'
 import { switchGoalView } from '../../store/appSlice'
 import { GoalViewMode } from '../../app/types/app.type'
@@ -11,7 +11,7 @@ export const GoalList = () => {
   const dispatch = useAppDispatch()
   const goalList = useAppSelector(state => state.goals.list)
 
-  const onSelectGoal = (goal: Goal) => {
+  const onSelectGoal = (goal: GoalType) => {
     dispatch(selectGoal(goal))
     dispatch(switchGoalView(GoalViewMode.EDIT_GOAL))
   }

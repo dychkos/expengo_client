@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { Goal, TimePeriod } from '../../app/types/goal'
+import { GoalType, TimePeriod } from '../../app/types/goal.type'
 import { Icon } from '../Icon'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { editSelectedGoal, updateGoalInList } from '../../store/goalsSlice'
-import EditableField from '../ui/EditableField'
 import GoalProgress from '../GoalProgress'
 import { uiTransformPeriod } from '../../app/helper'
 import { switchGoalView } from '../../store/appSlice'
@@ -14,14 +13,17 @@ import CircleBtn from '../ui/CircleBtn'
 import { AiOutlineArrowLeft, AiOutlineCheck } from 'react-icons/ai'
 import IconPopup from '../popups/IconPopup'
 import { Icons } from '../../app/temp'
+import { Digits } from '../../app/patterns'
+import EditableSelect from '../ui/EditableField/EditableSelect'
+import EditableInput from '../ui/EditableField/EditableInput'
 
 interface EditGoalProps {
-  goal: Goal
+  goal: GoalType
 }
 
 const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
   const dispatch = useAppDispatch()
-  const selectedGoal: Goal | null = useAppSelector(state => state.goals.selected)
+  const selectedGoal: GoalType | null = useAppSelector(state => state.goals.selected)
 
   const [showIconEdit, setShowIconEdit] = useState(false)
 
@@ -35,22 +37,22 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
     const isValid = validate(selectedGoal, GoalInEditSchema)
 
     if (isValid) {
-      dispatch(updateGoalInList(selectedGoal as Goal))
+      dispatch(updateGoalInList(selectedGoal as GoalType))
       toInitialView()
     }
   }
 
-  const editGoal = (goal: Goal) => {
+  const editGoal = (goal: GoalType) => {
     dispatch(editSelectedGoal(goal))
   }
 
-  const handleFieldUpdate = (field: keyof Goal, value: string) => {
+  const handleFieldUpdate = (field: keyof GoalType, value: string) => {
     clearError(field)
     editGoal({ ...goal, [field as string]: value })
   }
 
   const editGoalPeriod = (period: TimePeriod) => {
-    editGoal({ ...(selectedGoal as Goal), period })
+    editGoal({ ...(selectedGoal as GoalType), period })
   }
 
   const handleIconChange = (icon: string) => {
@@ -61,12 +63,10 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
     {
       title: 'тиждень',
       value: 'week',
-      onSelect: editGoalPeriod,
     },
     {
       title: 'місяць',
       value: 'month',
-      onSelect: editGoalPeriod,
     },
   ]
 
@@ -94,10 +94,9 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
           </div>
 
           <div>
-            <EditableField
-              type="text"
+            <EditableInput
               className="font-bold text-2xl"
-              innerText={goal.category}
+              value={goal.category}
               placeholder={'Назва категорії витрат'}
               onEdit={(val: string) => handleFieldUpdate('category', val)}
               error={checkError('category')}
@@ -116,27 +115,26 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
           <div>
             <div className="flex items-center gap-2">
               <span>Ліміт на</span>
-              <EditableField
-                type="select"
+              <EditableSelect
                 className="font-medium underline"
                 innerText={uiTransformPeriod(goal.period)}
                 options={periodOptions}
                 error={checkError('period')}
+                onEdit={editGoalPeriod}
               />
             </div>
 
             <div className="flex items-center gap-2">
-              <EditableField
+              <EditableInput
                 type="text"
                 className="text-xl md:text-2xl"
-                innerText={`${goal.limit}`}
-                regex={new RegExp('^[0-9]*$')}
+                value={`${goal.limit}`}
                 maxLength={7}
+                regex={Digits}
                 onEdit={(val: string) => handleFieldUpdate('limit', val)}
                 error={checkError('limit')}
-              >
-                грн
-              </EditableField>
+                afterText="грн"
+              />
             </div>
           </div>
 

@@ -1,14 +1,13 @@
 import React from 'react'
-import clsx from 'clsx'
+import { cn } from '../app/className'
 
 interface LayoutProps extends React.PropsWithChildren {
   className?: string
 }
+
 export const Layout: React.FC<LayoutProps> = ({ className, children }) => {
   return (
-    <main
-      className={clsx(className, 'px-4 md:px-0 pt-16 m-auto w-full sm:w-3/4 xl:w-2/4')}
-    >
+    <main className={cn('px-4 md:px-0 pt-16 m-auto w-full sm:w-3/4 xl:w-2/4', className)}>
       {children}
     </main>
   )

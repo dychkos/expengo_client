@@ -12,4 +12,6 @@ export const Icons = [
   'AiFillHome',
   'HiLightBulb',
   'HiLocationMarker',
+  'FaBabyCarriage',
+  'FaCannabis',
 ]

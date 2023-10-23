@@ -5,12 +5,14 @@ import {
   useSelector as useReduxSelector,
 } from 'react-redux'
 import GoalsReducer from './goalsSlice'
+import ExpensesReducer from './expensesSlice'
 import AppReducer from './appSlice'
 
 const store = configureStore({
   reducer: {
     app: AppReducer,
     goals: GoalsReducer,
+    expenses: ExpensesReducer,
   },
 })
 export type RootState = ReturnType<typeof store.getState>

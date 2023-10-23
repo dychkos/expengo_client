@@ -1,4 +1,4 @@
-import { greaterThenRule, numberRule, oneOfRule, requiredRule } from '../rules'
+import { greaterThenRule, oneOfRule, requiredRule } from '../rules'
 
 export const GoalInEditSchema = {
   id: [requiredRule()],

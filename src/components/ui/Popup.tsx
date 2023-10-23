@@ -1,22 +1,24 @@
-import React, { PropsWithChildren, ReactElement, useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import ReactPortal from '../ReactPortal'
 import { useOutsideClick } from '../../hooks/useClickOutside'
 import CircleBtn from './CircleBtn'
 import { AiOutlineClose } from 'react-icons/ai'
 import PopupHeader from './PopupHeader'
 import PopupFooter from './PopupFooter'
-
-interface PopupProps extends PropsWithChildren {
-  isOpened: boolean
-  onClose: Function
-}
+import { PopupProps } from '../popups/popup.props'
+import { cn } from '../../app/className'
 
 interface PopupModule {
   Header: typeof PopupHeader
   Footer: typeof PopupFooter
 }
 
-const Popup: React.FC<PopupProps> & PopupModule = ({ isOpened, onClose, children }) => {
+const Popup: React.FC<PopupProps> & PopupModule = ({
+  isOpened,
+  onClose,
+  className,
+  children,
+}) => {
   const outsideRef = useOutsideClick(() => {
     onClose()
   })
@@ -49,7 +51,10 @@ const Popup: React.FC<PopupProps> & PopupModule = ({ isOpened, onClose, children
       <div className="fixed top-0 left-0 right-0 bottom-0 box-border z-20 flex items-center justify-center overflow-y-auto backdrop-blur-sm bg-opacity-40 bg-stone-800">
         <div
           ref={outsideRef}
-          className="bg-white my-0 sm:my-32 rounded-md m-auto w-full sm:w-3/4 xl:w-2/4 h-full sm:h-auto"
+          className={cn(
+            'bg-white my-0 sm:my-32 rounded-md m-auto w-full sm:w-2/4 h-full sm:h-auto',
+            className,
+          )}
         >
           <div className="mt-2 mr-2 flex justify-end">
             <CircleBtn onClick={onClose}>
