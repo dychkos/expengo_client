@@ -14,7 +14,6 @@ const mockGoals: GoalType[] = [
     period: 'month',
     category: 'Подарунки',
     limit: 12_000,
-    current: 1_000,
   },
   {
     id: 2,
@@ -22,7 +21,6 @@ const mockGoals: GoalType[] = [
     category: 'Дім2',
     period: 'week',
     limit: 8_000,
-    current: 4_900,
   },
   {
     id: 3,
@@ -30,7 +28,6 @@ const mockGoals: GoalType[] = [
     category: 'Підписки',
     period: 'month',
     limit: 2_000,
-    current: 1_900,
   },
   {
     id: 4,
@@ -38,7 +35,6 @@ const mockGoals: GoalType[] = [
     category: 'Транспорт',
     period: 'week',
     limit: 4_500,
-    current: 900,
   },
   {
     id: 5,
@@ -46,7 +42,6 @@ const mockGoals: GoalType[] = [
     category: 'Транспорт',
     period: 'week',
     limit: 4_500,
-    current: 900,
   },
   {
     id: 6,
@@ -54,7 +49,6 @@ const mockGoals: GoalType[] = [
     category: 'Транспорт',
     period: 'week',
     limit: 4_500,
-    current: 900,
   },
 ]
 

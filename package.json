@@ -22,6 +22,8 @@
     "react-scripts": "5.0.1",
     "tailwind-merge": "^1.14.0",
     "typescript": "^4.9.5",
+    "uniqid": "^5.4.0",
+    "uuidv4": "^6.2.13",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -51,6 +53,7 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/loadable__component": "^5.13.4",
+    "@types/uniqid": "^5.3.3",
     "jes": "^0.6.1",
     "prettier": "^3.0.0"
   }

@@ -6,7 +6,7 @@ const ExpenseList: FC<{ expenses: ExpenseType[] }> = ({ expenses }) => {
   return (
     <section>
       {expenses.map(exp => (
-        <div className="my-6">
+        <div className="my-6" key={exp.id}>
           <ExpenseItem expenseItem={exp} />
         </div>
       ))}

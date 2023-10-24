@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react'
 import ReactPortal from '../ReactPortal'
-import { useOutsideClick } from '../../hooks/useClickOutside'
+// import { useOutsideClick } from '../../hooks/useClickOutside'
 import CircleBtn from './CircleBtn'
 import { AiOutlineClose } from 'react-icons/ai'
 import PopupHeader from './PopupHeader'
@@ -19,9 +19,7 @@ const Popup: React.FC<PopupProps> & PopupModule = ({
   className,
   children,
 }) => {
-  const outsideRef = useOutsideClick(() => {
-    onClose()
-  })
+  // const outsideRef = useOutsideClick(onClose)
 
   useEffect(() => {
     if (document) {
@@ -50,7 +48,7 @@ const Popup: React.FC<PopupProps> & PopupModule = ({
     <ReactPortal wrapperId="common-popup">
       <div className="fixed top-0 left-0 right-0 bottom-0 box-border z-20 flex items-center justify-center overflow-y-auto backdrop-blur-sm bg-opacity-40 bg-stone-800">
         <div
-          ref={outsideRef}
+          // ref={outsideRef}
           className={cn(
             'bg-white my-0 sm:my-32 rounded-md m-auto w-full sm:w-2/4 h-full sm:h-auto',
             className,

@@ -8,7 +8,7 @@ import { uiTransformPeriod } from '../../app/helper'
 import { switchGoalView } from '../../store/appSlice'
 import { GoalViewMode } from '../../app/types/app.type'
 import { GoalInEditSchema } from '../../app/validation/schemas/goal.schema'
-import { useValidator } from '../../hooks/useValidator'
+import { useValidator, useExpensesByGoal } from '../../hooks'
 import CircleBtn from '../ui/CircleBtn'
 import { AiOutlineArrowLeft, AiOutlineCheck } from 'react-icons/ai'
 import IconPopup from '../popups/IconPopup'
@@ -24,6 +24,7 @@ interface EditGoalProps {
 const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
   const dispatch = useAppDispatch()
   const selectedGoal: GoalType | null = useAppSelector(state => state.goals.selected)
+  const currentlyExpended = useExpensesByGoal(goal.id)
 
   const [showIconEdit, setShowIconEdit] = useState(false)
 
@@ -100,7 +101,6 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
               placeholder={'Назва категорії витрат'}
               onEdit={(val: string) => handleFieldUpdate('category', val)}
               error={checkError('category')}
-              tipPos="left"
             />
           </div>
 
@@ -138,7 +138,7 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
             </div>
           </div>
 
-          <GoalProgress current={goal.current} limit={goal.limit} size="huge" />
+          <GoalProgress current={currentlyExpended} limit={goal.limit} size="huge" />
         </div>
       </section>
 

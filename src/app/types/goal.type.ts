@@ -4,7 +4,6 @@ export interface GoalType {
   period: TimePeriod
   category: string
   limit: number
-  current: number
   about?: string
   createdAt?: string
 }

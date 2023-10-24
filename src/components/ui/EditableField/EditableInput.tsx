@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
 import { EditableInputProps } from './editable.props'
-import { useOutsideClick } from '../../../hooks/useClickOutside'
+import { useOutsideClick } from '../../../hooks'
 import { AiFillTool } from 'react-icons/ai'
 import { cn } from '../../../app/className'
 

@@ -4,7 +4,7 @@ export interface EditableProps {
   error: boolean
   afterText?: string
   tipPos?: 'left' | 'right'
-  onEdit?: Function
+  onEdit: Function
   className?: string
 }
 
