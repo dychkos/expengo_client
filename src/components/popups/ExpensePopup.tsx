@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { PopupProps } from './popup.props'
 import Popup from '../ui/Popup'
 import { Icon } from '../Icon'
@@ -24,7 +24,15 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
     const selectedById = state.goals.list.find(goal => goal.id === current?.goalId)
     return selectedById || state.goals.list[0]
   })
+
   const goals = useAppSelector(state => state.goals.list)
+
+  useEffect(() => {
+    if (!current.goalId && selectedGoal) {
+      setCurrent({ ...current, goalId: selectedGoal.id })
+    }
+  }, [])
+
   const onFieldEdit = (field: keyof ExpenseType, value: any) => {
     setCurrent({
       ...current,

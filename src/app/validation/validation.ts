@@ -1,5 +1,5 @@
 class Validation {
-  validate(data: any, schema: Schema) {
+  validate(data: any, schema: Schema<any>) {
     const errors = []
 
     for (const field in data) {
@@ -26,8 +26,8 @@ export interface Rule {
   meta?: any
 }
 
-export type Schema = {
-  [key: string]: Array<Rule>
+export type Schema<T> = {
+  [key in keyof T]: Array<Rule>
 }
 
 const validation = new Validation()

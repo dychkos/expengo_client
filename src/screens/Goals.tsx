@@ -5,6 +5,7 @@ import GoalInEdit from '../components/goals/GoalInEdit'
 import { useAppSelector } from '../store'
 import { GoalViewMode } from '../app/types/app.type'
 import { GoalType } from '../app/types/goal.type'
+import GoalCreate from '../components/goals/GoalCreate'
 
 const Goals = () => {
   const [appMode, selectedGoal] = useAppSelector(state => [
@@ -17,9 +18,7 @@ const Goals = () => {
       case GoalViewMode.EDIT_GOAL:
         return <GoalInEdit goal={selectedGoal as GoalType} />
       case GoalViewMode.CREATE_GOAL:
-        return <></>
-      case GoalViewMode.ADD_EXPENSE:
-        return <></>
+        return <GoalCreate />
       default:
         return <GoalList />
     }

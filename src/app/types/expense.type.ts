@@ -2,7 +2,7 @@ import u from 'uniqid'
 
 export interface ExpenseType {
   id: string
-  goalId: number
+  goalId: string
   title: string
   price: number
   createdAt: string
@@ -10,7 +10,7 @@ export interface ExpenseType {
 
 export const defaultExpense: ExpenseType = {
   id: u(),
-  goalId: 1,
+  goalId: '',
   title: 'Нова витрата',
   price: 0,
   createdAt: new Date(Date.now()).toISOString(),

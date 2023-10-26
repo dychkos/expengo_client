@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { GoalType } from '../app/types/goal.type'
+import u from 'uniqid'
 
 export interface GoalsState {
   list: Array<GoalType>
@@ -9,46 +10,36 @@ export interface GoalsState {
 }
 const mockGoals: GoalType[] = [
   {
-    id: 1,
+    id: u(),
     iconName: 'AiOutlineGift',
     period: 'month',
     category: 'Подарунки',
     limit: 12_000,
+    createdAt: '2023-10-20T14:30:00',
   },
   {
-    id: 2,
+    id: u(),
     iconName: 'AiOutlineHome',
     category: 'Дім2',
     period: 'week',
     limit: 8_000,
+    createdAt: '2023-10-20T14:30:00',
   },
   {
-    id: 3,
+    id: u(),
     iconName: 'AiOutlineInbox',
     category: 'Підписки',
     period: 'month',
     limit: 2_000,
+    createdAt: '2023-10-20T14:30:00',
   },
   {
-    id: 4,
+    id: u(),
     iconName: 'AiOutlineCar',
     category: 'Транспорт',
     period: 'week',
     limit: 4_500,
-  },
-  {
-    id: 5,
-    iconName: 'AiOutlineCar',
-    category: 'Транспорт',
-    period: 'week',
-    limit: 4_500,
-  },
-  {
-    id: 6,
-    iconName: 'AiOutlineCar',
-    category: 'Транспорт',
-    period: 'week',
-    limit: 4_500,
+    createdAt: '2023-10-20T14:30:00',
   },
 ]
 
@@ -76,8 +67,12 @@ export const goalsSlice = createSlice({
         state.list[index] = { ...state.list[index], ...action.payload }
       }
     },
+    createGoal: (state, action: PayloadAction<GoalType>) => {
+      state.list.push(action.payload)
+    },
   },
 })
 
-export const { selectGoal, updateGoalInList, editSelectedGoal } = goalsSlice.actions
+export const { selectGoal, updateGoalInList, editSelectedGoal, createGoal } =
+  goalsSlice.actions
 export default goalsSlice.reducer

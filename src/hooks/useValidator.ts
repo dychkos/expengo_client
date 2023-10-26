@@ -6,7 +6,7 @@ export const useValidator = () => {
 
   const checkError = (field: string) => errors.includes(field)
 
-  const validate = (objToValidate: any, schema: Schema) => {
+  const validate = (objToValidate: any, schema: Schema<any>) => {
     const errors = $v.validate(objToValidate, schema)
     setErrors(errors)
     return errors.length === 0

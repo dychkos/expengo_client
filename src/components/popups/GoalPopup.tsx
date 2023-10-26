@@ -7,7 +7,7 @@ import { cn } from '../../app/className'
 
 interface GoalPopupProps extends PopupProps {
   categories: GoalType[]
-  preSelectedId: number
+  preSelectedId: string
   onSelect: Function
 }
 

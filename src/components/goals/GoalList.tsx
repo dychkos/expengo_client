@@ -25,10 +25,14 @@ export const GoalList = () => {
     setShowNewExpense(false)
   }
 
+  const addGoal = () => {
+    dispatch(switchGoalView(GoalViewMode.CREATE_GOAL))
+  }
+
   return (
     <>
       <div className="mb-8 flex justify-end gap-2">
-        <Button>Новий ліміт</Button>
+        <Button onClick={addGoal}>Новий ліміт</Button>
         <Button size="huge" onClick={() => setShowNewExpense(true)}>
           Додати витрату
         </Button>

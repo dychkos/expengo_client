@@ -1,34 +1,26 @@
 import React, { useState } from 'react'
-import { GoalType } from '../../app/types/goal.type'
 import { Icon } from '../Icon'
 import { useAppDispatch } from '../../store'
-import { updateGoalInList } from '../../store/goalsSlice'
-import GoalProgress from '../GoalProgress'
-import { uiTransformDate, uiTransformPeriod } from '../../app/helper'
+import { createGoal } from '../../store/goalsSlice'
 import { switchGoalView } from '../../store/appSlice'
-import { GoalViewMode } from '../../app/types/app.type'
 import { GoalInEditSchema } from '../../app/validation/schemas/goal.schema'
-import { useExpensesByGoal, useValidator } from '../../hooks'
+import { useValidator } from '../../hooks'
 import CircleBtn from '../ui/CircleBtn'
 import { AiOutlineArrowLeft, AiOutlineCheck } from 'react-icons/ai'
 import IconPopup from '../popups/IconPopup'
+import { defaultGoal, GoalType } from '../../app/types/goal.type'
+import { GoalViewMode } from '../../app/types/app.type'
+import { uiTransformPeriod } from '../../app/helper'
 import { Icons } from '../../app/temp'
 import { Digits } from '../../app/patterns'
+import { PeriodOptions } from '../../app/variables'
 import EditableSelect from '../ui/EditableField/EditableSelect'
 import EditableInput from '../ui/EditableField/EditableInput'
-import { PeriodOptions } from '../../app/variables'
 
-interface EditGoalProps {
-  goal: GoalType
-}
-
-const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
+const GoalCreate: React.FC = () => {
   const dispatch = useAppDispatch()
-  const currentlyExpended = useExpensesByGoal(goal.id)
-
-  const [currentGoal, setCurrentGoal] = useState(goal)
-
-  const [showIconEdit, setShowIconEdit] = useState(false)
+  const [currentGoal, setCurrentGoal] = useState<GoalType>(defaultGoal)
+  const [iconEdit, setIconEdit] = useState<boolean>(false)
 
   const { validate, clearError, checkError } = useValidator()
 
@@ -40,7 +32,7 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
     const isValid = validate(currentGoal, GoalInEditSchema)
 
     if (isValid) {
-      dispatch(updateGoalInList(currentGoal as GoalType))
+      dispatch(createGoal(currentGoal))
       toInitialView()
     }
   }
@@ -67,7 +59,7 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
           <div>
             <div
               className="flex w-14 h-14 sm:w-24 sm:h-24 items-center cursor-pointer justify-center rounded-xl bg-primary"
-              onClick={() => setShowIconEdit(true)}
+              onClick={() => setIconEdit(true)}
             >
               <Icon nameIcon={currentGoal.iconName} propsIcon={{ size: '48px' }} />
             </div>
@@ -77,16 +69,11 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
             <EditableInput
               className="font-bold text-2xl"
               value={currentGoal.category}
+              focusDefault={true}
               placeholder={'Назва категорії витрат'}
               onEdit={(val: string) => handleFieldUpdate('category', val)}
               error={checkError('category')}
             />
-          </div>
-
-          <div>
-            <span className="hidden sm:block font-default font-bold leading-3 text-zinc-500 text-xs text-right ml-auto">
-              {uiTransformDate(currentGoal.createdAt)}
-            </span>
           </div>
         </div>
 
@@ -116,18 +103,12 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
               />
             </div>
           </div>
-
-          <GoalProgress
-            current={currentlyExpended}
-            limit={currentGoal.limit}
-            size="huge"
-          />
         </div>
       </section>
 
       <IconPopup
-        isOpened={showIconEdit}
-        onClose={() => setShowIconEdit(false)}
+        isOpened={iconEdit}
+        onClose={() => setIconEdit(false)}
         onSelect={(icon: string) => handleFieldUpdate('iconName', icon)}
         preSelected={currentGoal.iconName}
         iconSources={Icons}
@@ -135,4 +116,4 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
     </>
   )
 }
-export default GoalInEdit
+export default GoalCreate

@@ -1,10 +1,10 @@
 import { useAppSelector } from '../store'
 
-export const useExpensesByGoal = (goalId: number) => {
+export const useExpensesByGoal = (goalId: string) => {
   return useAppSelector(state =>
     state.expenses.list.reduce((acc, item) => {
       if (item.goalId === goalId) {
-        acc += item.price
+        acc += Number(item.price)
       }
       return acc
     }, 0),

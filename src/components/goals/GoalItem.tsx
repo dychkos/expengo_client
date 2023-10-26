@@ -3,7 +3,7 @@ import GoalProgress from '../GoalProgress'
 import { useExpensesByGoal } from '../../hooks'
 
 export interface GoalItemProps {
-  id: number
+  id: string
   iconName: string
   category: string
   period: 'week' | 'month'
