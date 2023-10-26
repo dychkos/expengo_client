@@ -9,14 +9,13 @@ import { switchGoalView } from '../../store/appSlice'
 import { GoalViewMode } from '../../app/types/app.type'
 import { GoalInEditSchema } from '../../app/validation/schemas/goal.schema'
 import { useExpensesByGoal, useValidator } from '../../hooks'
-import CircleBtn from '../ui/CircleBtn'
-import { AiOutlineArrowLeft, AiOutlineCheck } from 'react-icons/ai'
 import IconPopup from '../popups/IconPopup'
 import { Icons } from '../../app/temp'
 import { Digits } from '../../app/patterns'
 import EditableSelect from '../ui/EditableField/EditableSelect'
 import EditableInput from '../ui/EditableField/EditableInput'
 import { PeriodOptions } from '../../app/variables'
+import DrawerLayout from '../layouts/DrawerLayout'
 
 interface EditGoalProps {
   goal: GoalType
@@ -24,13 +23,13 @@ interface EditGoalProps {
 
 const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
   const dispatch = useAppDispatch()
-  const currentlyExpended = useExpensesByGoal(goal.id)
 
   const [currentGoal, setCurrentGoal] = useState(goal)
-
   const [showIconEdit, setShowIconEdit] = useState(false)
 
   const { validate, clearError, checkError } = useValidator()
+
+  const currentlyExpended = useExpensesByGoal(goal.id)
 
   const toInitialView = () => {
     dispatch(switchGoalView(GoalViewMode.GOAL_LIST))
@@ -51,79 +50,63 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
   }
 
   return (
-    <>
-      <section>
-        <nav className="flex justify-between mb-5">
-          <CircleBtn onClick={toInitialView}>
-            <AiOutlineArrowLeft size={'24px'} />
-          </CircleBtn>
-
-          <CircleBtn onClick={onSaveClick}>
-            <AiOutlineCheck size={'24px'} />
-          </CircleBtn>
-        </nav>
-
-        <div className="grid grid-cols-2-80-one sm:grid-cols-3-96-60-one gap-0 sm:gap-4">
-          <div>
-            <div
-              className="flex w-14 h-14 sm:w-24 sm:h-24 items-center cursor-pointer justify-center rounded-xl bg-primary"
-              onClick={() => setShowIconEdit(true)}
-            >
-              <Icon nameIcon={currentGoal.iconName} propsIcon={{ size: '48px' }} />
-            </div>
+    <DrawerLayout handleSave={onSaveClick} handleClose={toInitialView}>
+      <div className="grid grid-cols-2-80-one sm:grid-cols-3-96-60-one gap-0 sm:gap-4">
+        <div>
+          <div
+            className="flex w-14 h-14 sm:w-24 sm:h-24 items-center cursor-pointer justify-center rounded-xl bg-primary"
+            onClick={() => setShowIconEdit(true)}
+          >
+            <Icon nameIcon={currentGoal.iconName} propsIcon={{ size: '48px' }} />
           </div>
+        </div>
 
-          <div>
-            <EditableInput
-              className="font-bold text-2xl"
-              value={currentGoal.category}
-              placeholder={'Назва категорії витрат'}
-              onEdit={(val: string) => handleFieldUpdate('category', val)}
-              error={checkError('category')}
+        <div>
+          <EditableInput
+            className="font-bold text-2xl"
+            value={currentGoal.category}
+            placeholder={'Назва категорії витрат'}
+            onEdit={(val: string) => handleFieldUpdate('category', val)}
+            error={checkError('category')}
+          />
+        </div>
+
+        <div>
+          <span className="hidden sm:block font-default font-bold leading-3 text-zinc-500 text-xs text-right ml-auto">
+            {uiTransformDate(currentGoal.createdAt)}
+          </span>
+        </div>
+      </div>
+
+      <div className="grid grid-rows-2 md:grid-cols-2-one-two gap-5 mt-5">
+        <div>
+          <div className="flex items-center gap-2">
+            <span>Ліміт на</span>
+            <EditableSelect
+              className="font-medium underline"
+              innerText={uiTransformPeriod(currentGoal.period)}
+              options={PeriodOptions}
+              error={checkError('period')}
+              onEdit={(val: string) => handleFieldUpdate('period', val)}
             />
           </div>
 
-          <div>
-            <span className="hidden sm:block font-default font-bold leading-3 text-zinc-500 text-xs text-right ml-auto">
-              {uiTransformDate(currentGoal.createdAt)}
-            </span>
+          <div className="flex items-center gap-2">
+            <EditableInput
+              type="text"
+              className="text-xl md:text-2xl"
+              value={`${currentGoal.limit}`}
+              maxLength={7}
+              regex={Digits}
+              onEdit={(val: string) => handleFieldUpdate('limit', val)}
+              error={checkError('limit')}
+              afterText="грн"
+            />
           </div>
         </div>
 
-        <div className="grid grid-rows-2 md:grid-cols-2-one-two gap-5 mt-5">
-          <div>
-            <div className="flex items-center gap-2">
-              <span>Ліміт на</span>
-              <EditableSelect
-                className="font-medium underline"
-                innerText={uiTransformPeriod(currentGoal.period)}
-                options={PeriodOptions}
-                error={checkError('period')}
-                onEdit={(val: string) => handleFieldUpdate('period', val)}
-              />
-            </div>
-
-            <div className="flex items-center gap-2">
-              <EditableInput
-                type="text"
-                className="text-xl md:text-2xl"
-                value={`${currentGoal.limit}`}
-                maxLength={7}
-                regex={Digits}
-                onEdit={(val: string) => handleFieldUpdate('limit', val)}
-                error={checkError('limit')}
-                afterText="грн"
-              />
-            </div>
-          </div>
-
-          <GoalProgress
-            current={currentlyExpended}
-            limit={currentGoal.limit}
-            size="huge"
-          />
-        </div>
-      </section>
+        <GoalProgress current={currentlyExpended} limit={currentGoal.limit} size="huge" />
+      </div>
 
       <IconPopup
         isOpened={showIconEdit}
@@ -132,7 +115,7 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
         preSelected={currentGoal.iconName}
         iconSources={Icons}
       />
-    </>
+    </DrawerLayout>
   )
 }
 export default GoalInEdit

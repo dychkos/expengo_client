@@ -1,5 +1,5 @@
 import React from 'react'
-import Layout from '../components/Layout'
+import Layout from '../components/layouts/Layout'
 import { GoalList } from '../components/goals/GoalList'
 import GoalInEdit from '../components/goals/GoalInEdit'
 import { useAppSelector } from '../store'

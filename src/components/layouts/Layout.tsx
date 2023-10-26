@@ -1,5 +1,5 @@
 import React from 'react'
-import { cn } from '../app/className'
+import { cn } from '../../app/className'
 
 interface LayoutProps extends React.PropsWithChildren {
   className?: string
