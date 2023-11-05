@@ -15,8 +15,7 @@ const GoalProgress: React.FC<GoalProgressProps> = ({
   icon,
   size = 'default',
 }) => {
-  const progressPercent =
-    (current / limit) * 100 > 100 ? 100 : (current / limit) * 100
+  const progressPercent = (current / limit) * 100 > 100 ? 100 : (current / limit) * 100
 
   const calcProgressColor = (percent: number) => {
     if (percent <= 30) {
@@ -28,7 +27,7 @@ const GoalProgress: React.FC<GoalProgressProps> = ({
     }
   }
 
-  const ProgressBarClasses = clsx(
+  const progressBarClasses = clsx(
     `absolute top-0 h-10 ${calcProgressColor(progressPercent)}`,
     {
       'rounded-r-lg': !!icon,
@@ -37,7 +36,7 @@ const GoalProgress: React.FC<GoalProgressProps> = ({
     },
   )
 
-  const ProgressStyle = {
+  const progressStyle = {
     width: progressPercent + '%',
   }
 
@@ -54,20 +53,15 @@ const GoalProgress: React.FC<GoalProgressProps> = ({
           {current} / {limit}
         </div>
         <div
-          className={clsx(`h-10 align-middle w-full bg-slate-300`, {
+          className={clsx('h-10 align-middle w-full bg-slate-300', {
             'rounded-r-lg': !!icon,
             'rounded-lg': !icon,
             'h-16': size === 'huge',
           })}
         ></div>
-        <div className={ProgressBarClasses} style={ProgressStyle}></div>
+        <div className={progressBarClasses} style={progressStyle}></div>
       </div>
     </>
   )
 }
-
-GoalProgress.defaultProps = {
-  size: 'default',
-}
-
 export default GoalProgress

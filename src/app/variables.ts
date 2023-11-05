@@ -8,3 +8,5 @@ export const PeriodOptions = [
     value: 'month',
   },
 ]
+
+export const NumericMaxLength = 10

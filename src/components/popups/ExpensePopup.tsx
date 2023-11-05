@@ -9,11 +9,15 @@ import { defaultExpense, ExpenseType } from '../../app/types/expense.type'
 import { useAppSelector } from '../../store'
 import GoalPopup from './GoalPopup'
 import { GoalType } from '../../app/types/goal.type'
+import { useValidator } from '../../hooks'
+import { ExpenseSchema } from '../../app/validation/schemas/expense.schema'
+import { NumericMaxLength } from '../../app/variables'
 
 interface ExpensePopupProps extends PopupProps {
   expense?: ExpenseType
   focusOnShow?: boolean
   onSaveClick: (expense: ExpenseType) => void
+  onRemoveClick: (expense: ExpenseType) => void
 }
 
 const ExpensePopup: FC<ExpensePopupProps> = props => {
@@ -26,6 +30,7 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
   })
 
   const goals = useAppSelector(state => state.goals.list)
+  const { validate, clearError, checkError } = useValidator()
 
   useEffect(() => {
     if (!current.goalId && selectedGoal) {
@@ -34,22 +39,18 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
   }, [])
 
   const onFieldEdit = (field: keyof ExpenseType, value: any) => {
-    setCurrent({
-      ...current,
-      [field]: value,
-    })
-  }
-
-  const updateExpenseGoal = (goal: GoalType) => {
-    onFieldEdit('goalId', goal.id)
+    clearError(field)
+    setCurrent({ ...current, [field]: value })
   }
 
   const onSaveClick = () => {
-    props.onSaveClick(current)
+    if (validate(current, ExpenseSchema)) {
+      props.onSaveClick(current)
+    }
   }
 
   return (
-    <>
+    <React.Fragment>
       <Popup
         isOpened={props.isOpened}
         onClose={props.onClose}
@@ -58,27 +59,28 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
         <Popup.Header>Редагування витрати</Popup.Header>
         <div className="flex gap-4 items-center overflow-x-hidden">
           <div
-            className="flex cursor-pointer items-center justify-center p-4 max-h-full rounded-xl bg-primary"
+            className="flex flex-shrink-0 cursor-pointer  items-center justify-center p-4 max-h-full rounded-xl bg-primary"
             onClick={() => setShowGoal(true)}
           >
             <Icon nameIcon={selectedGoal.iconName} propsIcon={{ size: '36px' }} />
           </div>
-          <div className="w-full">
+          <div>
             <EditableInput
               type="text"
               value={current.price.toString()}
-              error={false}
+              error={checkError('price')}
               className="font-default font-bold text-4xl"
               regex={Digits}
               focusDefault={props.focusOnShow}
               onEdit={(val: string) => onFieldEdit('price', val)}
               inputMode={'numeric'}
+              maxLength={NumericMaxLength}
               afterText="грн"
             />
             <EditableInput
               type="text"
               value={current.title}
-              error={false}
+              error={checkError('title')}
               onEdit={(val: string) => onFieldEdit('title', val)}
               className="font-default text-md text-zinc-500"
             />
@@ -86,16 +88,21 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
         </div>
         <Popup.Footer>
           <Button onClick={onSaveClick}>Зберегти</Button>
+          {props.expense && (
+            <Button variant="outline" onClick={() => props.onRemoveClick(current)}>
+              Видалити
+            </Button>
+          )}
         </Popup.Footer>
       </Popup>
       <GoalPopup
         categories={goals}
         preSelectedId={current.goalId}
-        onSelect={updateExpenseGoal}
+        onSelect={(goal: GoalType) => onFieldEdit('goalId', goal.id)}
         isOpened={showGoal}
         onClose={() => setShowGoal(false)}
       />
-    </>
+    </React.Fragment>
   )
 }
 

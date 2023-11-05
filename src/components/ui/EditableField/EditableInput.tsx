@@ -23,8 +23,17 @@ const EditableInput: FC<EditableInputProps> = ({
   const [initialValue] = useState<string>(value ? value.toString() : '')
 
   useEffect(() => {
-    focusChildInput()
+    if (editMode) {
+      focusChildInput()
+    }
   }, [editMode])
+
+  useEffect(() => {
+    if (focusDefault) {
+      onEdit('')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusDefault])
 
   const outsideRef = useOutsideClick(() => {
     if (value.length > 0) {
@@ -40,15 +49,26 @@ const EditableInput: FC<EditableInputProps> = ({
     }
   }
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (onChange) onChange(event)
+    if (onChange) {
+      onChange(event)
+    }
   }
 
   const handleInputUpdate = (event: ChangeEvent<HTMLInputElement>) => {
     const val = event.currentTarget.value
-    if (onEdit && !regex) {
+    if (onEdit && (!regex || regex.test(val))) {
       onEdit(val)
-    } else if (onEdit && regex && regex.test(val)) {
-      onEdit(val)
+    }
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      setEditMode(false)
+    }
+
+    if (event.key === 'Tab') {
+      // Handle the Tab key press here, e.g., prevent default behavior
+      console.log('Tab key was pressed')
     }
   }
 
@@ -71,6 +91,7 @@ const EditableInput: FC<EditableInputProps> = ({
             )}
             onChange={handleInputChange}
             onInput={handleInputUpdate}
+            onKeyDown={handleKeyDown}
             {...props}
           />
         )}
@@ -107,6 +128,6 @@ const EditableInput: FC<EditableInputProps> = ({
 }
 
 const clearStyles =
-  'appearance-none block w-auto bg-white border border-none placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:placeholder-gray-400 focus:text-gray-900'
+  'appearance-none block w-full bg-white border border-none placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:placeholder-gray-400 focus:text-gray-900'
 
 export default EditableInput

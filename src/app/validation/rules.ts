@@ -17,7 +17,7 @@ export const requiredRule = (): Rule => {
 export const numberRule = (): Rule => {
   return {
     meta: null,
-    func: val => val.replace(/\D/g, '').length === val.length,
+    func: val => /^(?!0{1,})([0-9]*)$/.test(val),
   }
 }
 
