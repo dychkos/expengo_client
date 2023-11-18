@@ -8,15 +8,15 @@ import store from './store'
 function App() {
   return (
     <div className="mb-32">
-      <Header />
-
       <Provider store={store}>
-        <Routing />
-      </Provider>
+        <Header />
 
-      <div className="fixed z-20 bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        <NavBar />
-      </div>
+        <Routing />
+
+        <div className="fixed z-20 bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <NavBar />
+        </div>
+      </Provider>
     </div>
   )
 }

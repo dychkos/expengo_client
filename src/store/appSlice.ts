@@ -3,10 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface AppState {
   goalViewMode: GoalViewMode
+  premiumShow: boolean
 }
 
 const initialState: AppState = {
   goalViewMode: GoalViewMode.GOAL_LIST,
+  premiumShow: false,
 }
 
 export const appSlice = createSlice({
@@ -16,9 +18,12 @@ export const appSlice = createSlice({
     switchGoalView: (state, action: PayloadAction<GoalViewMode>) => {
       state.goalViewMode = action.payload
     },
+    togglePremium: state => {
+      state.premiumShow = !state.premiumShow
+    },
   },
 })
 
-export const { switchGoalView } = appSlice.actions
+export const { switchGoalView, togglePremium } = appSlice.actions
 
 export default appSlice.reducer
