@@ -29,7 +29,7 @@ const ExpenseEmpty: React.FC = () => {
           Ще немає жодної витрати
         </h1>
         <p className="mt-2 text-gray-500">Ти можеш почати додавати витрати зараз.</p>
-        <div className="flex items-center mt-4 sm:mx-auto gap-x-3">
+        <div className="flex items-center mt-4 mx-auto">
           <Button icon="AiOutlinePlusCircle" onClick={toggleEditing}>
             Нова витрата
           </Button>

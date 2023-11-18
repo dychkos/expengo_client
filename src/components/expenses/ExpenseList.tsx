@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import ExpenseItem from './ExpenseItem'
 import { ExpenseType } from '../../app/types/expense.type'
 import ExpenseEmpty from './ExpenseEmpty'

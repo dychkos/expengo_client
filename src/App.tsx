@@ -7,7 +7,7 @@ import store from './store'
 
 function App() {
   return (
-    <div>
+    <div className="mb-32">
       <Header />
 
       <Provider store={store}>

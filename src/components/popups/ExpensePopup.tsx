@@ -76,6 +76,7 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
               inputMode={'numeric'}
               maxLength={NumericMaxLength}
               afterText="грн"
+              placeholder={'150 грн'}
             />
             <EditableInput
               type="text"

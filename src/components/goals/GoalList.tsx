@@ -27,8 +27,12 @@ export const GoalList = () => {
   return (
     <>
       <div className="mb-8 flex justify-end gap-2">
-        <Button onClick={addGoal}>Новий ліміт</Button>
-        <Button onClick={toggleEditing}>Додати витрату</Button>
+        <Button icon="AiOutlinePlusCircle" onClick={toggleEditing}>
+          Додати витрату
+        </Button>
+        <Button variant="outline" onClick={addGoal}>
+          Новий ліміт
+        </Button>
       </div>
       <div className="flex flex-col">
         <div className="m-auto w-full">
