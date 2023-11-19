@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import GoalProgress from '../GoalProgress'
 import { useExpenseCountByGoal } from '../../hooks'
+import { StatsOptions } from '../../app/types/app.type'
 
 export interface GoalItemProps {
   id: string
@@ -19,7 +20,13 @@ const GoalItem: FC<GoalItemProps> = ({
   limit,
   onSelect,
 }) => {
-  const currentlyExpended = useExpenseCountByGoal(id)
+  const statsOptions: StatsOptions = {
+    targetMonth: new Date(Date.now()).getMonth(),
+    targetYear: new Date(Date.now()).getFullYear(),
+    totalValues: false,
+    includeCurrentWeek: period === 'week',
+  }
+  const currentlyExpended = useExpenseCountByGoal(id, statsOptions)
 
   return (
     <div

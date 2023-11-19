@@ -41,6 +41,13 @@ const tempExpenses: ExpenseType[] = [
   {
     id: u(),
     goalId: '4',
+    createdAt: '2023-11-16T14:30:00',
+    title: 'Похід до ресторану з Діаной',
+    price: 2200,
+  },
+  {
+    id: u(),
+    goalId: '4',
     createdAt: '2022-10-12T14:30:00',
     title: 'Жостка тусса',
     price: 2200,

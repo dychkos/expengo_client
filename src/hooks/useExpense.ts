@@ -12,7 +12,12 @@ export const useExpense = () => {
   const dispatch = useAppDispatch()
 
   const add = (expense: ExpenseType) => {
-    dispatch(createExpense(expense))
+    dispatch(
+      createExpense({
+        ...expense,
+        createdAt: new Date(Date.now()).toISOString(),
+      }),
+    )
 
     setIsEditing(false)
   }

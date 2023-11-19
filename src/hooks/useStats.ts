@@ -1,7 +1,36 @@
 import { useAppSelector } from '../store'
+import { StatsOptions } from '../app/types/app.type'
+import { filterByCurrentWeek } from '../app/helper'
 
-export const useExpenseCountByGoal = (goalId: string) => {
-  const expensesList = useAppSelector(state => state.expenses.list)
+const defaultOptions: StatsOptions = {
+  targetMonth: new Date(Date.now()).getMonth(),
+  targetYear: new Date(Date.now()).getFullYear(),
+  totalValues: false,
+  includeCurrentWeek: false,
+}
+
+export const useExpenseCountByGoal = (
+  goalId: string,
+  options: StatsOptions = defaultOptions,
+) => {
+  let expensesList = useAppSelector(state => state.expenses.list)
+  let weekStartDay = useAppSelector(state => state.config.weekStartDay)
+
+  const { targetMonth, targetYear, totalValues, includeCurrentWeek } = options
+
+  if (!totalValues) {
+    if (includeCurrentWeek) {
+      expensesList = filterByCurrentWeek(expensesList, weekStartDay)
+    } else {
+      expensesList = expensesList.filter(expense => {
+        const expenseDate = new Date(expense.createdAt)
+        return (
+          expenseDate.getMonth() === targetMonth &&
+          expenseDate.getFullYear() === targetYear
+        )
+      })
+    }
+  }
 
   return expensesList.reduce((acc, item) => {
     if (item.goalId === goalId) {

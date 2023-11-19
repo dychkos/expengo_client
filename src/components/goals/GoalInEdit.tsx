@@ -6,7 +6,7 @@ import { updateGoalInList } from '../../store/goalsSlice'
 import GoalProgress from '../GoalProgress'
 import { uiTransformDate, uiTransformPeriod } from '../../app/helper'
 import { switchGoalView } from '../../store/appSlice'
-import { GoalViewMode } from '../../app/types/app.type'
+import { GoalViewMode, StatsOptions } from '../../app/types/app.type'
 import { GoalInEditSchema } from '../../app/validation/schemas/goal.schema'
 import { useExpenseCountByGoal, useValidator } from '../../hooks'
 import IconPopup from '../popups/IconPopup'
@@ -28,8 +28,13 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
   const [showIconEdit, setShowIconEdit] = useState(false)
 
   const { validate, clearError, checkError } = useValidator()
-
-  const currentlyExpended = useExpenseCountByGoal(goal.id)
+  const statsOptions: StatsOptions = {
+    targetMonth: new Date(Date.now()).getMonth(),
+    targetYear: new Date(Date.now()).getFullYear(),
+    totalValues: false,
+    includeCurrentWeek: goal.period === 'week',
+  }
+  const currentlyExpended = useExpenseCountByGoal(goal.id, statsOptions)
 
   const toInitialView = () => {
     dispatch(switchGoalView(GoalViewMode.GOAL_LIST))
