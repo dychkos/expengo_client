@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import GoalProgress from '../GoalProgress'
-import { useExpensesByGoal } from '../../hooks'
+import { useExpenseCountByGoal } from '../../hooks'
 
 export interface GoalItemProps {
   id: string
@@ -19,7 +19,7 @@ const GoalItem: FC<GoalItemProps> = ({
   limit,
   onSelect,
 }) => {
-  const currentlyExpended = useExpensesByGoal(id)
+  const currentlyExpended = useExpenseCountByGoal(id)
 
   return (
     <div

@@ -8,7 +8,7 @@ import { uiTransformDate, uiTransformPeriod } from '../../app/helper'
 import { switchGoalView } from '../../store/appSlice'
 import { GoalViewMode } from '../../app/types/app.type'
 import { GoalInEditSchema } from '../../app/validation/schemas/goal.schema'
-import { useExpensesByGoal, useValidator } from '../../hooks'
+import { useExpenseCountByGoal, useValidator } from '../../hooks'
 import IconPopup from '../popups/IconPopup'
 import { Icons } from '../../app/temp'
 import { Digits } from '../../app/patterns'
@@ -29,7 +29,7 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
 
   const { validate, clearError, checkError } = useValidator()
 
-  const currentlyExpended = useExpensesByGoal(goal.id)
+  const currentlyExpended = useExpenseCountByGoal(goal.id)
 
   const toInitialView = () => {
     dispatch(switchGoalView(GoalViewMode.GOAL_LIST))

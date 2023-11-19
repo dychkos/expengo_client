@@ -1,20 +1,19 @@
-import { RootState, useAppSelector } from '../store'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '../store'
 
-export const useExpensesByGoal = (goalId: string) => {
-  return useAppSelector(state =>
-    state.expenses.list.reduce((acc, item) => {
-      if (item.goalId === goalId) {
-        acc += Number(item.price)
-      }
-      return acc
-    }, 0),
-  )
+export const useExpenseCountByGoal = (goalId: string) => {
+  const expensesList = useAppSelector(state => state.expenses.list)
+
+  return expensesList.reduce((acc, item) => {
+    if (item.goalId === goalId) {
+      acc += Number(item.price)
+    }
+    return acc
+  }, 0)
 }
 
 export const useStatsSelector = () => {
-  const goals = useSelector((state: RootState) => state.goals.list)
-  const expensesList = useSelector((state: RootState) => state.expenses.list)
+  const goals = useAppSelector(state => state.goals.list)
+  const expensesList = useAppSelector(state => state.expenses.list)
   const total = useAppSelector(state =>
     state.expenses.list.reduce((expenseAcc, item) => {
       expenseAcc += Number(item.price)

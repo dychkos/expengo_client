@@ -1,3 +1,3 @@
-export * from './useExpensesByGoal'
+export * from './useStats'
 export * from './useValidator'
 export * from './useClickOutside'

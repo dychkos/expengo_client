@@ -1,18 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ReactECharts from 'echarts-for-react'
-import { useAppSelector } from '../../store'
-import { useExpensesByGoal, useStatsSelector } from '../../hooks'
+import { useStatsSelector } from '../../hooks'
 
 const BaseChart: React.FC = () => {
-  const expenseCategories = useAppSelector(state => state.goals.list)
-  const stats = useStatsSelector()
+  const statsData = useStatsSelector()
 
-  if (!expenseCategories.length) {
-    return <p>No found</p>
+  if (statsData.stats.length < 1) {
+    return <>Упс, статистики ще немає</>
   }
 
   const getGraphData = () => {
-    return stats.stats.map(s => ({ value: s.totalPrice, name: s.category }))
+    return statsData.stats.map(s => ({ value: s.totalPrice, name: s.category }))
   }
 
   const options = {
