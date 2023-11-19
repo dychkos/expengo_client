@@ -11,7 +11,7 @@ interface ExpenseItemProps {
 }
 
 const ExpenseItem: React.FC<ExpenseItemProps> = ({ expenseItem }) => {
-  const { addExpense, removeExpense, isEditing, toggleEditing } = useExpense()
+  const { edit, remove, isEditing, toggleEditing } = useExpense()
 
   const expenseGoal = useAppSelector(state =>
     state.goals.list.find(goal => goal.id === expenseItem.goalId),
@@ -45,8 +45,8 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({ expenseItem }) => {
       <ExpensePopup
         isOpened={isEditing}
         expense={expenseItem}
-        onSaveClick={addExpense}
-        onRemoveClick={removeExpense}
+        onSaveClick={edit}
+        onRemoveClick={remove}
         onClose={toggleEditing}
       />
     </React.Fragment>

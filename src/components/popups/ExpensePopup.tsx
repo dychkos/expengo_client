@@ -14,10 +14,10 @@ import { ExpenseSchema } from '../../app/validation/schemas/expense.schema'
 import { NumericMaxLength } from '../../app/variables'
 
 interface ExpensePopupProps extends PopupProps {
+  onSaveClick: (expense: ExpenseType) => void
   expense?: ExpenseType
   focusOnShow?: boolean
-  onSaveClick: (expense: ExpenseType) => void
-  onRemoveClick: (expense: ExpenseType) => void
+  onRemoveClick?: (expense: ExpenseType) => void
 }
 
 const ExpensePopup: FC<ExpensePopupProps> = props => {
@@ -46,6 +46,12 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
   const onSaveClick = () => {
     if (validate(current, ExpenseSchema)) {
       props.onSaveClick(current)
+    }
+  }
+
+  const onRemoveClick = () => {
+    if (props.onRemoveClick) {
+      props.onRemoveClick(current)
     }
   }
 
@@ -89,8 +95,8 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
         </div>
         <Popup.Footer>
           <Button onClick={onSaveClick}>Зберегти</Button>
-          {props.expense && (
-            <Button variant="outline" onClick={() => props.onRemoveClick(current)}>
+          {props.onRemoveClick && (
+            <Button variant="outline" onClick={onRemoveClick}>
               Видалити
             </Button>
           )}

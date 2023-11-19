@@ -10,7 +10,7 @@ import ExpensePopup from '../popups/ExpensePopup'
 import { useExpense } from '../../hooks/useExpense'
 
 export const GoalList = () => {
-  const { addExpense, removeExpense, isEditing, toggleEditing } = useExpense(true)
+  const { add, isEditing, toggleEditing } = useExpense()
 
   const dispatch = useAppDispatch()
   const goalList = useAppSelector(state => state.goals.list)
@@ -42,8 +42,7 @@ export const GoalList = () => {
         </div>
       </div>
       <ExpensePopup
-        onSaveClick={addExpense}
-        onRemoveClick={removeExpense}
+        onSaveClick={add}
         isOpened={isEditing}
         focusOnShow={true}
         onClose={toggleEditing}

@@ -7,20 +7,23 @@ import {
   updateExpenseInList,
 } from '../store/expensesSlice'
 
-export const useExpense = (withCreate = false) => {
+export const useExpense = () => {
   const [isEditing, setIsEditing] = React.useState(false)
   const dispatch = useAppDispatch()
 
-  const addExpense = (expense: ExpenseType) => {
-    if (withCreate) {
-      dispatch(createExpense(expense))
-    } else {
-      updateExpenseInList(expense)
-    }
+  const add = (expense: ExpenseType) => {
+    dispatch(createExpense(expense))
+
     setIsEditing(false)
   }
 
-  const removeExpense = (expense: ExpenseType) => {
+  const edit = (expense: ExpenseType) => {
+    updateExpenseInList(expense)
+
+    setIsEditing(false)
+  }
+
+  const remove = (expense: ExpenseType) => {
     dispatch(removeExpenseInList(expense))
     setIsEditing(false)
   }
@@ -31,8 +34,9 @@ export const useExpense = (withCreate = false) => {
 
   return {
     isEditing,
-    addExpense,
-    removeExpense,
+    add,
+    edit,
+    remove,
     toggleEditing,
   }
 }

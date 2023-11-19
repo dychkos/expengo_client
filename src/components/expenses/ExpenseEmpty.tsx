@@ -1,11 +1,11 @@
 import React from 'react'
 import Button from '../ui/Button'
-import ExpensePopup from '../popups/ExpensePopup'
-import { useExpense } from '../../hooks/useExpense'
 
-const ExpenseEmpty: React.FC = () => {
-  const { addExpense, removeExpense, isEditing, toggleEditing } = useExpense(true)
+interface ExpenseEmptyProps {
+  handleAdding: () => void
+}
 
+const ExpenseEmpty: React.FC<ExpenseEmptyProps> = ({ handleAdding }) => {
   return (
     <div className="flex items-center mt-6 text-center rounded-lg h-96">
       <div className="flex flex-col w-full max-w-sm px-4 mx-auto">
@@ -30,18 +30,11 @@ const ExpenseEmpty: React.FC = () => {
         </h1>
         <p className="mt-2 text-gray-500">Ти можеш почати додавати витрати зараз.</p>
         <div className="flex items-center mt-4 mx-auto">
-          <Button icon="AiOutlinePlusCircle" onClick={toggleEditing}>
+          <Button icon="AiOutlinePlusCircle" onClick={handleAdding}>
             Нова витрата
           </Button>
         </div>
       </div>
-      <ExpensePopup
-        onSaveClick={addExpense}
-        onRemoveClick={removeExpense}
-        isOpened={isEditing}
-        focusOnShow={true}
-        onClose={toggleEditing}
-      />
     </div>
   )
 }
