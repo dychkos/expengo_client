@@ -18,7 +18,7 @@ const mockGoals: GoalType[] = [
     createdAt: '2023-10-20T14:30:00',
   },
   {
-    id: u(),
+    id: '4',
     iconName: 'AiOutlineHome',
     category: 'Дім2',
     period: 'week',

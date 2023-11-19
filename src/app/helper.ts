@@ -38,3 +38,17 @@ export const uiTransformDate = (date: string): string => {
     return `${daysAgo} днів тому`
   }
 }
+
+export const getFormattedMonth = (date: string) => {
+  const currentDate = new Date(date)
+
+  let formatted = currentDate.toLocaleString('uk-UA', {
+    year: 'numeric',
+    month: 'long',
+  })
+
+  formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1)
+  formatted = formatted.replace(/р\.$/, '')
+
+  return formatted
+}
