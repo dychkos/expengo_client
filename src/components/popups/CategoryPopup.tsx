@@ -1,27 +1,29 @@
-import Popup from '../ui/Popup'
-import { Icon } from '../Icon'
-import React, { FC } from 'react'
-import { GoalType } from '../../app/types/goal.type'
-import { PopupProps } from './popup.props'
+import { FC } from 'react'
 import { cn } from '../../app/className'
+import { CategoryType } from '../../app/types/category.type'
+import { Icon } from '../Icon'
+import Popup from '../ui/Popup'
+import { PopupProps } from './popup.props'
 
-interface GoalPopupProps extends PopupProps {
-  categories: GoalType[]
+interface CategoryPopupProps extends PopupProps {
+  categories: CategoryType[]
   preSelectedId: string
-  onSelect: Function
+  onSelect: (category: CategoryType) => void
 }
 
-const GoalPopup: FC<GoalPopupProps> = ({
+const CategoryPopup: FC<CategoryPopupProps> = ({
   categories,
   onSelect,
   preSelectedId,
   isOpened,
   onClose,
 }) => {
-  const handleSelectGoal = (goal: GoalType) => {
-    onSelect(goal)
+
+  const handleSelectCategory = (category: CategoryType) => {
+    onSelect(category)
     onClose()
   }
+
   return (
     <Popup isOpened={isOpened} onClose={onClose}>
       <Popup.Header>Обери категорію</Popup.Header>
@@ -33,12 +35,12 @@ const GoalPopup: FC<GoalPopupProps> = ({
                 'w-full h-full sm:w-16 sm:h-16 bg-gray-100 flex items-center justify-center mx-auto rounded-md p-2 cursor-pointer hover:bg-amber-100',
                 preSelectedId === category.id && 'bg-primary',
               )}
-              onClick={() => handleSelectGoal(category)}
+              onClick={() => handleSelectCategory(category)}
             >
               <Icon nameIcon={category.iconName} propsIcon={{ size: '24px' }} />
             </div>
             <p className="font-default text-sm text-gray-600 text-center mt-1">
-              {category.category}
+              {category.title}
             </p>
           </div>
         ))}
@@ -47,4 +49,4 @@ const GoalPopup: FC<GoalPopupProps> = ({
   )
 }
 
-export default GoalPopup
+export default CategoryPopup

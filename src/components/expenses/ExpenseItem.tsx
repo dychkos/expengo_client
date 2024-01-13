@@ -13,12 +13,12 @@ interface ExpenseItemProps {
 const ExpenseItem: React.FC<ExpenseItemProps> = ({ expenseItem }) => {
   const { edit, remove, isEditing, toggleEditing } = useExpense()
 
-  const expenseGoal = useAppSelector(state =>
-    state.goals.list.find(goal => goal.id === expenseItem.goalId),
+  const expenseCategory = useAppSelector(state =>
+    state.categories.list.find(category => category.id === expenseItem.categoryId),
   )
 
-  if (!expenseGoal) {
-    throw new Error('Invalid goal ID')
+  if (!expenseCategory) {
+    throw new Error('Invalid category ID')
   }
 
   return (
@@ -28,7 +28,7 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({ expenseItem }) => {
         onClick={toggleEditing}
       >
         <div className="flex items-center justify-center p-2 max-h-full rounded-xl bg-primary">
-          <Icon nameIcon={expenseGoal.iconName} propsIcon={{ size: '24px' }} />
+          <Icon nameIcon={expenseCategory.iconName} propsIcon={{ size: '24px' }} />
         </div>
         <div className="w-full">
           <h3 className="font-default font-bold text-md text-clip overflow-hidden">

@@ -1,22 +1,22 @@
 import u from 'uniqid'
 
-export interface GoalType {
+export interface CategoryType {
   id: string
   iconName: string
   period: TimePeriod
-  category: string
-  limit: number
+  title: string
+  limit: number 
   about?: string
   createdAt: string
 }
 
 export type TimePeriod = 'month' | 'week'
 
-export const defaultGoal: GoalType = {
+export const getDefaultCategory = (): CategoryType => ({
   id: u(),
   iconName: 'AiOutlineCar', // replace by default Icon
-  category: '',
+  title: '',
   period: 'month',
   limit: 250,
   createdAt: new Date(Date.now()).toISOString(),
-}
+})

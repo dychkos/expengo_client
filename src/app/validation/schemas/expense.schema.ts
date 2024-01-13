@@ -4,7 +4,7 @@ import { greaterThenRule, numberRule, requiredRule } from '../rules'
 
 export const ExpenseSchema: Schema<ExpenseType> = {
   id: [requiredRule()],
-  goalId: [requiredRule()],
+  categoryId: [requiredRule()],
   price: [requiredRule(), numberRule(), greaterThenRule(1)],
   title: [requiredRule()],
   createdAt: [requiredRule()],

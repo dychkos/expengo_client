@@ -27,9 +27,3 @@ export const oneOfRule = (meta: Array<string>): Rule => {
     func: (val, meta) => meta.includes(val),
   }
 }
-
-// data obj
-// {
-//      firstname: requiredRule(),
-//      age: greaterThanRule(3)
-// }

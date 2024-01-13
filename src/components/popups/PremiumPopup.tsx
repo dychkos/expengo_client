@@ -1,6 +1,6 @@
+import Button from '../ui/Button'
 import Popup from '../ui/Popup'
 import { PopupProps } from './popup.props'
-import Button from '../ui/Button'
 
 interface PremiumPopupProps extends PopupProps {}
 

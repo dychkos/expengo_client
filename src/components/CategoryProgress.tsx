@@ -2,14 +2,14 @@ import React from 'react'
 import clsx from 'clsx'
 import { Icon } from './Icon'
 
-interface GoalProgressProps {
+interface CategoryProgressProps {
   current: number
   limit: number
   icon?: string
   size?: 'huge' | 'default'
 }
 
-const GoalProgress: React.FC<GoalProgressProps> = ({
+const CategoryProgress: React.FC<CategoryProgressProps> = ({
   current,
   limit,
   icon,
@@ -64,4 +64,4 @@ const GoalProgress: React.FC<GoalProgressProps> = ({
     </>
   )
 }
-export default GoalProgress
+export default CategoryProgress

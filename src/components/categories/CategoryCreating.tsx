@@ -1,44 +1,45 @@
 import React, { useState } from 'react'
-import { Icon } from '../Icon'
-import { useAppDispatch } from '../../store'
-import { createGoal } from '../../store/goalsSlice'
-import { switchGoalView } from '../../store/appSlice'
-import { GoalInEditSchema } from '../../app/validation/schemas/goal.schema'
-import { useValidator } from '../../hooks'
-import IconPopup from '../popups/IconPopup'
-import { defaultGoal, GoalType } from '../../app/types/goal.type'
-import { GoalViewMode } from '../../app/types/app.type'
 import { uiTransformPeriod } from '../../app/helper'
-import { Icons } from '../../app/temp'
 import { Digits } from '../../app/patterns'
+import { Icons } from '../../app/temp'
+import { CategoryViewMode } from '../../app/types/app.type'
+import { getDefaultCategory, CategoryType } from '../../app/types/category.type'
+import { CategorySchema } from '../../app/validation/schemas/category.schema'
 import { PeriodOptions } from '../../app/variables'
-import EditableSelect from '../ui/EditableField/EditableSelect'
-import EditableInput from '../ui/EditableField/EditableInput'
+import { useValidator } from '../../hooks'
+import { useAppDispatch } from '../../store'
+import { switchCategoryView } from '../../store/appSlice'
+import { createCategory } from '../../store/categoriesSlice'
+import { Icon } from '../Icon'
 import DrawerLayout from '../layouts/DrawerLayout'
+import IconPopup from '../popups/IconPopup'
+import EditableInput from '../ui/EditableField/EditableInput'
+import EditableSelect from '../ui/EditableField/EditableSelect'
 
-const GoalCreate: React.FC = () => {
+const CategoryCreating: React.FC = () => {
   const dispatch = useAppDispatch()
-  const [currentGoal, setCurrentGoal] = useState<GoalType>(defaultGoal)
-  const [iconEdit, setIconEdit] = useState<boolean>(false)
+
+  const [category, setCategory] = useState<CategoryType>(getDefaultCategory())
+  const [isIconEditing, setIsIconEditing] = useState<boolean>(false)
 
   const { validate, clearError, checkError } = useValidator()
 
   const toInitialView = () => {
-    dispatch(switchGoalView(GoalViewMode.GOAL_LIST))
+    dispatch(switchCategoryView(CategoryViewMode.CATEGORY_LIST))
   }
 
   const onSaveClick = () => {
-    const isValid = validate(currentGoal, GoalInEditSchema)
+    const isValid = validate(category, CategorySchema)
 
     if (isValid) {
-      dispatch(createGoal(currentGoal))
+      dispatch(createCategory(category))
       toInitialView()
     }
   }
 
-  const handleFieldUpdate = (field: keyof GoalType, value: string) => {
+  const handleFieldUpdate = (field: keyof CategoryType, value: string) => {
     clearError(field)
-    setCurrentGoal({ ...currentGoal, [field as string]: value })
+    setCategory({ ...category, [field as string]: value })
   }
 
   return (
@@ -47,20 +48,20 @@ const GoalCreate: React.FC = () => {
         <div>
           <div
             className="flex w-14 h-14 sm:w-24 sm:h-24 items-center cursor-pointer justify-center rounded-xl bg-primary"
-            onClick={() => setIconEdit(true)}
+            onClick={() => setIsIconEditing(true)}
           >
-            <Icon nameIcon={currentGoal.iconName} propsIcon={{ size: '48px' }} />
+            <Icon nameIcon={category.iconName} propsIcon={{ size: '48px' }} />
           </div>
         </div>
 
         <div>
           <EditableInput
             className="font-bold text-2xl"
-            value={currentGoal.category}
+            value={category.title}
             focusDefault={true}
-            placeholder={'Назва категорії витрат'}
-            onEdit={(val: string) => handleFieldUpdate('category', val)}
-            error={checkError('category')}
+            placeholder="Назва категорії витрат"
+            onEdit={(val: string) => handleFieldUpdate('title', val)}
+            error={checkError('title')}
           />
         </div>
       </div>
@@ -71,7 +72,7 @@ const GoalCreate: React.FC = () => {
             <span>Ліміт на</span>
             <EditableSelect
               className="font-medium underline"
-              innerText={uiTransformPeriod(currentGoal.period)}
+              innerText={uiTransformPeriod(category.period)}
               options={PeriodOptions}
               error={checkError('period')}
               onEdit={(val: string) => handleFieldUpdate('period', val)}
@@ -82,7 +83,7 @@ const GoalCreate: React.FC = () => {
             <EditableInput
               type="text"
               className="text-xl md:text-2xl"
-              value={`${currentGoal.limit}`}
+              value={`${category.limit}`}
               maxLength={7}
               regex={Digits}
               onEdit={(val: string) => handleFieldUpdate('limit', val)}
@@ -92,14 +93,16 @@ const GoalCreate: React.FC = () => {
           </div>
         </div>
       </div>
+
       <IconPopup
-        isOpened={iconEdit}
-        onClose={() => setIconEdit(false)}
+        isOpened={isIconEditing}
+        onClose={() => setIsIconEditing(false)}
         onSelect={(icon: string) => handleFieldUpdate('iconName', icon)}
-        preSelected={currentGoal.iconName}
-        iconSources={Icons}
+        preSelected={category.iconName}
+        iconSource={Icons}
       />
+
     </DrawerLayout>
   )
 }
-export default GoalCreate
+export default CategoryCreating

@@ -7,7 +7,7 @@ interface IconPopupProps {
   isOpened: boolean
   onClose: Function
   onSelect: Function
-  iconSources: Array<string>
+  iconSource: Array<string>
   preSelected: string
 }
 
@@ -21,7 +21,7 @@ const IconPopup: React.FC<IconPopupProps> = props => {
     <Popup isOpened={props.isOpened} onClose={props.onClose}>
       <Popup.Header>Обери іконку</Popup.Header>
       <div className="grid mx-auto grid-cols-5 gap-4">
-        {props.iconSources.map(icon => (
+        {props.iconSource.map(icon => (
           <div
             className={clsx(
               'w-full h-full sm:w-16 sm:h-16 bg-gray-100 flex items-center justify-center mx-auto rounded-md p-2 cursor-pointer hover:bg-amber-100',

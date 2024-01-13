@@ -1,12 +1,11 @@
+import { CategoryType } from '../../types/category.type'
 import { greaterThenRule, oneOfRule, requiredRule } from '../rules'
-import { GoalType } from '../../types/goal.type'
 import { Schema } from '../validation'
 
-export const GoalInEditSchema: Schema<GoalType> = {
-  //todo: rename into 'GoalSchema'
+export const CategorySchema: Schema<CategoryType> = {
   id: [requiredRule()],
   iconName: [requiredRule()],
-  category: [requiredRule()],
+  title: [requiredRule()],
   period: [requiredRule(), oneOfRule(['month', 'week'])],
   limit: [requiredRule(), greaterThenRule(1)],
   createdAt: [requiredRule()],

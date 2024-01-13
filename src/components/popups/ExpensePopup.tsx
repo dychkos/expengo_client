@@ -1,17 +1,17 @@
 import React, { FC, useEffect, useState } from 'react'
-import { PopupProps } from './popup.props'
-import Popup from '../ui/Popup'
-import { Icon } from '../Icon'
-import { EditableInput } from '../ui/EditableField'
 import { Digits } from '../../app/patterns'
-import Button from '../ui/Button'
-import { defaultExpense, ExpenseType } from '../../app/types/expense.type'
-import { useAppSelector } from '../../store'
-import GoalPopup from './GoalPopup'
-import { GoalType } from '../../app/types/goal.type'
-import { useValidator } from '../../hooks'
+import { CategoryType } from '../../app/types/category.type'
+import { ExpenseType, defaultExpense } from '../../app/types/expense.type'
 import { ExpenseSchema } from '../../app/validation/schemas/expense.schema'
 import { NumericMaxLength } from '../../app/variables'
+import { useValidator } from '../../hooks'
+import { useAppSelector } from '../../store'
+import { Icon } from '../Icon'
+import Button from '../ui/Button'
+import { EditableInput } from '../ui/EditableField'
+import Popup from '../ui/Popup'
+import CategoryPopup from './CategoryPopup'
+import { PopupProps } from './popup.props'
 
 interface ExpensePopupProps extends PopupProps {
   onSaveClick: (expense: ExpenseType) => void
@@ -22,19 +22,19 @@ interface ExpensePopupProps extends PopupProps {
 
 const ExpensePopup: FC<ExpensePopupProps> = props => {
   const [current, setCurrent] = useState<ExpenseType>(props.expense || defaultExpense)
-  const [showGoal, setShowGoal] = useState<boolean>(false)
+  const [showCategory, setShowCategory] = useState<boolean>(false)
 
-  const selectedGoal = useAppSelector(state => {
-    const selectedById = state.goals.list.find(goal => goal.id === current?.goalId)
-    return selectedById || state.goals.list[0]
+  const selectedCategory = useAppSelector(state => {
+    const selectedById = state.categories.list.find(cat => cat.id === current?.categoryId)
+    return selectedById || state.categories.list[0]
   })
 
-  const goals = useAppSelector(state => state.goals.list)
+  const categories = useAppSelector(state => state.categories.list)
   const { validate, clearError, checkError } = useValidator()
 
   useEffect(() => {
-    if (!current.goalId && selectedGoal) {
-      setCurrent({ ...current, goalId: selectedGoal.id })
+    if (!current.categoryId && selectedCategory) {
+      setCurrent({ ...current, categoryId: selectedCategory.id })
     }
   }, [])
 
@@ -66,9 +66,9 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
         <div className="flex gap-4 items-center overflow-x-hidden">
           <div
             className="flex flex-shrink-0 cursor-pointer  items-center justify-center p-4 max-h-full rounded-xl bg-primary"
-            onClick={() => setShowGoal(true)}
+            onClick={() => setShowCategory(true)}
           >
-            <Icon nameIcon={selectedGoal.iconName} propsIcon={{ size: '36px' }} />
+            <Icon nameIcon={selectedCategory.iconName} propsIcon={{ size: '36px' }} />
           </div>
           <div>
             <EditableInput
@@ -102,12 +102,12 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
           )}
         </Popup.Footer>
       </Popup>
-      <GoalPopup
-        categories={goals}
-        preSelectedId={current.goalId}
-        onSelect={(goal: GoalType) => onFieldEdit('goalId', goal.id)}
-        isOpened={showGoal}
-        onClose={() => setShowGoal(false)}
+      <CategoryPopup
+        categories={categories}
+        preSelectedId={current.categoryId}
+        onSelect={(category: CategoryType) => onFieldEdit('categoryId', category.id)}
+        isOpened={showCategory}
+        onClose={() => setShowCategory(false)}
       />
     </React.Fragment>
   )

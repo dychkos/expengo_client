@@ -1,7 +1,7 @@
-export enum GoalViewMode {
-  EDIT_GOAL = 'edit',
-  CREATE_GOAL = 'create',
-  GOAL_LIST = 'goal_list',
+export enum CategoryViewMode {
+  EDIT_CATEGORY = 'category_in_edit',
+  CREATE_CATEGORY = 'category_in_create',
+  CATEGORY_LIST = 'category_list',
 }
 
 export interface StatsOptions {

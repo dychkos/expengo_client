@@ -4,16 +4,16 @@ import {
   useDispatch,
   useSelector as useReduxSelector,
 } from 'react-redux'
-import GoalsReducer from './goalsSlice'
-import ExpensesReducer from './expensesSlice'
-import ConfigReducer from './configSlice'
 import AppReducer from './appSlice'
+import CategoriesReducer from './categoriesSlice'
+import ConfigReducer from './configSlice'
+import ExpensesReducer from './expensesSlice'
 
 const store = configureStore({
   reducer: {
     app: AppReducer,
     config: ConfigReducer,
-    goals: GoalsReducer,
+    categories: CategoriesReducer,
     expenses: ExpensesReducer,
   },
 })

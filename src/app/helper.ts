@@ -1,4 +1,4 @@
-import { TimePeriod } from './types/goal.type'
+import { TimePeriod } from './types/category.type'
 
 export const uiTransformPeriod = (period: TimePeriod): string => {
   const periodMap = new Map([
@@ -53,26 +53,3 @@ export const getFormattedMonth = (date: string) => {
   return formatted
 }
 
-export const filterByCurrentWeek = (
-  obj: {
-    createdAt: string
-  }[],
-  weekStartDay: number,
-): any => {
-  const now = new Date()
-  const startOfCurrentWeek = new Date(now)
-  const dayOfWeek = now.getDay()
-  const diff = (dayOfWeek - weekStartDay + 7) % 7
-
-  startOfCurrentWeek.setDate(now.getDate() - diff)
-  startOfCurrentWeek.setHours(0, 0, 0, 0)
-
-  const endOfCurrentWeek = new Date(startOfCurrentWeek)
-  endOfCurrentWeek.setDate(endOfCurrentWeek.getDate() + 7)
-  endOfCurrentWeek.setHours(0, 0, 0, 0)
-
-  return obj.filter(ob => {
-    const createdAtDate = new Date(ob.createdAt)
-    return createdAtDate >= startOfCurrentWeek && createdAtDate < endOfCurrentWeek
-  })
-}

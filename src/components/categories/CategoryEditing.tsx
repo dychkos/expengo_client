@@ -1,57 +1,54 @@
 import React, { useState } from 'react'
-import { GoalType } from '../../app/types/goal.type'
-import { Icon } from '../Icon'
-import { useAppDispatch } from '../../store'
-import { updateGoalInList } from '../../store/goalsSlice'
-import GoalProgress from '../GoalProgress'
 import { uiTransformDate, uiTransformPeriod } from '../../app/helper'
-import { switchGoalView } from '../../store/appSlice'
-import { GoalViewMode, StatsOptions } from '../../app/types/app.type'
-import { GoalInEditSchema } from '../../app/validation/schemas/goal.schema'
-import { useExpenseCountByGoal, useValidator } from '../../hooks'
-import IconPopup from '../popups/IconPopup'
-import { Icons } from '../../app/temp'
 import { Digits } from '../../app/patterns'
-import EditableSelect from '../ui/EditableField/EditableSelect'
-import EditableInput from '../ui/EditableField/EditableInput'
+import { Icons } from '../../app/temp'
+import { CategoryViewMode } from '../../app/types/app.type'
+import { CategoryType } from '../../app/types/category.type'
+import { CategorySchema } from '../../app/validation/schemas/category.schema'
 import { PeriodOptions } from '../../app/variables'
+import { useExpensesInCategory, useValidator } from '../../hooks'
+import { useAppDispatch } from '../../store'
+import { switchCategoryView } from '../../store/appSlice'
+import { updateCategoryInList } from '../../store/categoriesSlice'
+import CategoryProgress from '../CategoryProgress'
+import { Icon } from '../Icon'
 import DrawerLayout from '../layouts/DrawerLayout'
+import IconPopup from '../popups/IconPopup'
+import EditableInput from '../ui/EditableField/EditableInput'
+import EditableSelect from '../ui/EditableField/EditableSelect'
 
-interface EditGoalProps {
-  goal: GoalType
+interface EditCategoryProps {
+  category: CategoryType
 }
 
-const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
+const CategoryEditing: React.FC<EditCategoryProps> = ({ category: initial }) => {
   const dispatch = useAppDispatch()
 
-  const [currentGoal, setCurrentGoal] = useState(goal)
+  const [category, setCategory] = useState(initial)
   const [showIconEdit, setShowIconEdit] = useState(false)
 
   const { validate, clearError, checkError } = useValidator()
-  const statsOptions: StatsOptions = {
-    targetMonth: new Date(Date.now()).getMonth(),
-    targetYear: new Date(Date.now()).getFullYear(),
-    totalValues: false,
-    includeCurrentWeek: goal.period === 'week',
-  }
-  const currentlyExpended = useExpenseCountByGoal(goal.id, statsOptions)
+
+  const currentlySpent = useExpensesInCategory(category.id, {
+    forWeek: category.period === 'week',
+  })
 
   const toInitialView = () => {
-    dispatch(switchGoalView(GoalViewMode.GOAL_LIST))
+    dispatch(switchCategoryView(CategoryViewMode.CATEGORY_LIST))
   }
 
   const onSaveClick = () => {
-    const isValid = validate(currentGoal, GoalInEditSchema)
+    const isValid = validate(category, CategorySchema)
 
     if (isValid) {
-      dispatch(updateGoalInList(currentGoal as GoalType))
+      dispatch(updateCategoryInList(category as CategoryType))
       toInitialView()
     }
   }
 
-  const handleFieldUpdate = (field: keyof GoalType, value: string) => {
+  const handleFieldUpdate = (field: keyof CategoryType, value: string) => {
     clearError(field)
-    setCurrentGoal({ ...currentGoal, [field as string]: value })
+    setCategory({ ...category, [field as string]: value })
   }
 
   return (
@@ -62,23 +59,23 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
             className="flex w-14 h-14 sm:w-24 sm:h-24 items-center cursor-pointer justify-center rounded-xl bg-primary"
             onClick={() => setShowIconEdit(true)}
           >
-            <Icon nameIcon={currentGoal.iconName} propsIcon={{ size: '48px' }} />
+            <Icon nameIcon={category.iconName} propsIcon={{ size: '48px' }} />
           </div>
         </div>
 
         <div>
           <EditableInput
             className="font-bold text-2xl"
-            value={currentGoal.category}
-            placeholder={'Назва категорії витрат'}
-            onEdit={(val: string) => handleFieldUpdate('category', val)}
+            value={category.title}
+            placeholder="Назва категорії витрат"
+            onEdit={(val: string) => handleFieldUpdate('title', val)}
             error={checkError('category')}
           />
         </div>
 
         <div>
           <span className="hidden sm:block font-default font-bold leading-3 text-zinc-500 text-xs text-right ml-auto">
-            {uiTransformDate(currentGoal.createdAt)}
+            {uiTransformDate(category.createdAt)}
           </span>
         </div>
       </div>
@@ -89,7 +86,7 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
             <span>Ліміт на</span>
             <EditableSelect
               className="font-medium underline"
-              innerText={uiTransformPeriod(currentGoal.period)}
+              innerText={uiTransformPeriod(category.period)}
               options={PeriodOptions}
               error={checkError('period')}
               onEdit={(val: string) => handleFieldUpdate('period', val)}
@@ -100,7 +97,7 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
             <EditableInput
               type="text"
               className="text-xl md:text-2xl"
-              value={`${currentGoal.limit}`}
+              value={category.limit.toString()}
               maxLength={7}
               regex={Digits}
               onEdit={(val: string) => handleFieldUpdate('limit', val)}
@@ -110,17 +107,17 @@ const GoalInEdit: React.FC<EditGoalProps> = ({ goal }) => {
           </div>
         </div>
 
-        <GoalProgress current={currentlyExpended} limit={currentGoal.limit} size="huge" />
+        <CategoryProgress current={currentlySpent} limit={category.limit} size="huge" />
       </div>
 
       <IconPopup
         isOpened={showIconEdit}
         onClose={() => setShowIconEdit(false)}
         onSelect={(icon: string) => handleFieldUpdate('iconName', icon)}
-        preSelected={currentGoal.iconName}
-        iconSources={Icons}
+        preSelected={category.iconName}
+        iconSource={Icons}
       />
     </DrawerLayout>
   )
 }
-export default GoalInEdit
+export default CategoryEditing

@@ -1,14 +1,14 @@
-import { GoalViewMode } from '../app/types/app.type'
+import { CategoryViewMode } from '../app/types/app.type'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface AppState {
-  goalViewMode: GoalViewMode
+  categoryViewMode: CategoryViewMode
   premiumShow: boolean
   settingsOpen: boolean
 }
 
 const initialState: AppState = {
-  goalViewMode: GoalViewMode.GOAL_LIST,
+  categoryViewMode: CategoryViewMode.CATEGORY_LIST,
   premiumShow: false,
   settingsOpen: false,
 }
@@ -17,8 +17,8 @@ export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    switchGoalView: (state, action: PayloadAction<GoalViewMode>) => {
-      state.goalViewMode = action.payload
+    switchCategoryView: (state, action: PayloadAction<CategoryViewMode>) => {
+      state.categoryViewMode = action.payload
     },
     togglePremium: state => {
       state.premiumShow = !state.premiumShow
@@ -29,6 +29,6 @@ export const appSlice = createSlice({
   },
 })
 
-export const { switchGoalView, togglePremium, toggleSettings } = appSlice.actions
+export const { switchCategoryView, togglePremium, toggleSettings } = appSlice.actions
 
 export default appSlice.reducer
