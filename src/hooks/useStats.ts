@@ -1,5 +1,7 @@
-import { useAppSelector } from '../store'
+import { getRandomColor } from '../app/helper'
 import { ExpenseType } from '../app/types/expense.type'
+import { StatsItem } from '../app/types/stats.type'
+import { useAppSelector } from '../store'
 
 interface GetTotalExpenseOptions {
   forWeek?: boolean
@@ -43,7 +45,10 @@ export const filterByYearAndMonth = (
   })
 }
 
-const calculateExpensesInCategory = (expenses: ExpenseType[], categoryId: string): number => {
+const calculateExpensesInCategory = (
+  expenses: ExpenseType[],
+  categoryId: string,
+): number => {
   return expenses.reduce((acc, item) => {
     if (item.categoryId === categoryId) {
       acc += Number(item.price)
@@ -58,19 +63,58 @@ export const useExpensesInCategory = (
     forWeek = false,
     targetMonth = new Date(Date.now()).getMonth(),
     targetYear = new Date(Date.now()).getFullYear(),
-    getTotal = false
+    getTotal = false,
   }: GetTotalExpenseOptions,
 ) => {
   let expensesList = useAppSelector(state => state.expenses.list)
   let weekStartDay = useAppSelector(state => state.config.weekStartDay)
 
   if (!getTotal) {
-    expensesList = forWeek 
-    ? filterByCurrentWeek(expensesList, weekStartDay) 
-    : filterByYearAndMonth(expensesList, targetYear, targetMonth)
-  } 
+    expensesList = forWeek
+      ? filterByCurrentWeek(expensesList, weekStartDay)
+      : filterByYearAndMonth(expensesList, targetYear, targetMonth)
+  }
 
-  return calculateExpensesInCategory(expensesList, categoryId);
+  return calculateExpensesInCategory(expensesList, categoryId)
+}
+
+export const useStats = ({
+  forWeek = false,
+  targetMonth = new Date(Date.now()).getMonth(),
+  targetYear = new Date(Date.now()).getFullYear(),
+  getTotal = false,
+}: GetTotalExpenseOptions): StatsItem[] => {
+  let categoriesList = useAppSelector(state => state.categories.list)
+  let expensesList = useAppSelector(state => state.expenses.list)
+  let weekStartDay = useAppSelector(state => state.config.weekStartDay)
+
+  if (!getTotal) {
+    expensesList = forWeek
+      ? filterByCurrentWeek(expensesList, weekStartDay)
+      : filterByYearAndMonth(expensesList, targetYear, targetMonth)
+  }
+
+  const total = calculateTotalExpense(expensesList)
+
+  return categoriesList.flatMap(cat => {
+    const cost = calculateExpensesInCategory(expensesList, cat.id)
+    if (cost === 0) {
+      return []
+    }
+    return {
+      category: cat,
+      cost,
+      color: getRandomColor(),
+      percent: Math.round((cost / total) * 100),
+    }
+  })
+}
+
+const calculateTotalExpense = (expensesList: ExpenseType[]) => {
+  return expensesList.reduce((expenseAcc, item) => {
+    expenseAcc += Number(item.price)
+    return expenseAcc
+  }, 0)
 }
 
 // export const useStatsSelector = () => {

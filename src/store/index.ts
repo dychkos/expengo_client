@@ -8,6 +8,7 @@ import AppReducer from './appSlice'
 import CategoriesReducer from './categoriesSlice'
 import ConfigReducer from './configSlice'
 import ExpensesReducer from './expensesSlice'
+import StatsReducer from './statsSlice'
 
 const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
     config: ConfigReducer,
     categories: CategoriesReducer,
     expenses: ExpensesReducer,
+    stats: StatsReducer,
   },
 })
 export type RootState = ReturnType<typeof store.getState>

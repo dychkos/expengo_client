@@ -1,21 +1,21 @@
-import { ExpenseType } from '../app/types/expense.type'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import u from 'uniqid'
+import { ExpenseType } from '../app/types/expense.type'
 
 const tempExpenses: ExpenseType[] = [
   {
     id: u(),
     categoryId: '4',
-    createdAt: '2023-10-20T14:30:00',
+    createdAt: '2024-01-10T14:30:00',
     title: 'Покупки в магазині',
     price: 125,
   },
   {
     id: u(),
-    categoryId: '4',
-    createdAt: '2023-09-20T14:30:00',
+    categoryId: '1',
+    createdAt: '2024-01-12T14:30:00',
     title: 'Нова машина',
-    price: 525_000,
+    price: 4377,
   },
   {
     id: u(),

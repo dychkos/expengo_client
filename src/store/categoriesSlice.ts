@@ -10,7 +10,7 @@ export interface CategoriesState {
 }
 const mockCategories: CategoryType[] = [
   {
-    id: u(),
+    id: '1',
     iconName: 'AiOutlineGift',
     period: 'month',
     title: 'Подарунки',
