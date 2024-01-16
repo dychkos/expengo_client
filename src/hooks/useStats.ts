@@ -1,10 +1,17 @@
 import { getRandomColor } from '../app/helper'
 import { ExpenseType } from '../app/types/expense.type'
-import { StatsItem } from '../app/types/stats.type'
+import { StatsDiapason, StatsItem } from '../app/types/stats.type'
 import { useAppSelector } from '../store'
 
 interface GetTotalExpenseOptions {
   forWeek?: boolean
+  targetMonth?: number
+  targetYear?: number
+  getTotal?: boolean
+}
+
+interface GetStatsOptions {
+  diapason?: StatsDiapason
   targetMonth?: number
   targetYear?: number
   getTotal?: boolean
@@ -45,6 +52,16 @@ export const filterByYearAndMonth = (
   })
 }
 
+export const filterByYear = (
+  expenses: ExpenseType[],
+  targetYear: number,
+): ExpenseType[] => {
+  return expenses.filter(expense => {
+    const expenseDate = new Date(expense.createdAt)
+    return expenseDate.getFullYear() === targetYear
+  })
+}
+
 const calculateExpensesInCategory = (
   expenses: ExpenseType[],
   categoryId: string,
@@ -79,19 +96,30 @@ export const useExpensesInCategory = (
 }
 
 export const useStats = ({
-  forWeek = false,
+  diapason = 'month',
   targetMonth = new Date(Date.now()).getMonth(),
   targetYear = new Date(Date.now()).getFullYear(),
   getTotal = false,
-}: GetTotalExpenseOptions): StatsItem[] => {
+}: GetStatsOptions): StatsItem[] => {
   let categoriesList = useAppSelector(state => state.categories.list)
   let expensesList = useAppSelector(state => state.expenses.list)
   let weekStartDay = useAppSelector(state => state.config.weekStartDay)
 
   if (!getTotal) {
-    expensesList = forWeek
-      ? filterByCurrentWeek(expensesList, weekStartDay)
-      : filterByYearAndMonth(expensesList, targetYear, targetMonth)
+    switch (diapason) {
+      case 'week': {
+        expensesList = filterByCurrentWeek(expensesList, weekStartDay)
+        break
+      }
+      case 'month': {
+        expensesList = filterByYearAndMonth(expensesList, targetYear, targetMonth)
+        break
+      }
+      case 'year': {
+        expensesList = filterByYear(expensesList, targetYear)
+        break
+      }
+    }
   }
 
   const total = calculateTotalExpense(expensesList)

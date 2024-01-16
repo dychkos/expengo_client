@@ -79,10 +79,10 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
               regex={Digits}
               focusDefault={props.focusOnShow}
               onEdit={(val: string) => onFieldEdit('price', val)}
-              inputMode={'numeric'}
+              inputMode="numeric"
               maxLength={NumericMaxLength}
               afterText="грн"
-              placeholder={'150 грн'}
+              placeholder="150 грн"
             />
             <EditableInput
               type="text"

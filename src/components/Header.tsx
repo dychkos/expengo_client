@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { AiOutlineApi, AiOutlineSetting } from 'react-icons/ai'
 import { NavLink } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../store'
@@ -19,7 +19,7 @@ const Header: FC = () => {
   }
 
   return (
-    <header className="fixed z-10 flex justify-between bg-white px-4 md:px-20 py-4 w-full">
+    <header className="fixed z-10 flex justify-between bg-white shadow-sm px-4 md:px-20 py-4 w-full">
       <NavLink to={'/'} className="font-default font-bold cursor-pointer">
         Expengo
       </NavLink>

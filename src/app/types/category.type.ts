@@ -10,7 +10,7 @@ export interface CategoryType {
   createdAt: string
 }
 
-export type TimePeriod = 'month' | 'week'
+export type TimePeriod = 'month' | 'week' 
 
 export const getDefaultCategory = (): CategoryType => ({
   id: u(),

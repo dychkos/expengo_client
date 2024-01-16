@@ -1,9 +1,10 @@
-import { TimePeriod } from './types/category.type'
+import { StatsDiapason } from './types/stats.type'
 
-export const uiTransformPeriod = (period: TimePeriod): string => {
+export const uiTransformPeriod = (period: StatsDiapason): string => {
   const periodMap = new Map([
     ['month', 'місяць'],
     ['week', 'тиждень'],
+    ['year', 'рік'],
   ])
 
   return periodMap.has(period) ? periodMap.get(period) ?? '' : ''

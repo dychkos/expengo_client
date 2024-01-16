@@ -1,12 +1,12 @@
 import React, { ReactElement, useEffect } from 'react'
 import ReactPortal from '../ReactPortal'
 // import { useOutsideClick } from '../../hooks/useClickOutside'
-import CircleBtn from './CircleBtn'
-import { AiOutlineClose } from 'react-icons/ai'
-import PopupHeader from './PopupHeader'
-import PopupFooter from './PopupFooter'
-import { PopupProps } from '../popups/popup.props'
+import { MdClose } from 'react-icons/md'
 import { cn } from '../../app/className'
+import { PopupProps } from '../popups/popup.props'
+import CircleBtn from './CircleBtn'
+import PopupFooter from './PopupFooter'
+import PopupHeader from './PopupHeader'
 
 interface PopupModule {
   Header: typeof PopupHeader
@@ -56,7 +56,7 @@ const Popup: React.FC<PopupProps> & PopupModule = ({
         >
           <div className="mt-2 mr-2 flex justify-end">
             <CircleBtn onClick={onClose}>
-              <AiOutlineClose size={'24px'} />
+              <MdClose size={'24px'} />
             </CircleBtn>
           </div>
           <div className="px-6 mb-6">
