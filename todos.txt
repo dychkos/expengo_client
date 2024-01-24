@@ -1,8 +1,10 @@
 // TODO LIST
 
 [] - Refactor Edit/Create Expense popup (bug when not change category)
-[] - Fix filterByCurrentWeek to check also date (it returns current week when year is changed)
-[] - Make Category color statical
+[+] - Fix filterByCurrentWeek to check also date (it returns current week when year is changed)
+[+] - Make Category color statical
 [] - Find way to optimize rerender on Stats Page
 [] - On StatsCard click show view with Expenses only in this category
-[] - Add total sum calculations on Stats View
+[+] - Add total sum calculations on Stats View
+
+[] - add "key" to all .map = <Compont />

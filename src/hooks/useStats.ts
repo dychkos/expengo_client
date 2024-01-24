@@ -1,4 +1,4 @@
-import { getRandomColor } from '../app/helper'
+import moment from 'moment'
 import { ExpenseType } from '../app/types/expense.type'
 import { StatsDiapason, StatsItem } from '../app/types/stats.type'
 import { useAppSelector } from '../store'
@@ -18,22 +18,22 @@ interface GetStatsOptions {
 }
 
 const filterByCurrentWeek = (
-  expense: ExpenseType[],
+  expenses: ExpenseType[],
   weekStartDay: number,
 ): ExpenseType[] => {
   const now = new Date()
-  const startOfCurrentWeek = new Date(now)
   const dayOfWeek = now.getDay()
   const diff = (dayOfWeek - weekStartDay + 7) % 7
 
+  const startOfCurrentWeek = new Date(now)
   startOfCurrentWeek.setDate(now.getDate() - diff)
   startOfCurrentWeek.setHours(0, 0, 0, 0)
 
   const endOfCurrentWeek = new Date(startOfCurrentWeek)
-  endOfCurrentWeek.setDate(endOfCurrentWeek.getDate() + 7)
+  endOfCurrentWeek.setDate(startOfCurrentWeek.getDate() + 7)
   endOfCurrentWeek.setHours(0, 0, 0, 0)
 
-  return expense.filter(ob => {
+  return expenses.filter(ob => {
     const createdAtDate = new Date(ob.createdAt)
     return createdAtDate >= startOfCurrentWeek && createdAtDate < endOfCurrentWeek
   })
@@ -97,8 +97,8 @@ export const useExpensesInCategory = (
 
 export const useStats = ({
   diapason = 'month',
-  targetMonth = new Date(Date.now()).getMonth(),
-  targetYear = new Date(Date.now()).getFullYear(),
+  targetMonth = moment().month(),
+  targetYear = moment().year(),
   getTotal = false,
 }: GetStatsOptions): StatsItem[] => {
   let categoriesList = useAppSelector(state => state.categories.list)
@@ -108,6 +108,9 @@ export const useStats = ({
   if (!getTotal) {
     switch (diapason) {
       case 'week': {
+        if (moment().month() !== targetMonth || moment().year() !== targetYear) {
+          return []
+        }
         expensesList = filterByCurrentWeek(expensesList, weekStartDay)
         break
       }
@@ -132,7 +135,6 @@ export const useStats = ({
     return {
       category: cat,
       cost,
-      color: getRandomColor(),
       percent: Math.round((cost / total) * 100),
     }
   })

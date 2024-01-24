@@ -1,4 +1,5 @@
 import u from 'uniqid'
+import { getRandomColor } from '../helper'
 
 export interface CategoryType {
   id: string
@@ -6,7 +7,8 @@ export interface CategoryType {
   period: TimePeriod
   title: string
   limit: number 
-  about?: string
+  color: string
+  // about?: string
   createdAt: string
 }
 
@@ -18,5 +20,6 @@ export const getDefaultCategory = (): CategoryType => ({
   title: '',
   period: 'month',
   limit: 250,
+  color: getRandomColor(),
   createdAt: new Date(Date.now()).toISOString(),
 })

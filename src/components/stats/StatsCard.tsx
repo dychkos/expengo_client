@@ -3,10 +3,10 @@ import { StatsItem } from '../../app/types/stats.type'
 
 interface StatsCardProps {
   data: StatsItem
-} 
+}
 
 const StatsCard: React.FC<StatsCardProps> = ({ data }) => {
-  const { color, category, cost, percent } = data
+  const { category, cost, percent } = data
 
   return (
     <div className="transition-transform transform hover:scale-105 rounded-lg text-black bg-gray-100 p-3 flex flex-row justify-between">
@@ -15,7 +15,7 @@ const StatsCard: React.FC<StatsCardProps> = ({ data }) => {
         <p className="mt-1">{category.title}</p>
         <div
           className="mt-1 w-4 h-4 rounded-full"
-          style={{ backgroundColor: color }}
+          style={{ backgroundColor: category.color }}
         ></div>
       </div>
       <div>

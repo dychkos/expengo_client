@@ -15,6 +15,7 @@ const mockCategories: CategoryType[] = [
     period: 'month',
     title: 'Подарунки',
     limit: 12_000,
+    color: '#191a29',
     createdAt: '2023-10-20T14:30:00',
   },
   {
@@ -23,6 +24,7 @@ const mockCategories: CategoryType[] = [
     title: 'Дім2',
     period: 'week',
     limit: 8_000,
+    color: '#8B75A2',
     createdAt: '2023-10-20T14:30:00',
   },
   {
@@ -31,6 +33,7 @@ const mockCategories: CategoryType[] = [
     title: 'Підписки',
     period: 'month',
     limit: 2_000,
+    color: '#69D32E',
     createdAt: '2023-10-20T14:30:00',
   },
   {
@@ -39,6 +42,7 @@ const mockCategories: CategoryType[] = [
     title: 'Транспорт',
     period: 'week',
     limit: 4_500,
+    color: '#2EBFA2',
     createdAt: '2023-10-20T14:30:00',
   },
 ]

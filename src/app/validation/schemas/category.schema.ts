@@ -9,4 +9,5 @@ export const CategorySchema: Schema<CategoryType> = {
   period: [requiredRule(), oneOfRule(['month', 'week'])],
   limit: [requiredRule(), greaterThenRule(1)],
   createdAt: [requiredRule()],
+  color: [requiredRule()],
 }
