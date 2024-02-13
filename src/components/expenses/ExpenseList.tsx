@@ -1,11 +1,11 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
+import { getFormattedMonth } from '../../app/helper'
 import { ExpenseType } from '../../app/types/expense.type'
-import ExpenseEmpty from './ExpenseEmpty'
 import { useExpense } from '../../hooks/useExpense'
 import ExpensePopup from '../popups/ExpensePopup'
 import Button from '../ui/Button'
+import ExpenseEmpty from './ExpenseEmpty'
 import ExpenseItem from './ExpenseItem'
-import { getFormattedMonth } from '../../app/helper'
 
 const ExpenseList: FC<{ expenses: ExpenseType[] }> = ({ expenses }) => {
   const { add, isEditing, toggleEditing } = useExpense()
@@ -25,10 +25,8 @@ const ExpenseList: FC<{ expenses: ExpenseType[] }> = ({ expenses }) => {
         currentDate = currentMonth
 
         return (
-          <div>
-            <span className="text-gray-800 font-medium" key={exp.id}>
-              {currentMonth}
-            </span>
+          <div key={exp.id}>
+            <span className="text-gray-800 font-medium">{currentMonth}</span>
             <div className="my-2">
               <ExpenseItem expenseItem={exp} />
             </div>

@@ -6,24 +6,18 @@ import MonthYearPicker from '../components/stats/MonthYearPicker'
 import StatsCard from '../components/stats/StatsCard'
 import { useStats } from '../hooks'
 import { useAppDispatch, useAppSelector } from '../store'
-import { setupStatsDate } from '../store/statsSlice'
+import { diapasonTargetSelector, openCategory, setupStatsDate } from '../store/statsSlice'
 
 const Stats = () => {
   const dispatch = useAppDispatch()
 
-  const [diapason, targetMonth, targetYear] = useAppSelector(state => [
-    state.stats.currentDiapason,
-    state.stats.targetMonth,
-    state.stats.targetYear,
-  ])
+  const { diapason, targetMonth, targetYear } = useAppSelector(diapasonTargetSelector)
 
   const statsData = useStats({
     diapason,
     targetMonth,
     targetYear,
   })
-
-  console.log(statsData)
 
   const setupTimePeriod = (calendarValue: any) => {
     dispatch(
@@ -49,7 +43,11 @@ const Stats = () => {
 
             <div className="mt-5 grid grid-cols-2 gap-4">
               {statsData.map(st => (
-                <StatsCard data={st} key={st.category.title} />
+                <StatsCard
+                  data={st}
+                  key={st.category.title}
+                  onClick={() => dispatch(openCategory(st.category.id))}
+                />
               ))}
             </div>
           </div>

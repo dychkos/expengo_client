@@ -1,6 +1,6 @@
 import React from 'react'
-import { useAppDispatch } from '../store'
 import { ExpenseType } from '../app/types/expense.type'
+import { useAppDispatch } from '../store'
 import {
   createExpense,
   removeExpenseInList,
@@ -23,7 +23,7 @@ export const useExpense = () => {
   }
 
   const edit = (expense: ExpenseType) => {
-    updateExpenseInList(expense)
+    dispatch(updateExpenseInList(expense))
 
     setIsEditing(false)
   }

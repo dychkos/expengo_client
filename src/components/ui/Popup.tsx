@@ -46,7 +46,7 @@ const Popup: React.FC<PopupProps> & PopupModule = ({
 
   return (
     <ReactPortal wrapperId="common-popup">
-      <div className="fixed top-0 left-0 right-0 bottom-0 box-border z-20 flex items-center justify-center overflow-y-auto backdrop-blur-sm bg-opacity-40 bg-stone-800">
+      <div className="fixed top-0 left-0 right-0 bottom-0 box-border z-30 flex items-center justify-center overflow-y-auto backdrop-blur-sm bg-opacity-40 bg-stone-800">
         <div
           // ref={outsideRef}
           className={cn(

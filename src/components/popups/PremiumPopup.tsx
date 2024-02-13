@@ -46,7 +46,7 @@ const PremiumPopup: React.FC<PremiumPopupProps> = ({ isOpened, onClose }) => {
 
             <ul className="mt-6 space-y-1">
               {benefitsPro.map(bene => (
-                <li className="flex items-center gap-1">
+                <li className="flex items-center gap-1" key={bene}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -90,7 +90,7 @@ const PremiumPopup: React.FC<PremiumPopupProps> = ({ isOpened, onClose }) => {
 
             <ul className="mt-6 space-y-1">
               {benefitsStandard.map(bene => (
-                <li className="flex items-center gap-1">
+                <li className="flex items-center gap-1" key={bene}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
