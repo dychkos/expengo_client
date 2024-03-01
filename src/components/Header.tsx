@@ -7,6 +7,7 @@ import PremiumPopup from './popups/PremiumPopup'
 
 const Header: FC = () => {
   const premiumShow = useAppSelector(state => state.app.premiumShow)
+  const isAuth = useAppSelector(state => state.auth.isAuthorized)
 
   const dispatch = useAppDispatch()
 
@@ -23,20 +24,22 @@ const Header: FC = () => {
       <NavLink to={'/'} className="font-default font-bold cursor-pointer">
         Expengo
       </NavLink>
-      <div className="flex gap-6">
-        <span
-          className="flex items-center justify-center bg-primary w-8 h-8 rounded-full cursor-pointer"
-          onClick={togglePremiumPopup}
-        >
-          <AiOutlineApi className="fill-white" />
-        </span>
-        <span
-          className="flex items-center justify-center bg-slate-200 w-8 h-8 rounded-full cursor-pointer"
-          onClick={toggleSettingsSidebar}
-        >
-          <AiOutlineSetting />
-        </span>
-      </div>
+      {isAuth && (
+        <div className="flex gap-6">
+          <span
+            className="flex items-center justify-center bg-primary w-8 h-8 rounded-full cursor-pointer"
+            onClick={togglePremiumPopup}
+          >
+            <AiOutlineApi className="fill-white" />
+          </span>
+          <span
+            className="flex items-center justify-center bg-slate-200 w-8 h-8 rounded-full cursor-pointer"
+            onClick={toggleSettingsSidebar}
+          >
+            <AiOutlineSetting />
+          </span>
+        </div>
+      )}
       <PremiumPopup isOpened={premiumShow} onClose={togglePremiumPopup} />
     </header>
   )

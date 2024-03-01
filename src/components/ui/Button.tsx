@@ -1,10 +1,12 @@
 import React from 'react'
-import { Icon } from '../Icon'
 import { cn } from '../../app/className'
+import { ReactComponent as SpinnerSvg } from '../../components/ui/icons/LoadingSpinner.svg'
+import { Icon } from '../Icon'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'outline' | 'huge'
   icon?: string
+  loading?: boolean
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -19,15 +21,19 @@ export const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       {...props}
       className={cn(
-        'inline-block rounded-lg bg-blue-500 px-5 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700',
+        'inline-flex justify-center items-center gap-2 rounded-lg bg-blue-500 px-5 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700',
         props.icon && 'flex items-center justify-center gap-2',
+        props.loading && 'bg-slate-400 border-0',
         variant === 'outline' && 'text-gray-700 bg-white border hover:bg-gray-100',
         variant === 'huge' && 'h-12 font-bold focus:ring-4 text-md',
         className,
       )}
     >
-      {props.icon && <Icon nameIcon={props.icon} propsIcon={{ size: '16px' }} />}
+      {!props.loading && props.icon && (
+        <Icon nameIcon={props.icon} propsIcon={{ size: '16px' }} />
+      )}
       {children}
+      {props.loading && <SpinnerSvg />}
     </button>
   )
 }

@@ -1,12 +1,17 @@
-import React from 'react'
+import clsx from 'clsx'
 import {
-  AiOutlineUnorderedList,
-  AiOutlineRotateRight,
   AiOutlineLineChart,
+  AiOutlineRotateRight,
+  AiOutlineUnorderedList,
 } from 'react-icons/ai'
 import { NavLink } from 'react-router-dom'
-import clsx from 'clsx'
+import { useAppSelector } from '../store'
+
 const NavBar = () => {
+  const isAuth = useAppSelector(state => state.auth.isAuthorized)
+
+  if (!isAuth) return <></>
+
   return (
     <nav className="flex justify-between backdrop-blur-md bg-slate-400 bg-opacity-50 py-2 px-6 w-64 min-w-full rounded-2xl">
       <NavLink to={'/expenses'} className={NavItemClasses}>

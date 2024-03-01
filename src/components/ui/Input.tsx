@@ -1,7 +1,7 @@
 import React, { HTMLInputTypeAttribute, InputHTMLAttributes, useState } from 'react'
+import uniqid from 'uniqid'
 import { cn } from '../../app/className'
 import { Icon } from '../Icon'
-import uniqid from 'uniqid'
 
 export interface CustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: string
@@ -37,7 +37,7 @@ const Input: React.FC<CustomInputProps> = ({
       <input
         {...props}
         className={cn(
-          'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm',
+          'w-full rounded-lg border-gray-700 p-4 pe-12 text-sm shadow-sm',
           className,
         )}
         onChange={onChange}

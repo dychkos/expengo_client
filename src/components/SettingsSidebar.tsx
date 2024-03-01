@@ -1,8 +1,8 @@
-import { useAppDispatch, useAppSelector } from '../store'
 import React from 'react'
-import { useOutsideClick } from '../hooks'
-import { togglePremium, toggleSettings } from '../store/appSlice'
 import { FaStar } from 'react-icons/fa6'
+import { useLogout, useOutsideClick } from '../hooks'
+import { useAppDispatch, useAppSelector } from '../store'
+import { togglePremium, toggleSettings } from '../store/appSlice'
 import { SettingsFooter } from './settings/SettingsFooter'
 import SettingsItem from './settings/SettingsItem'
 import SettingsMultipleItem from './settings/SettingsMultipleItem'
@@ -10,14 +10,20 @@ import SettingsMultipleItem from './settings/SettingsMultipleItem'
 const SettingsSidebar: React.FC = () => {
   const isOpen = useAppSelector(state => state.app.settingsOpen)
   const dispatch = useAppDispatch()
+  const { logout } = useLogout()
+
   const toggleSettingsSidebar = () => {
     dispatch(toggleSettings())
   }
 
   const togglePremiumModal = () => {
     dispatch(toggleSettings())
-
     dispatch(togglePremium())
+  }
+
+  const handleLogout = () => {
+    logout()
+    toggleSettingsSidebar()
   }
 
   const settingsRef = useOutsideClick(toggleSettingsSidebar)
@@ -58,14 +64,12 @@ const SettingsSidebar: React.FC = () => {
 
           <SettingsItem>Чат підтримки</SettingsItem>
 
-          <SettingsItem className="font-bold">Вийти з системи</SettingsItem>
+          <SettingsItem className="font-bold" onClick={handleLogout}>
+            Вийти з системи
+          </SettingsItem>
         </ul>
       </div>
-      <SettingsFooter
-        firstName="Serhii"
-        lastName="Dychko"
-        email="serhii.dychko@gmail.com"
-      />
+      <SettingsFooter />
     </div>
   )
 }

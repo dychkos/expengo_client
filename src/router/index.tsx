@@ -1,13 +1,14 @@
+import { FC, useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
+import { CategoryViewMode } from '../app/types/app.type'
 import Categories from '../screens/Categories'
 import Expenses from '../screens/Expenses'
-import Stats from '../screens/Stats'
 import Login from '../screens/Login'
-import React, { FC, useEffect } from 'react'
+import Register from '../screens/Register'
+import Stats from '../screens/Stats'
 import { useAppDispatch } from '../store'
 import { switchCategoryView } from '../store/appSlice'
-import { CategoryViewMode } from '../app/types/app.type'
-import Register from '../screens/Register'
+import PrivateRoutes from './privateRoutes'
 
 export const Routing: FC = () => {
   const location = useLocation()
@@ -19,9 +20,12 @@ export const Routing: FC = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Categories />} />
-      <Route path="/expenses" element={<Expenses />} />
-      <Route path="/stats" element={<Stats />} />
+      <Route element={<PrivateRoutes />}>
+        <Route path="/" element={<Categories />} />
+        <Route path="/expenses" element={<Expenses />} />
+        <Route path="/stats" element={<Stats />} />
+      </Route>
+
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
     </Routes>

@@ -1,11 +1,38 @@
-import React from 'react'
-import Layout from '../components/layouts/Layout'
-import Input from '../components/ui/Input'
-import Button from '../components/ui/Button'
+import React, { useEffect } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { GoogleAuthBtn } from '../components/GoogleAuthBtn'
-import { NavLink } from 'react-router-dom'
+import Layout from '../components/layouts/Layout'
+import Button from '../components/ui/Button'
+import Input from '../components/ui/Input'
+import { useAppSelector } from '../store'
+import { useLoginUserMutation } from '../store/api/authApi'
 
 const Login: React.FC = () => {
+  const [loginUser, { isLoading }] = useLoginUserMutation()
+  const isAuth = useAppSelector(state => state.auth.isAuthorized)
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    if (isAuth) {
+      navigate('/')
+    }
+  }, [isAuth])
+
+  const [loginData, setLoginData] = React.useState({
+    email: '',
+    password: '',
+  })
+
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginData({ ...loginData, [event.currentTarget.name]: event.currentTarget.value })
+  }
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    loginUser(loginData)
+  }
+
   return (
     <Layout className="flex justify-center items-center h-screen">
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -18,19 +45,23 @@ const Login: React.FC = () => {
           </p>
         </div>
 
-        <form action="" className="mx-auto mb-0 mt-8 max-w-md space-y-4">
+        <form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={handleSubmit}>
           <Input
             icon="MdOutlineAlternateEmail"
             id="login-email"
+            name="email"
             type="email"
             placeholder="Введіть email"
+            onInput={handleInput}
           />
 
           <Input
             icon="AiOutlineEye"
             id="login-password"
             type="password"
+            name="password"
             placeholder="Введіть пароль"
+            onInput={handleInput}
           />
 
           <div className="flex items-center justify-between">
@@ -41,7 +72,9 @@ const Login: React.FC = () => {
               </NavLink>
             </p>
 
-            <Button type="submit">Увійти</Button>
+            <Button type="submit" loading={isLoading}>
+              Увійти
+            </Button>
           </div>
           <GoogleAuthBtn />
         </form>
