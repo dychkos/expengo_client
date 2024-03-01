@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { Digits } from '../../app/patterns'
 import { CategoryType } from '../../app/types/category.type'
 import { ExpenseType, defaultExpense } from '../../app/types/expense.type'
-import { ExpenseSchema } from '../../app/validation/schemas/expense.schema'
+import { ExpenseSchema } from '../../app/validation/schemas/ExpenseSchema'
 import { NumericMaxLength } from '../../app/variables'
 import { useValidator } from '../../hooks'
 import { useAppSelector } from '../../store'
@@ -30,7 +30,7 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
   })
 
   const categories = useAppSelector(state => state.categories.list)
-  const { validate, clearError, checkError } = useValidator()
+  const { validate, clearError, checkError } = useValidator<typeof ExpenseSchema>()
 
   useEffect(() => {
     if (!current.categoryId && selectedCategory) {

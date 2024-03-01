@@ -4,7 +4,7 @@ import { Digits } from '../../app/patterns'
 import { Icons } from '../../app/temp'
 import { CategoryViewMode } from '../../app/types/app.type'
 import { CategoryType } from '../../app/types/category.type'
-import { CategorySchema } from '../../app/validation/schemas/category.schema'
+import { CategorySchema } from '../../app/validation/schemas/CategorySchema'
 import { PeriodOptions } from '../../app/variables'
 import { useExpensesInCategory, useValidator } from '../../hooks'
 import { useAppDispatch } from '../../store'
@@ -27,7 +27,7 @@ const CategoryEditing: React.FC<EditCategoryProps> = ({ category: initial }) => 
   const [category, setCategory] = useState(initial)
   const [showIconEdit, setShowIconEdit] = useState(false)
 
-  const { validate, clearError, checkError } = useValidator()
+  const { validate, clearError, checkError } = useValidator<typeof CategorySchema>()
 
   const currentlySpent = useExpensesInCategory(category.id, {
     forWeek: category.period === 'week',

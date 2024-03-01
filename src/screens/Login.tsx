@@ -1,5 +1,8 @@
-import React, { useEffect } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import React from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { LoginSchema, LoginSchemaType } from '../app/validation/schemas/LoginSchema'
 import { GoogleAuthBtn } from '../components/GoogleAuthBtn'
 import Layout from '../components/layouts/Layout'
 import Button from '../components/ui/Button'
@@ -18,19 +21,14 @@ const Login: React.FC = () => {
     }
   }, [isAuth])
 
-  const [loginData, setLoginData] = React.useState({
-    email: '',
-    password: '',
-  })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginSchemaType>({ resolver: zodResolver(LoginSchema) })
 
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLoginData({ ...loginData, [event.currentTarget.name]: event.currentTarget.value })
-  }
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    loginUser(loginData)
+  const onSubmit: SubmitHandler<LoginSchemaType> = data => {
+    loginUser(data)
   }
 
   return (
@@ -45,14 +43,18 @@ const Login: React.FC = () => {
           </p>
         </div>
 
-        <form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={handleSubmit}>
+        <form
+          className="mx-auto mb-0 mt-8 max-w-md space-y-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Input
             icon="MdOutlineAlternateEmail"
             id="login-email"
             name="email"
             type="email"
             placeholder="Введіть email"
-            onInput={handleInput}
+            error={errors.email?.message}
+            register={register}
           />
 
           <Input
@@ -61,7 +63,8 @@ const Login: React.FC = () => {
             type="password"
             name="password"
             placeholder="Введіть пароль"
-            onInput={handleInput}
+            error={errors.password?.message}
+            register={register}
           />
 
           <div className="flex items-center justify-between">

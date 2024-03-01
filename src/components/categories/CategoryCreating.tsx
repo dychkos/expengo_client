@@ -3,8 +3,8 @@ import { uiTransformPeriod } from '../../app/helper'
 import { Digits } from '../../app/patterns'
 import { Icons } from '../../app/temp'
 import { CategoryViewMode } from '../../app/types/app.type'
-import { getDefaultCategory, CategoryType } from '../../app/types/category.type'
-import { CategorySchema } from '../../app/validation/schemas/category.schema'
+import { CategoryType, getDefaultCategory } from '../../app/types/category.type'
+import { CategorySchema } from '../../app/validation/schemas/CategorySchema'
 import { PeriodOptions } from '../../app/variables'
 import { useValidator } from '../../hooks'
 import { useAppDispatch } from '../../store'
@@ -22,7 +22,7 @@ const CategoryCreating: React.FC = () => {
   const [category, setCategory] = useState<CategoryType>(getDefaultCategory())
   const [isIconEditing, setIsIconEditing] = useState<boolean>(false)
 
-  const { validate, clearError, checkError } = useValidator()
+  const { validate, clearError, checkError } = useValidator<typeof CategorySchema>()
 
   const toInitialView = () => {
     dispatch(switchCategoryView(CategoryViewMode.CATEGORY_LIST))
@@ -101,7 +101,6 @@ const CategoryCreating: React.FC = () => {
         preSelected={category.iconName}
         iconSource={Icons}
       />
-
     </DrawerLayout>
   )
 }

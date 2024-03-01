@@ -1,5 +1,11 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { NavLink, useNavigate } from 'react-router-dom'
+import {
+  RegisterSchema,
+  RegisterSchemaType,
+} from '../app/validation/schemas/RegisterSchema'
 import { GoogleAuthBtn } from '../components/GoogleAuthBtn'
 import Layout from '../components/layouts/Layout'
 import Button from '../components/ui/Button'
@@ -8,7 +14,7 @@ import { useAppSelector } from '../store'
 import { useRegisterUserMutation } from '../store/api/authApi'
 
 const Register: React.FC = () => {
-  const [registerUser, { isLoading, error }] = useRegisterUserMutation()
+  const [registerUser, { isLoading, error: apiError }] = useRegisterUserMutation()
   const isAuth = useAppSelector(state => state.auth.isAuthorized)
   const navigate = useNavigate()
 
@@ -18,24 +24,14 @@ const Register: React.FC = () => {
     }
   }, [isAuth])
 
-  const [registerData, setRegisterData] = React.useState({
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-  })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterSchemaType>({ resolver: zodResolver(RegisterSchema) })
 
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRegisterData({
-      ...registerData,
-      [event.currentTarget.name]: event.currentTarget.value,
-    })
-  }
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    registerUser(registerData)
+  const onSubmit: SubmitHandler<RegisterSchemaType> = data => {
+    registerUser(data)
   }
 
   return (
@@ -50,43 +46,49 @@ const Register: React.FC = () => {
           </p>
         </div>
 
-        <form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={handleSubmit}>
-          <div className="flex gap-2">
-            <Input
-              type="text"
-              name="firstName"
-              placeholder="Введіть ім'я"
-              onInput={handleInput}
-            />
+        <form
+          className="mx-auto mb-0 mt-8 max-w-md space-y-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <Input
+            type="text"
+            placeholder="Введіть ім'я"
+            error={errors?.firstName?.message}
+            name="firstName"
+            register={register}
+          />
 
-            <Input
-              type="text"
-              name="lastName"
-              placeholder="Введіть прізвище"
-              onInput={handleInput}
-            />
-          </div>
+          <Input
+            type="text"
+            placeholder="Введіть прізвище"
+            error={errors?.lastName?.message}
+            name="lastName"
+            register={register}
+          />
 
           <Input
             icon="MdOutlineAlternateEmail"
             id="login-email"
             type="email"
-            name="email"
             placeholder="Введіть email"
-            onInput={handleInput}
+            error={errors?.email?.message}
+            name="email"
+            register={register}
           />
 
           <Input
             icon="AiOutlineEye"
             id="login-password"
             type="password"
-            name="password"
             placeholder="Введіть пароль"
-            onInput={handleInput}
+            error={errors?.password?.message}
+            name="password"
+            autoComplete="off"
+            register={register}
           />
 
           <div>
-            {error && <span className="text-sm text-red-500">Something went wrong.</span>}
+            {apiError && <span className="text-sm text-red-500">Error to be here</span>}
           </div>
 
           <div className="flex items-center justify-between">

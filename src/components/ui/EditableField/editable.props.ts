@@ -1,4 +1,4 @@
-import { CustomInputProps } from '../Input'
+import { InputHTMLAttributes } from 'react'
 
 export interface EditableProps {
   error: boolean
@@ -8,7 +8,7 @@ export interface EditableProps {
   className?: string
 }
 
-export interface EditableInputProps extends EditableProps, CustomInputProps {
+export interface EditableInputProps extends EditableProps, InputHTMLAttributes<HTMLInputElement> {
   value: string
   focusDefault?: boolean
   regex?: RegExp
