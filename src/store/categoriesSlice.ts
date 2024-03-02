@@ -48,7 +48,7 @@ const mockCategories: CategoryType[] = [
 ]
 
 const initialState: CategoriesState = {
-  list: mockCategories,
+  list: [],
   selected: null,
   error: null,
   loading: null,
@@ -58,6 +58,9 @@ export const categorySlice = createSlice({
   name: 'categories',
   initialState,
   reducers: {
+    setCategories: (state, action: PayloadAction<CategoryType[]>) => {
+      state.list = action.payload
+    },
     selectCategory: (state, action: PayloadAction<CategoryType | null>) => {
       state.selected = action.payload
     },
@@ -74,6 +77,6 @@ export const categorySlice = createSlice({
   },
 })
 
-export const { selectCategory, updateCategoryInList, createCategory } =
+export const { setCategories, selectCategory, updateCategoryInList, createCategory } =
   categorySlice.actions
 export default categorySlice.reducer

@@ -1,3 +1,4 @@
+import React from 'react'
 import { CategoryViewMode } from '../../app/types/app.type'
 import { CategoryType } from '../../app/types/category.type'
 import { useExpense } from '../../hooks/useExpense'
@@ -9,7 +10,7 @@ import Button from '../ui/Button'
 import CategoryItem from './CategoryItem'
 
 const CategoryList = () => {
-  const { add, isEditing, toggleEditing } = useExpense()
+  const { add: addExpense, isEditing, toggleEditing } = useExpense()
 
   const dispatch = useAppDispatch()
   const categories = useAppSelector(state => state.categories.list)
@@ -23,8 +24,12 @@ const CategoryList = () => {
     dispatch(switchCategoryView(CategoryViewMode.CREATE_CATEGORY))
   }
 
+  if (!categories.length) {
+    return <div>no cats</div>
+  }
+
   return (
-    <>
+    <React.Fragment>
       <div className="mb-8 flex justify-end gap-2">
         <Button icon="AiOutlinePlusCircle" onClick={toggleEditing}>
           Додати витрату
@@ -40,13 +45,14 @@ const CategoryList = () => {
           ))}
         </div>
       </div>
+
       <ExpensePopup
-        onSaveClick={add}
+        onSaveClick={addExpense}
         isOpened={isEditing}
         focusOnShow={true}
         onClose={toggleEditing}
       />
-    </>
+    </React.Fragment>
   )
 }
 

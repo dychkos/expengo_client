@@ -3,7 +3,7 @@ import { useAppSelector } from '../../store'
 
 
 export const SettingsFooter: React.FC = () => {
-  const user = useAppSelector(state => state.auth.userInfo);
+  const user = useAppSelector(state => state.user.userInfo);
 
   return (
     <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">

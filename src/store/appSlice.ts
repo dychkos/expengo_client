@@ -1,7 +1,8 @@
-import { CategoryViewMode } from '../app/types/app.type'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { CategoryViewMode } from '../app/types/app.type'
 
 export interface AppState {
+  appLoading: boolean
   categoryViewMode: CategoryViewMode
   premiumShow: boolean
   settingsOpen: boolean
@@ -11,6 +12,7 @@ const initialState: AppState = {
   categoryViewMode: CategoryViewMode.CATEGORY_LIST,
   premiumShow: false,
   settingsOpen: false,
+  appLoading: true,
 }
 
 export const appSlice = createSlice({
@@ -26,9 +28,13 @@ export const appSlice = createSlice({
     toggleSettings: state => {
       state.settingsOpen = !state.settingsOpen
     },
+    setAppLoading: (state, action: PayloadAction<boolean>) => {
+      state.appLoading = action.payload
+    },
   },
 })
 
-export const { switchCategoryView, togglePremium, toggleSettings } = appSlice.actions
+export const { setAppLoading, switchCategoryView, togglePremium, toggleSettings } =
+  appSlice.actions
 
 export default appSlice.reducer

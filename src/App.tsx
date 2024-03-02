@@ -1,15 +1,18 @@
 import Header from './components/Header'
 import NavBar from './components/NavBar'
 import SettingsSidebar from './components/SettingsSidebar'
+import { MainLoader } from './components/ui/MainLoader'
 import { Routing } from './router'
 import { useAppSelector } from './store'
-import { useGetMeQuery } from './store/api/userApi'
+import { useStartSessionQuery } from './store/api/user.api'
 
 function App() {
-  const { data, error, isLoading } = useGetMeQuery(null)
+  const isLoading = useAppSelector(state => state.app.appLoading)
+
+  useStartSessionQuery(null)
 
   if (isLoading) {
-    return <div>loading ... </div>
+    return <MainLoader />
   }
 
   return (

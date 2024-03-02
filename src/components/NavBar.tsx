@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom'
 import { useAppSelector } from '../store'
 
 const NavBar = () => {
-  const isAuth = useAppSelector(state => state.auth.isAuthorized)
+  const isAuth = useAppSelector(state => state.user.isAuthorized)
 
   if (!isAuth) return <></>
 

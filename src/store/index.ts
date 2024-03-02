@@ -4,14 +4,13 @@ import {
   useDispatch,
   useSelector as useReduxSelector,
 } from 'react-redux'
-import { authApi } from './api/authApi'
-import { userApi } from './api/userApi'
 import AppReducer from './appSlice'
-import AuthReducer from './authSlice'
 import CategoriesReducer from './categoriesSlice'
 import ConfigReducer from './configSlice'
 import ExpensesReducer from './expensesSlice'
 import StatsReducer from './statsSlice'
+import UserReducer from './userSlice'
+import { api } from './api/api'
 
 const store = configureStore({
   reducer: {
@@ -20,13 +19,14 @@ const store = configureStore({
     categories: CategoriesReducer,
     expenses: ExpensesReducer,
     stats: StatsReducer,
-    auth: AuthReducer,
+    user: UserReducer,
 
-    [authApi.reducerPath]: authApi.reducer,
-    [userApi.reducerPath]: userApi.reducer,
+    [api.reducerPath]: api.reducer,
   },
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({}).concat([authApi.middleware, userApi.middleware]),
+    getDefaultMiddleware({}).concat([
+      api.middleware,
+    ]),
 })
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

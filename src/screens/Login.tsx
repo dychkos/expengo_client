@@ -8,11 +8,11 @@ import Layout from '../components/layouts/Layout'
 import Button from '../components/ui/Button'
 import Input from '../components/ui/Input'
 import { useAppSelector } from '../store'
-import { useLoginUserMutation } from '../store/api/authApi'
+import { useLoginUserMutation } from '../store/api/auth.api'
 
 const Login: React.FC = () => {
   const [loginUser, { isLoading }] = useLoginUserMutation()
-  const isAuth = useAppSelector(state => state.auth.isAuthorized)
+  const isAuth = useAppSelector(state => state.user.isAuthorized)
   const navigate = useNavigate()
 
   React.useEffect(() => {

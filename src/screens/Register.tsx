@@ -11,11 +11,11 @@ import Layout from '../components/layouts/Layout'
 import Button from '../components/ui/Button'
 import Input from '../components/ui/Input'
 import { useAppSelector } from '../store'
-import { useRegisterUserMutation } from '../store/api/authApi'
+import { useRegisterUserMutation } from '../store/api/auth.api'
 
 const Register: React.FC = () => {
   const [registerUser, { isLoading, error: apiError }] = useRegisterUserMutation()
-  const isAuth = useAppSelector(state => state.auth.isAuthorized)
+  const isAuth = useAppSelector(state => state.user.isAuthorized)
   const navigate = useNavigate()
 
   React.useEffect(() => {

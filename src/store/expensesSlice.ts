@@ -69,7 +69,7 @@ export interface ExpensesState {
 }
 
 const initialState: ExpensesState = {
-  list: tempExpenses,
+  list: [],
   error: null,
   loading: false,
   selected: null,
@@ -79,6 +79,9 @@ const expensesSlice = createSlice({
   name: 'expenses',
   initialState,
   reducers: {
+    setExpenses: (state, action: PayloadAction<ExpenseType[]>) => {
+      state.list = action.payload
+    },
     createExpense: (state, action: PayloadAction<ExpenseType>) => {
       state.list.push(action.payload)
     },
@@ -99,7 +102,7 @@ const expensesSlice = createSlice({
   },
 })
 
-export const { createExpense, updateExpenseInList, removeExpenseInList } =
+export const { setExpenses, createExpense, updateExpenseInList, removeExpenseInList } =
   expensesSlice.actions
 
 export default expensesSlice.reducer

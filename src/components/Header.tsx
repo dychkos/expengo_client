@@ -7,7 +7,7 @@ import PremiumPopup from './popups/PremiumPopup'
 
 const Header: FC = () => {
   const premiumShow = useAppSelector(state => state.app.premiumShow)
-  const isAuth = useAppSelector(state => state.auth.isAuthorized)
+  const isAuth = useAppSelector(state => state.user.isAuthorized)
 
   const dispatch = useAppDispatch()
 
