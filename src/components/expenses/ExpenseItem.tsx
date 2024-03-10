@@ -11,7 +11,8 @@ interface ExpenseItemProps {
 }
 
 const ExpenseItem: React.FC<ExpenseItemProps> = ({ expenseItem }) => {
-  const { edit, remove, isEditing, toggleEditing } = useExpense()
+  const { edit, remove, isEditing, toggleEditing, isLoading } = useExpense()
+
 
   const expenseCategory = useAppSelector(state =>
     state.categories.list.find(category => category.id === expenseItem.categoryId),
@@ -20,6 +21,7 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({ expenseItem }) => {
   if (!expenseCategory) {
     throw new Error('Invalid category ID')
   }
+
 
   return (
     <React.Fragment>
@@ -48,6 +50,7 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({ expenseItem }) => {
         onSaveClick={edit}
         onRemoveClick={remove}
         onClose={toggleEditing}
+        loading={isLoading}
       />
     </React.Fragment>
   )

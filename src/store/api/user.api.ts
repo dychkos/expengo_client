@@ -7,7 +7,7 @@ import { api } from './api'
 
 export const userApi = api.injectEndpoints({
   endpoints: builder => ({
-    startSession: builder.query<UserType, null>({
+    startSession: builder.query<UserType, {} | null>({
       query() {
         return {
           url: 'users/me',

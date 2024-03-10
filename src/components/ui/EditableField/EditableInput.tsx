@@ -75,7 +75,7 @@ const EditableInput: FC<EditableInputProps> = ({
   return (
     <div
       ref={outsideRef}
-      className="my-2 mr-2 flex items-end gap-4 cursor-pointer"
+      className={cn('my-2 mr-2 flex items-end gap-4 cursor-pointer', error && 'shake-elem')}
       onClick={() => setEditMode(true)}
     >
       <div>
@@ -121,7 +121,7 @@ const EditableInput: FC<EditableInputProps> = ({
       </div>
 
       {afterText && !editMode && (
-        <p className={cn(className, 'text-gray-600 text-2xl')}>{afterText}</p>
+        <p className={cn(className, 'text-gray-600 text-2xl', error && 'text-red-400')}>{afterText}</p>
       )}
     </div>
   )

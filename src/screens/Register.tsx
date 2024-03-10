@@ -7,7 +7,6 @@ import {
   RegisterSchemaType,
 } from '../app/validation/schemas/RegisterSchema'
 import { GoogleAuthBtn } from '../components/GoogleAuthBtn'
-import Layout from '../components/layouts/Layout'
 import Button from '../components/ui/Button'
 import Input from '../components/ui/Input'
 import { useAppSelector } from '../store'
@@ -35,7 +34,7 @@ const Register: React.FC = () => {
   }
 
   return (
-    <Layout className="flex justify-center items-center h-screen">
+    <main className="flex justify-center items-center h-screen px-4 md:px-0 pt-24 mx-auto w-full sm:w-3/4 xl:w-2/4">
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-lg text-center">
           <h1 className="font-default text-2xl font-bold sm:text-3xl">Вітаємо!</h1>
@@ -107,7 +106,7 @@ const Register: React.FC = () => {
           <GoogleAuthBtn />
         </form>
       </div>
-    </Layout>
+    </main>
   )
 }
 

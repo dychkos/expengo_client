@@ -61,6 +61,12 @@ export const categorySlice = createSlice({
     setCategories: (state, action: PayloadAction<CategoryType[]>) => {
       state.list = action.payload
     },
+    setCategoryLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload
+    },
+    setCategoryError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload
+    },
     selectCategory: (state, action: PayloadAction<CategoryType | null>) => {
       state.selected = action.payload
     },
@@ -77,6 +83,6 @@ export const categorySlice = createSlice({
   },
 })
 
-export const { setCategories, selectCategory, updateCategoryInList, createCategory } =
+export const { setCategories, setCategoryLoading, setCategoryError, selectCategory, updateCategoryInList, createCategory } =
   categorySlice.actions
 export default categorySlice.reducer

@@ -1,9 +1,11 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { cn } from '../../app/className'
 import { CategoryType } from '../../app/types/category.type'
-import { Icon } from '../Icon'
 import Popup from '../ui/Popup'
 import { PopupProps } from './popup.props'
+import { useAppDispatch } from '../../store'
+import { toggleAddingCategory } from '../../store/appSlice'
+import CategoryCard from '../categories/CategoryCard'
 
 interface CategoryPopupProps extends PopupProps {
   categories: CategoryType[]
@@ -18,6 +20,11 @@ const CategoryPopup: FC<CategoryPopupProps> = ({
   isOpened,
   onClose,
 }) => {
+  const dispatch = useAppDispatch()
+
+  const addCategory = () => {
+    dispatch(toggleAddingCategory())
+  }
 
   const handleSelectCategory = (category: CategoryType) => {
     onSelect(category)
@@ -27,23 +34,23 @@ const CategoryPopup: FC<CategoryPopupProps> = ({
   return (
     <Popup isOpened={isOpened} onClose={onClose}>
       <Popup.Header>Обери категорію</Popup.Header>
-      <div className="grid mx-auto grid-cols-3 md:grid-cols-4 gap-8 md:gap-4">
-        {categories.map(category => (
-          <div key={category.id}>
-            <div
-              className={cn(
-                'w-full h-full sm:w-16 sm:h-16 bg-gray-100 flex items-center justify-center mx-auto rounded-md p-2 cursor-pointer hover:bg-amber-100',
-                preSelectedId === category.id && 'bg-primary',
-              )}
+      <div className="grid mx-auto content-center grid-cols-3 md:grid-cols-4 gap-8 md:gap-4">
+        {categories.length > 0 &&
+          categories.map(category => (
+            <CategoryCard
+              key={category.id}
+              iconName={category.iconName}
               onClick={() => handleSelectCategory(category)}
-            >
-              <Icon nameIcon={category.iconName} propsIcon={{ size: '24px' }} />
-            </div>
-            <p className="font-default text-sm text-gray-600 text-center mt-1">
-              {category.title}
-            </p>
-          </div>
-        ))}
+              className={cn(preSelectedId === category.id && 'bg-primary')}
+              title={category.title}
+            />
+          ))}
+
+        <CategoryCard
+          onClick={addCategory}
+          title="Додати категорію"
+          iconName="FiPlusCircle"
+        />
       </div>
     </Popup>
   )

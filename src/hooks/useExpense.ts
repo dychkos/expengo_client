@@ -1,23 +1,18 @@
 import React from 'react'
 import { ExpenseType } from '../app/types/expense.type'
-import { useAppDispatch } from '../store'
-import {
-  createExpense,
-  removeExpenseInList,
-  updateExpenseInList,
-} from '../store/expensesSlice'
+import { useAppDispatch, useAppSelector } from '../store'
+import { useDestroyExpenseMutation, useStoreExpenseMutation } from '../store/api/expenses.api'
+import { createExpense, updateExpenseInList } from '../store/expensesSlice'
 
 export const useExpense = () => {
   const [isEditing, setIsEditing] = React.useState(false)
+  const isLoading = useAppSelector(state => state.expenses.loading)
+  const [destroyExpense] = useDestroyExpenseMutation()
+  const [storeExpense] = useStoreExpenseMutation()
   const dispatch = useAppDispatch()
 
-  const add = (expense: ExpenseType) => {
-    dispatch(
-      createExpense({
-        ...expense,
-        createdAt: new Date(Date.now()).toISOString(),
-      }),
-    )
+  const add = async (expense: ExpenseType) => {
+    await storeExpense(expense)
 
     setIsEditing(false)
   }
@@ -28,8 +23,8 @@ export const useExpense = () => {
     setIsEditing(false)
   }
 
-  const remove = (expense: ExpenseType) => {
-    dispatch(removeExpenseInList(expense))
+  const remove = async (expense: ExpenseType) => {
+    await destroyExpense(expense)
     setIsEditing(false)
   }
 
@@ -43,5 +38,6 @@ export const useExpense = () => {
     edit,
     remove,
     toggleEditing,
+    isLoading,
   }
 }

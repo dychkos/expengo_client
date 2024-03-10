@@ -82,6 +82,12 @@ const expensesSlice = createSlice({
     setExpenses: (state, action: PayloadAction<ExpenseType[]>) => {
       state.list = action.payload
     },
+    setExpenseLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload
+    },
+    setExpenseError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload
+    },
     createExpense: (state, action: PayloadAction<ExpenseType>) => {
       state.list.push(action.payload)
     },
@@ -102,7 +108,7 @@ const expensesSlice = createSlice({
   },
 })
 
-export const { setExpenses, createExpense, updateExpenseInList, removeExpenseInList } =
+export const { setExpenses, setExpenseLoading, setExpenseError, createExpense, updateExpenseInList, removeExpenseInList } =
   expensesSlice.actions
 
 export default expensesSlice.reducer

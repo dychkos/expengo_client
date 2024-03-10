@@ -1,12 +1,12 @@
-import React from 'react'
-import Popup from '../ui/Popup'
-import { Icon } from '../Icon'
 import clsx from 'clsx'
+import React from 'react'
+import { Icon } from '../Icon'
+import Popup from '../ui/Popup'
 
 interface IconPopupProps {
   isOpened: boolean
-  onClose: Function
-  onSelect: Function
+  onClose: () => void
+  onSelect: (icon: string) => void
   iconSource: Array<string>
   preSelected: string
 }

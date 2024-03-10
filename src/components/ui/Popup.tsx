@@ -17,6 +17,7 @@ const Popup: React.FC<PopupProps> & PopupModule = ({
   isOpened,
   onClose,
   className,
+  disabled,
   children,
 }) => {
   // const outsideRef = useOutsideClick(onClose)
@@ -44,6 +45,7 @@ const Popup: React.FC<PopupProps> & PopupModule = ({
     }
   })
 
+
   return (
     <ReactPortal wrapperId="common-popup">
       <div className="fixed top-0 left-0 right-0 bottom-0 box-border z-30 flex items-center justify-center overflow-y-auto backdrop-blur-sm bg-opacity-40 bg-stone-800">
@@ -55,7 +57,7 @@ const Popup: React.FC<PopupProps> & PopupModule = ({
           )}
         >
           <div className="mt-2 mr-2 flex justify-end">
-            <CircleBtn onClick={onClose}>
+            <CircleBtn onClick={onClose} disabled={disabled ?? false}>
               <MdClose size={'24px'} />
             </CircleBtn>
           </div>

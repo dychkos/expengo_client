@@ -4,7 +4,6 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { LoginSchema, LoginSchemaType } from '../app/validation/schemas/LoginSchema'
 import { GoogleAuthBtn } from '../components/GoogleAuthBtn'
-import Layout from '../components/layouts/Layout'
 import Button from '../components/ui/Button'
 import Input from '../components/ui/Input'
 import { useAppSelector } from '../store'
@@ -32,7 +31,7 @@ const Login: React.FC = () => {
   }
 
   return (
-    <Layout className="flex justify-center items-center h-screen">
+    <main className="flex justify-center items-center h-screen px-4 md:px-0 pt-24 mx-auto w-full sm:w-3/4 xl:w-2/4">
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-lg text-center">
           <h1 className="font-default text-2xl font-bold sm:text-3xl">З поверненням!</h1>
@@ -82,7 +81,7 @@ const Login: React.FC = () => {
           <GoogleAuthBtn />
         </form>
       </div>
-    </Layout>
+    </main>
   )
 }
 

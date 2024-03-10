@@ -1,5 +1,10 @@
 import { CategoryType } from '../../app/types/category.type'
-import { setCategories } from '../categoriesSlice'
+import {
+  createCategory,
+  setCategories,
+  setCategoryError,
+  setCategoryLoading,
+} from '../categoriesSlice'
 import { api } from './api'
 
 export const categoriesApi = api.injectEndpoints({
@@ -17,7 +22,29 @@ export const categoriesApi = api.injectEndpoints({
         } catch (error) {}
       },
     }),
+    storeCategory: builder.mutation<CategoryType, CategoryType>({
+      query(data) {
+        return {
+          url: 'categories',
+          method: 'POST',
+          body: data,
+        }
+      },
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setCategoryLoading(true))
+
+          const { data } = await queryFulfilled
+
+          dispatch(createCategory(data))
+        } catch (e) {
+          dispatch(setCategoryError('Не вдалось додати витрату'))
+        } finally {
+          dispatch(setCategoryLoading(false))
+        }
+      },
+    }),
   }),
 })
 
-export const { useGetCategoriesQuery } = categoriesApi
+export const { useGetCategoriesQuery, useStoreCategoryMutation } = categoriesApi

@@ -1,5 +1,14 @@
-import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
-import { getToken } from '../../app/utils'
+import {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  createApi,
+  fetchBaseQuery,
+  retry,
+} from '@reduxjs/toolkit/query/react'
+import { getToken, removeToken } from '../../app/utils'
+import { logout } from '../userSlice'
+import { toInitialApp } from "../appSlice";
 
 const BASE_URL = 'http://localhost:5000'
 
@@ -17,6 +26,22 @@ const baseQuery = fetchBaseQuery({
 })
 
 const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 })
+
+const baseQueryWithReauth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions = {}) => {
+  const result = await baseQuery(args, api, extraOptions)
+  if (result?.error?.status === 401) {
+    api.dispatch(logout())
+    api.dispatch(toInitialApp())
+
+    removeToken()
+  }
+
+  return result
+}
 
 /**
  * Create a base API to inject endpoints into elsewhere.
@@ -36,7 +61,7 @@ export const api = createApi({
   /**
    * A bare bones base query would just be `baseQuery: fetchBaseQuery({ baseUrl: '/' })`
    */
-  baseQuery: baseQueryWithRetry,
+  baseQuery: baseQueryWithReauth,
   /**
    * Tag types must be defined in the original API definition
    * for any tags that would be provided by injected endpoints

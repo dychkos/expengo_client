@@ -8,10 +8,10 @@ export interface ExpenseType {
   createdAt: string
 }
 
-export const defaultExpense: ExpenseType = {
+export const getDefaultExpense = (): ExpenseType => ({
   id: u(),
   categoryId: '',
   title: 'Нова витрата',
   price: 0,
   createdAt: new Date(Date.now()).toISOString(),
-}
+})

@@ -19,7 +19,7 @@ interface EditCategoryProps {
   category: CategoryType
 }
 
-const CategoryEditing: React.FC<EditCategoryProps> = ({ category: initial }) => {
+const CategoryEdit: React.FC<EditCategoryProps> = ({ category: initial }) => {
   const dispatch = useAppDispatch()
 
   const [category, setCategory] = useState(initial)
@@ -118,4 +118,4 @@ const CategoryEditing: React.FC<EditCategoryProps> = ({ category: initial }) => 
     </DrawerLayout>
   )
 }
-export default CategoryEditing
+export default CategoryEdit

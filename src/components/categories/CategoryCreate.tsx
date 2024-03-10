@@ -2,40 +2,46 @@ import React, { useState } from 'react'
 import { uiTransformPeriod } from '../../app/helper'
 import { Digits } from '../../app/patterns'
 import { Icons } from '../../app/temp'
-import { CategoryViewMode } from '../../app/types/app.type'
 import { CategoryType, getDefaultCategory } from '../../app/types/category.type'
 import { CategorySchema } from '../../app/validation/schemas/CategorySchema'
 import { PeriodOptions } from '../../app/variables'
 import { useValidator } from '../../hooks'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { useStoreCategoryMutation } from '../../store/api/categories.api'
-import { switchCategoryView } from '../../store/appSlice'
+import { toggleAddingCategory} from '../../store/appSlice'
 import { Icon } from '../Icon'
 import DrawerLayout from '../layouts/DrawerLayout'
 import IconPopup from '../popups/IconPopup'
 import EditableInput from '../ui/EditableField/EditableInput'
 import EditableSelect from '../ui/EditableField/EditableSelect'
 
-const CategoryCreating: React.FC = () => {
+const CategoryCreate: React.FC = () => {
   const dispatch = useAppDispatch()
+
+  const isOpened = useAppSelector(state => state.app.addingCategory)
+  const isLoading = useAppSelector(state => state.categories.loading)
+
   const [storeCategory] = useStoreCategoryMutation()
 
-  const isLoading = useAppSelector(state => state.categories.loading)
   const [category, setCategory] = useState<CategoryType>(getDefaultCategory())
   const [isIconEditing, setIsIconEditing] = useState<boolean>(false)
 
   const { validate, clearError, checkError } = useValidator<typeof CategorySchema>()
 
-  const toInitialView = () => {
-    dispatch(switchCategoryView(CategoryViewMode.CATEGORY_LIST))
+  if (!isOpened) {
+    return null;
   }
 
-  const onSaveClick = async () => {
+  const onClose = () => {
+    dispatch(toggleAddingCategory())
+  }
+
+  const onSave = async () => {
     const isValid = validate(category, CategorySchema)
 
     if (isValid) {
       await storeCategory(category)
-      toInitialView()
+      onClose()
     }
   }
 
@@ -44,10 +50,11 @@ const CategoryCreating: React.FC = () => {
     setCategory({ ...category, [field as string]: value })
   }
 
+
   return (
     <DrawerLayout
-      handleClose={toInitialView}
-      handleSave={onSaveClick}
+      handleClose={onClose}
+      handleSave={onSave}
       disabled={!!isLoading}
     >
       <div className="grid grid-cols-2-80-one sm:grid-cols-3-96-60-one gap-0 sm:gap-4">
@@ -110,4 +117,4 @@ const CategoryCreating: React.FC = () => {
     </DrawerLayout>
   )
 }
-export default CategoryCreating
+export default CategoryCreate

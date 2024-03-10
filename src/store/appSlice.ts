@@ -1,40 +1,54 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { CategoryViewMode } from '../app/types/app.type'
 
 export interface AppState {
   appLoading: boolean
-  categoryViewMode: CategoryViewMode
+
   premiumShow: boolean
+  addingExpense: boolean
+  addingCategory: boolean
   settingsOpen: boolean
 }
 
 const initialState: AppState = {
-  categoryViewMode: CategoryViewMode.CATEGORY_LIST,
   premiumShow: false,
   settingsOpen: false,
-  appLoading: true,
+  appLoading: false,
+  addingExpense: false,
+  addingCategory: false,
 }
 
 export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    switchCategoryView: (state, action: PayloadAction<CategoryViewMode>) => {
-      state.categoryViewMode = action.payload
-    },
     togglePremium: state => {
       state.premiumShow = !state.premiumShow
     },
     toggleSettings: state => {
       state.settingsOpen = !state.settingsOpen
     },
+    toggleAddingExpense: state => {
+      state.addingExpense = !state.addingExpense
+    },
+    toggleAddingCategory: state => {
+      state.addingCategory = !state.addingCategory
+    },
     setAppLoading: (state, action: PayloadAction<boolean>) => {
       state.appLoading = action.payload
     },
+    toInitialApp: () => {
+      return initialState;
+    }
   },
 })
 
-export const { setAppLoading, switchCategoryView, togglePremium, toggleSettings } =
-  appSlice.actions
+export const {
+  setAppLoading,
+  togglePremium,
+  toggleSettings,
+  toggleAddingExpense,
+  toggleAddingCategory,
+  toInitialApp
+} = appSlice.actions
 
 export default appSlice.reducer
