@@ -1,47 +1,40 @@
 import React, { useState } from 'react'
-import { uiTransformDate, uiTransformPeriod } from '../../app/helper'
+import { uiTransformPeriod } from '../../app/helper'
 import { Digits } from '../../app/patterns'
 import { Icons } from '../../app/temp'
 import { CategoryViewMode } from '../../app/types/app.type'
-import { CategoryType } from '../../app/types/category.type'
+import { CategoryType, getDefaultCategory } from '../../app/types/category.type'
 import { CategorySchema } from '../../app/validation/schemas/CategorySchema'
 import { PeriodOptions } from '../../app/variables'
-import { useExpensesInCategory, useValidator } from '../../hooks'
-import { useAppDispatch } from '../../store'
+import { useValidator } from '../../hooks'
+import { useAppDispatch, useAppSelector } from '../../store'
+import { useStoreCategoryMutation } from '../../store/api/categories.api'
 import { switchCategoryView } from '../../store/appSlice'
-import { updateCategoryInList } from '../../store/categoriesSlice'
-import CategoryProgress from '../CategoryProgress'
 import { Icon } from '../Icon'
 import DrawerLayout from '../layouts/DrawerLayout'
 import IconPopup from '../popups/IconPopup'
 import EditableInput from '../ui/EditableField/EditableInput'
 import EditableSelect from '../ui/EditableField/EditableSelect'
 
-interface EditCategoryProps {
-  category: CategoryType
-}
-
-const CategoryEditing: React.FC<EditCategoryProps> = ({ category: initial }) => {
+const CategoryCreating: React.FC = () => {
   const dispatch = useAppDispatch()
+  const [storeCategory] = useStoreCategoryMutation()
 
-  const [category, setCategory] = useState(initial)
-  const [showIconEdit, setShowIconEdit] = useState(false)
+  const isLoading = useAppSelector(state => state.categories.loading)
+  const [category, setCategory] = useState<CategoryType>(getDefaultCategory())
+  const [isIconEditing, setIsIconEditing] = useState<boolean>(false)
 
   const { validate, clearError, checkError } = useValidator<typeof CategorySchema>()
-
-  const currentlySpent = useExpensesInCategory(category.id, {
-    forWeek: category.period === 'week',
-  })
 
   const toInitialView = () => {
     dispatch(switchCategoryView(CategoryViewMode.CATEGORY_LIST))
   }
 
-  const onSaveClick = () => {
+  const onSaveClick = async () => {
     const isValid = validate(category, CategorySchema)
 
     if (isValid) {
-      dispatch(updateCategoryInList(category as CategoryType))
+      await storeCategory(category)
       toInitialView()
     }
   }
@@ -52,12 +45,16 @@ const CategoryEditing: React.FC<EditCategoryProps> = ({ category: initial }) => 
   }
 
   return (
-    <DrawerLayout handleSave={onSaveClick} handleClose={toInitialView}>
+    <DrawerLayout
+      handleClose={toInitialView}
+      handleSave={onSaveClick}
+      disabled={!!isLoading}
+    >
       <div className="grid grid-cols-2-80-one sm:grid-cols-3-96-60-one gap-0 sm:gap-4">
         <div>
           <div
             className="flex w-14 h-14 sm:w-24 sm:h-24 items-center cursor-pointer justify-center rounded-xl bg-primary"
-            onClick={() => setShowIconEdit(true)}
+            onClick={() => setIsIconEditing(true)}
           >
             <Icon nameIcon={category.iconName} propsIcon={{ size: '48px' }} />
           </div>
@@ -67,16 +64,11 @@ const CategoryEditing: React.FC<EditCategoryProps> = ({ category: initial }) => 
           <EditableInput
             className="font-bold text-2xl"
             value={category.title}
+            focusDefault={true}
             placeholder="Назва категорії витрат"
             onEdit={(val: string) => handleFieldUpdate('title', val)}
-            error={checkError('category')}
+            error={checkError('title')}
           />
-        </div>
-
-        <div>
-          <span className="hidden sm:block font-default font-bold leading-3 text-zinc-500 text-xs text-right ml-auto">
-            {uiTransformDate(category.createdAt)}
-          </span>
         </div>
       </div>
 
@@ -97,7 +89,7 @@ const CategoryEditing: React.FC<EditCategoryProps> = ({ category: initial }) => 
             <EditableInput
               type="text"
               className="text-xl md:text-2xl"
-              value={category.limit.toString()}
+              value={`${category.limit}`}
               maxLength={7}
               regex={Digits}
               onEdit={(val: string) => handleFieldUpdate('limit', val)}
@@ -106,13 +98,11 @@ const CategoryEditing: React.FC<EditCategoryProps> = ({ category: initial }) => 
             />
           </div>
         </div>
-
-        <CategoryProgress current={currentlySpent} limit={category.limit} size="huge" />
       </div>
 
       <IconPopup
-        isOpened={showIconEdit}
-        onClose={() => setShowIconEdit(false)}
+        isOpened={isIconEditing}
+        onClose={() => setIsIconEditing(false)}
         onSelect={(icon: string) => handleFieldUpdate('iconName', icon)}
         preSelected={category.iconName}
         iconSource={Icons}
@@ -120,4 +110,4 @@ const CategoryEditing: React.FC<EditCategoryProps> = ({ category: initial }) => 
     </DrawerLayout>
   )
 }
-export default CategoryEditing
+export default CategoryCreating
