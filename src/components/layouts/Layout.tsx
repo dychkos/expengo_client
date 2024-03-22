@@ -4,6 +4,8 @@ import ExpenseCreatePopup from "../expenses/ExpenseCreatePopup";
 import CategoryCreate from "../categories/CategoryCreate";
 import NavBar from "../NavBar";
 import SettingsSidebar from "../SettingsSidebar";
+import SettingsPasswordPopup from "../settings/SettingsPasswordPopup";
+import SettingsUserInfoPopup from "../settings/SettingsUserInfoPopup";
 
 interface LayoutProps extends React.PropsWithChildren {
   className?: string
@@ -24,6 +26,8 @@ export const Layout: React.FC<LayoutProps> = ({ className, children }) => {
           <NavBar />
         </div>
         <SettingsSidebar />
+        <SettingsPasswordPopup />
+        <SettingsUserInfoPopup />
       </div>
     </main>
   )

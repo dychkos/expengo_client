@@ -27,7 +27,7 @@ const Register: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterSchemaType>({ resolver: zodResolver(RegisterSchema) })
+    } = useForm<RegisterSchemaType>({ resolver: zodResolver(RegisterSchema) })
 
   const onSubmit: SubmitHandler<RegisterSchemaType> = data => {
     registerUser(data)

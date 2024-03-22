@@ -10,7 +10,7 @@ import { useAppSelector } from '../store'
 import { useLoginUserMutation } from '../store/api/auth.api'
 
 const Login: React.FC = () => {
-  const [loginUser, { isLoading }] = useLoginUserMutation()
+  const [loginUser, { isLoading, error: apiError }] = useLoginUserMutation()
   const isAuth = useAppSelector(state => state.user.isAuthorized)
   const navigate = useNavigate()
 
@@ -18,7 +18,7 @@ const Login: React.FC = () => {
     if (isAuth) {
       navigate('/')
     }
-  }, [isAuth])
+  }, [isAuth, navigate])
 
   const {
     register,
@@ -65,6 +65,10 @@ const Login: React.FC = () => {
             error={errors.password?.message}
             register={register}
           />
+
+          <div>
+            {apiError && <span className="text-sm text-red-500">Error to be here</span>}
+          </div>
 
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-500">

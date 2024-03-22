@@ -6,13 +6,18 @@ export interface CategoryType {
   iconName: string
   period: TimePeriod
   title: string
-  limit: number 
+  limit: number
   color: string
-  // about?: string
   createdAt: string
+  volume: ExpenseVolume
 }
 
-export type TimePeriod = 'month' | 'week' 
+export interface ExpenseVolume {
+  month: number
+  week: number
+}
+
+export type TimePeriod = 'month' | 'week'
 
 export const getDefaultCategory = (): CategoryType => ({
   id: u(),
@@ -22,4 +27,8 @@ export const getDefaultCategory = (): CategoryType => ({
   limit: 250,
   color: getRandomColor(),
   createdAt: new Date(Date.now()).toISOString(),
+  volume: {
+    week: 0,
+    month: 0,
+  },
 })

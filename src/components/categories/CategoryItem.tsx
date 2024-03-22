@@ -1,24 +1,15 @@
 import { FC } from 'react'
-import { useExpensesInCategory } from '../../hooks'
 import CategoryProgress from '../CategoryProgress'
 import { CategoryType } from '../../app/types/category.type'
 
-export interface CategoryItemProps extends CategoryType {
+export interface CategoryItemProps {
+  category: CategoryType
   onSelect: () => void
 }
 
-const CategoryItem: FC<CategoryItemProps> = ({
-  id,
-  iconName,
-  title,
-  period,
-  limit,
-  onSelect,
-}) => {
-
-  const currentlySpent = useExpensesInCategory(id, {
-    forWeek: period === 'week',
-  })
+const CategoryItem: FC<CategoryItemProps> = ({ onSelect, category }) => {
+  const { period, title, iconName, limit } = category
+  const { week, month } = category.volume
 
   return (
     <div
@@ -33,7 +24,11 @@ const CategoryItem: FC<CategoryItemProps> = ({
       </div>
 
       <div className="flex items-center">
-        <CategoryProgress current={currentlySpent} limit={limit} icon={iconName} />
+        <CategoryProgress
+          current={period === 'month' ? month : week}
+          limit={limit}
+          icon={iconName}
+        />
       </div>
     </div>
   )

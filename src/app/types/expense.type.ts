@@ -1,4 +1,5 @@
 import u from 'uniqid'
+import { PaginatedOutputDto } from './app.type'
 
 export interface ExpenseType {
   id: string
@@ -7,6 +8,15 @@ export interface ExpenseType {
   price: number
   createdAt: string
 }
+
+export interface ExpenseRequest {
+  perPage: number
+  page: number
+}
+
+export interface ExpensesPaginated extends PaginatedOutputDto<ExpenseType> {}
+
+export const EXPENSES_PER_PAGE = 4
 
 export const getDefaultExpense = (): ExpenseType => ({
   id: u(),

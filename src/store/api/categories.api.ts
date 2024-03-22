@@ -10,6 +10,7 @@ import { api } from './api'
 export const categoriesApi = api.injectEndpoints({
   endpoints: builder => ({
     getCategories: builder.query<CategoryType[], null>({
+      providesTags: ['Categories'],
       query() {
         return {
           url: 'categories',
@@ -23,6 +24,7 @@ export const categoriesApi = api.injectEndpoints({
       },
     }),
     storeCategory: builder.mutation<CategoryType, CategoryType>({
+      invalidatesTags: ['Categories'],
       query(data) {
         return {
           url: 'categories',
@@ -36,7 +38,7 @@ export const categoriesApi = api.injectEndpoints({
 
           const { data } = await queryFulfilled
 
-          dispatch(createCategory(data))
+          dispatch(createCategory({ ...data, volume: { week: 0, month: 0 } }))
         } catch (e) {
           dispatch(setCategoryError('Не вдалось додати витрату'))
         } finally {

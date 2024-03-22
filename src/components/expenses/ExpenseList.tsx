@@ -17,13 +17,7 @@ const ExpenseList: FC<{ expenses: ExpenseType[] }> = ({ expenses }) => {
   const renderExpenses = (expenses: ExpenseType[]) => {
     let currentDate = getFormattedMonth(new Date().toString())
 
-    const sortedByTime = expenses.slice().sort((a, b) => {
-      const dateA: Date = new Date(a.createdAt)
-      const dateB: Date = new Date(b.createdAt)
-      return dateB.getTime() - dateA.getTime()
-    })
-
-    return sortedByTime.map((exp, index) => {
+    return expenses.map((exp, index) => {
       const currentMonth = getFormattedMonth(exp.createdAt)
       if (currentMonth !== currentDate || index === 0) {
         currentDate = currentMonth

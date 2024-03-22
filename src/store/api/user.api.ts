@@ -4,6 +4,7 @@ import { setAuthorized, setUser } from '../userSlice'
 import { categoriesApi } from './categories.api'
 import { expensesApi } from './expenses.api'
 import { api } from './api'
+import { EXPENSES_PER_PAGE } from '../../app/types/expense.type'
 
 export const userApi = api.injectEndpoints({
   endpoints: builder => ({
@@ -24,18 +25,35 @@ export const userApi = api.injectEndpoints({
           dispatch(setAuthorized(true))
 
           await dispatch(categoriesApi.endpoints.getCategories.initiate(null))
-          await dispatch(expensesApi.endpoints.getExpenses.initiate(null))
-
+          await dispatch(
+            expensesApi.endpoints.getExpenses.initiate({
+              page: 1,
+              perPage: EXPENSES_PER_PAGE,
+            }),
+          )
         } catch (error) {
           dispatch(setUser(null))
           dispatch(setAuthorized(false))
-
         } finally {
           dispatch(setAppLoading(false))
         }
       },
     }),
+
+    updateUser: builder.mutation<UserType, Partial<UserType>>({
+      query(data) {
+        return {
+          url: 'users/me',
+          method: 'PATCH',
+          body: data,
+        }
+      },
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        const { data } = await queryFulfilled
+        dispatch(setUser(data))
+      },
+    }),
   }),
 })
 
-export const { useStartSessionQuery } = userApi
+export const { useStartSessionQuery, useUpdateUserMutation } = userApi

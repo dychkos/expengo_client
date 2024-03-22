@@ -5,12 +5,18 @@ interface UserState {
   userInfo: UserType | null
   accessToken: string
   isAuthorized: boolean
+
+  loading: boolean
+  error: null | string
 }
 
 const initialState: UserState = {
   userInfo: null,
   accessToken: '',
   isAuthorized: false,
+
+  loading: false,
+  error: null,
 }
 
 export const userSlice = createSlice({
@@ -24,9 +30,16 @@ export const userSlice = createSlice({
     setAuthorized: (state, action: PayloadAction<boolean>) => {
       state.isAuthorized = action.payload
     },
+    setUserError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload
+    },
+    setUserLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload
+    },
   },
 })
 
 export default userSlice.reducer
 
-export const { logout, setUser, setAuthorized } = userSlice.actions
+export const { logout, setUser, setAuthorized, setUserLoading, setUserError } =
+  userSlice.actions

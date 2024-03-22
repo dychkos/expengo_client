@@ -43,7 +43,7 @@ const CategoryList = () => {
             <CategoryItem
               key={item.id}
               onSelect={() => onSelectCategory(item)}
-              {...item}
+              category={item}
             />
           ))}
         </div>

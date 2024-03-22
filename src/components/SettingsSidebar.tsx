@@ -2,10 +2,12 @@ import React from 'react'
 import { FaStar } from 'react-icons/fa6'
 import { useLogout, useOutsideClick } from '../hooks'
 import { useAppDispatch, useAppSelector } from '../store'
-import { togglePremium, toggleSettings } from '../store/appSlice'
+import {togglePremium, toggleSettings, toggleUpdatePassword, toggleUpdateUserInfo} from '../store/appSlice'
 import { SettingsFooter } from './settings/SettingsFooter'
 import SettingsItem from './settings/SettingsItem'
 import SettingsMultipleItem from './settings/SettingsMultipleItem'
+import {SUPPORT_LINK} from "../app/variables";
+import SettingsPasswordPopup from "./settings/SettingsPasswordPopup";
 
 const SettingsSidebar: React.FC = () => {
   const isOpen = useAppSelector(state => state.app.settingsOpen)
@@ -22,8 +24,22 @@ const SettingsSidebar: React.FC = () => {
   }
 
   const handleLogout = () => {
-    logout()
     toggleSettingsSidebar()
+    logout()
+  }
+
+  const handlePasswordUpdate = () => {
+    dispatch(toggleSettings())
+    dispatch(toggleUpdatePassword())
+  }
+
+  const handleUserInfoUpdate = () => {
+    dispatch(toggleSettings())
+    dispatch(toggleUpdateUserInfo())
+  }
+
+  const handleSupport = () => {
+    window.open(SUPPORT_LINK, '_blank')?.focus();
   }
 
   const settingsRef = useOutsideClick(toggleSettingsSidebar)
@@ -58,11 +74,11 @@ const SettingsSidebar: React.FC = () => {
           </SettingsItem>
 
           <SettingsMultipleItem title="Налаштування профілю">
-            <SettingsItem>Змінити пароль</SettingsItem>
-            <SettingsItem>Редагувати інформацію</SettingsItem>
+            <SettingsItem onClick={handleUserInfoUpdate}>Редагувати інформацію</SettingsItem>
+            <SettingsItem onClick={handlePasswordUpdate}>Змінити пароль</SettingsItem>
           </SettingsMultipleItem>
 
-          <SettingsItem>Чат підтримки</SettingsItem>
+          <SettingsItem onClick={handleSupport}>Чат підтримки</SettingsItem>
 
           <SettingsItem className="font-bold" onClick={handleLogout}>
             Вийти з системи

@@ -5,9 +5,9 @@ import { Icons } from '../../app/temp'
 import { CategoryType } from '../../app/types/category.type'
 import { CategorySchema } from '../../app/validation/schemas/CategorySchema'
 import { PeriodOptions } from '../../app/variables'
-import { useExpensesInCategory, useValidator } from '../../hooks'
+import { useValidator } from '../../hooks'
 import { useAppDispatch } from '../../store'
-import {selectCategory, updateCategoryInList} from '../../store/categoriesSlice'
+import { selectCategory, updateCategoryInList } from '../../store/categoriesSlice'
 import CategoryProgress from '../CategoryProgress'
 import { Icon } from '../Icon'
 import DrawerLayout from '../layouts/DrawerLayout'
@@ -26,10 +26,6 @@ const CategoryEdit: React.FC<EditCategoryProps> = ({ category: initial }) => {
   const [showIconEdit, setShowIconEdit] = useState(false)
 
   const { validate, clearError, checkError } = useValidator<typeof CategorySchema>()
-
-  const currentlySpent = useExpensesInCategory(category.id, {
-    forWeek: category.period === 'week',
-  })
 
   const toInitialView = () => {
     dispatch(selectCategory(null))
@@ -105,7 +101,13 @@ const CategoryEdit: React.FC<EditCategoryProps> = ({ category: initial }) => {
           </div>
         </div>
 
-        <CategoryProgress current={currentlySpent} limit={category.limit} size="huge" />
+        <CategoryProgress
+          current={
+            category.period === 'month' ? category.volume.month : category.volume.week
+          }
+          limit={category.limit}
+          size="huge"
+        />
       </div>
 
       <IconPopup
