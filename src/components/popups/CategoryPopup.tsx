@@ -34,7 +34,7 @@ const CategoryPopup: FC<CategoryPopupProps> = ({
   return (
     <Popup isOpened={isOpened} onClose={onClose}>
       <Popup.Header>Обери категорію</Popup.Header>
-      <div className="grid mx-auto content-center grid-cols-3 md:grid-cols-4 gap-8 md:gap-4">
+      <div className="grid mx-auto items-start content-center grid-cols-3 md:grid-cols-4 gap-8 md:gap-4">
         {categories.length > 0 &&
           categories.map(category => (
             <CategoryCard

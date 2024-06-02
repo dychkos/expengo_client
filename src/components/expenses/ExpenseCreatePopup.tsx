@@ -30,7 +30,6 @@ const ExpenseCreatePopup: FC = () => {
     validate,
     clearError,
     checkError,
-    errors: valError,
   } = useValidator<typeof ExpenseSchema>()
 
   const onFieldEdit = (field: keyof ExpenseType, value: any) => {

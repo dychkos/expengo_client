@@ -39,7 +39,7 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
     if (!current.categoryId && selectedCategory) {
       setCurrent({ ...current, categoryId: selectedCategory.id })
     }
-  }, [])
+  }, [current, selectedCategory])
 
   const onFieldEdit = (field: keyof ExpenseType, value: any) => {
     clearError(field)

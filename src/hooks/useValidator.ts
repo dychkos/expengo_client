@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import { useState } from 'react'
 import z from 'zod'
 
 export const useValidator = <T extends z.ZodObject<any, any>>() => {
@@ -8,7 +8,7 @@ export const useValidator = <T extends z.ZodObject<any, any>>() => {
 
   const validate = (objToValidate: any, schema: T) => {
     try {
-      setErrors({});
+      setErrors({})
       schema.parse(objToValidate)
       return true
     } catch (error) {
@@ -20,7 +20,7 @@ export const useValidator = <T extends z.ZodObject<any, any>>() => {
           }
         })
         setErrors(fieldErrors)
-        triggerShakeAnimation();
+        triggerShakeAnimation()
       } else {
         console.error('Validation error:', error)
         setErrors({})
@@ -38,14 +38,14 @@ export const useValidator = <T extends z.ZodObject<any, any>>() => {
   }
 
   const triggerShakeAnimation = () => {
-    const shakeElements = document.querySelectorAll('.shake-elem');
+    const shakeElements = document.querySelectorAll('.shake-elem')
     shakeElements.forEach(el => {
-      el.classList.remove('animate-shake');
+      el.classList.remove('animate-shake')
 
       setTimeout(() => {
-        el.classList.add('animate-shake');
-      }, 100);
-    });
+        el.classList.add('animate-shake')
+      }, 100)
+    })
   }
 
   return {

@@ -4,7 +4,6 @@ import {
   FetchBaseQueryError,
   createApi,
   fetchBaseQuery,
-  retry,
 } from '@reduxjs/toolkit/query/react'
 import { getToken, removeToken } from '../../app/utils'
 import { logout } from '../userSlice'
@@ -25,7 +24,7 @@ const baseQuery = fetchBaseQuery({
   },
 })
 
-const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 })
+// const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 })
 
 const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,

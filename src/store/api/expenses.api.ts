@@ -11,7 +11,6 @@ import {
   setExpenses,
 } from '../expensesSlice'
 import { api } from './api'
-import { categoriesApi } from './categories.api'
 
 export const expensesApi = api.injectEndpoints({
   endpoints: builder => ({

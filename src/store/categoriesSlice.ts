@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import u from 'uniqid'
 import { CategoryType } from '../app/types/category.type'
 
 export interface CategoriesState {

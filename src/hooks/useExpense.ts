@@ -2,7 +2,7 @@ import React from 'react'
 import { ExpenseType } from '../app/types/expense.type'
 import { useAppDispatch, useAppSelector } from '../store'
 import { useDestroyExpenseMutation, useStoreExpenseMutation } from '../store/api/expenses.api'
-import { createExpense, updateExpenseInList } from '../store/expensesSlice'
+import { updateExpenseInList } from '../store/expensesSlice'
 
 export const useExpense = () => {
   const [isEditing, setIsEditing] = React.useState(false)

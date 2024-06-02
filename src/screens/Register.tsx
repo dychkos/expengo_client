@@ -21,7 +21,7 @@ const Register: React.FC = () => {
     if (isAuth) {
       navigate('/')
     }
-  }, [isAuth])
+  }, [isAuth, navigate])
 
   const {
     register,
