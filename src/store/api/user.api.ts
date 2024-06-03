@@ -25,12 +25,6 @@ export const userApi = api.injectEndpoints({
           dispatch(setAuthorized(true))
 
           await dispatch(categoriesApi.endpoints.getCategories.initiate(null))
-          await dispatch(
-            expensesApi.endpoints.getExpenses.initiate({
-              page: 1,
-              perPage: EXPENSES_PER_PAGE,
-            }),
-          )
         } catch (error) {
           dispatch(setUser(null))
           dispatch(setAuthorized(false))

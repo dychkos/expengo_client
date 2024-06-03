@@ -1,19 +1,13 @@
-import { FC } from 'react'
+import React from 'react'
 import { getFormattedMonth } from '../../app/helper'
 import { ExpenseType } from '../../app/types/expense.type'
-import Button from '../ui/Button'
-import ExpenseEmpty from './ExpenseEmpty'
 import ExpenseItem from './ExpenseItem'
-import { useAppDispatch } from '../../store'
-import { toggleAddingExpense } from '../../store/appSlice'
 
-const ExpenseList: FC<{ expenses: ExpenseType[] }> = ({ expenses }) => {
-  const dispatch = useAppDispatch()
+interface ExpensesListProps {
+  expenses: ExpenseType[]
+}
 
-  const addExpense = () => {
-    dispatch(toggleAddingExpense())
-  }
-
+const ExpenseList: React.FC<ExpensesListProps> = ({ expenses }) => {
   const renderExpenses = (expenses: ExpenseType[]) => {
     let currentDate = getFormattedMonth(new Date().toString())
 
@@ -40,20 +34,7 @@ const ExpenseList: FC<{ expenses: ExpenseType[] }> = ({ expenses }) => {
     })
   }
 
-  return (
-    <section>
-      {expenses.length > 0 ? (
-        <div>
-          <Button icon="AiOutlinePlusCircle" className="ml-auto" onClick={addExpense}>
-            Нова витрата
-          </Button>
-          {renderExpenses(expenses)}
-        </div>
-      ) : (
-        <ExpenseEmpty handleAdding={addExpense} />
-      )}
-    </section>
-  )
+  return <section>{renderExpenses(expenses)}</section>
 }
 
 export default ExpenseList

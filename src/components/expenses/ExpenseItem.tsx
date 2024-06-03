@@ -29,7 +29,7 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({ expenseItem }) => {
         className="flex items-center gap-4 p-1 w-full cursor-pointer rounded-xl hover:bg-amber-100"
         onClick={toggleEditing}
       >
-        <div className="flex items-center justify-center p-2 max-h-full rounded-xl bg-primary">
+        <div className="flex items-center w-10 h-10 justify-center p-2 rounded-xl bg-primary">
           <Icon nameIcon={expenseCategory.iconName} propsIcon={{ size: '24px' }} />
         </div>
         <div className="w-full">

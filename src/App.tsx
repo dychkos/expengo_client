@@ -1,5 +1,5 @@
 import Header from './components/Header'
-import { MainLoader } from './components/ui/MainLoader'
+import MainLoader from './components/ui/loaders/MainLoader'
 import { Routing } from './router'
 import { useAppSelector } from './store'
 import { useStartSessionQuery } from './store/api/user.api'

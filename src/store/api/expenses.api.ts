@@ -4,11 +4,11 @@ import {
   ExpenseType,
 } from '../../app/types/expense.type'
 import {
-  createExpense,
-  removeExpenseInList,
+  appendExpenses,
+  createExpense, removeExpenseInList,
   setExpenseError,
   setExpenseLoading,
-  setExpenses,
+  setExpenses, updateExpenseInList,
 } from '../expensesSlice'
 import { api } from './api'
 
@@ -22,10 +22,19 @@ export const expensesApi = api.injectEndpoints({
           url: `expenses?page=${page}&perPage=${perPage}`,
         }
       },
-      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg?.page !== previousArg?.page
+      },
+
+      async onQueryStarted(args, { dispatch, queryFulfilled, getState }) {
         try {
           const { data: expenses } = (await queryFulfilled).data
-          dispatch(setExpenses(expenses))
+          if (args.page === 1) {
+            dispatch(setExpenses(expenses))
+          } else {
+            dispatch(appendExpenses(expenses))
+          }
         } catch (error) {}
       },
     }),
@@ -53,6 +62,32 @@ export const expensesApi = api.injectEndpoints({
         }
       },
     }),
+
+    editExpense: builder.mutation<ExpenseType, ExpenseType>({
+      query({ id, ...data}) {
+        return {
+          url: `expenses/${id}`,
+          method: 'PUT',
+          body: data,
+        }
+      },
+      invalidatesTags: ['Categories'],
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setExpenseLoading(true))
+
+          const { data } = await queryFulfilled
+
+          dispatch(updateExpenseInList(data))
+          // dispatch(categoriesApi.endpoints.getCategories.initiate(null))
+        } catch (e) {
+          dispatch(setExpenseError('Не вдалось відредагувати витрату'))
+        } finally {
+          dispatch(setExpenseLoading(false))
+        }
+      },
+    }),
+
     destroyExpense: builder.mutation<ExpenseType, ExpenseType>({
       query({ id, ...data }) {
         return {
@@ -61,6 +96,7 @@ export const expensesApi = api.injectEndpoints({
           body: data,
         }
       },
+      invalidatesTags: ['Categories'],
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           dispatch(setExpenseLoading(true))
@@ -78,5 +114,5 @@ export const expensesApi = api.injectEndpoints({
   }),
 })
 
-export const { useGetExpensesQuery, useDestroyExpenseMutation, useStoreExpenseMutation } =
+export const { useGetExpensesQuery, useDestroyExpenseMutation, useStoreExpenseMutation, useEditExpenseMutation } =
   expensesApi

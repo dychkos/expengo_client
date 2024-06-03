@@ -16,7 +16,7 @@ export interface ExpenseRequest {
 
 export interface ExpensesPaginated extends PaginatedOutputDto<ExpenseType> {}
 
-export const EXPENSES_PER_PAGE = 4
+export const EXPENSES_PER_PAGE = 40
 
 export const getDefaultExpense = (): ExpenseType => ({
   id: u(),

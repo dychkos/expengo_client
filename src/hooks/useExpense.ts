@@ -1,7 +1,7 @@
 import React from 'react'
 import { ExpenseType } from '../app/types/expense.type'
 import { useAppDispatch, useAppSelector } from '../store'
-import { useDestroyExpenseMutation, useStoreExpenseMutation } from '../store/api/expenses.api'
+import {useDestroyExpenseMutation, useEditExpenseMutation, useStoreExpenseMutation} from '../store/api/expenses.api'
 import { updateExpenseInList } from '../store/expensesSlice'
 
 export const useExpense = () => {
@@ -9,6 +9,7 @@ export const useExpense = () => {
   const isLoading = useAppSelector(state => state.expenses.loading)
   const [destroyExpense] = useDestroyExpenseMutation()
   const [storeExpense] = useStoreExpenseMutation()
+  const [editExpense] = useEditExpenseMutation()
   const dispatch = useAppDispatch()
 
   const add = async (expense: ExpenseType) => {
@@ -17,8 +18,8 @@ export const useExpense = () => {
     setIsEditing(false)
   }
 
-  const edit = (expense: ExpenseType) => {
-    dispatch(updateExpenseInList(expense))
+  const edit = async (expense: ExpenseType) => {
+    await editExpense(expense);
 
     setIsEditing(false)
   }

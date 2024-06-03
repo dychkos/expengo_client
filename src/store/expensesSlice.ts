@@ -6,6 +6,7 @@ export interface ExpensesState {
   selected: ExpenseType | null
   error: string | null
   loading: boolean
+  viewedPage: number
 }
 
 const initialState: ExpensesState = {
@@ -13,6 +14,7 @@ const initialState: ExpensesState = {
   error: null,
   loading: false,
   selected: null,
+  viewedPage: 1,
 }
 
 const expensesSlice = createSlice({
@@ -22,6 +24,9 @@ const expensesSlice = createSlice({
     setExpenses: (state, action: PayloadAction<ExpenseType[]>) => {
       state.list = action.payload
     },
+    appendExpenses: (state, action: PayloadAction<ExpenseType[]>) => {
+      state.list = [...state.list, ...action.payload]
+    },
     setExpenseLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload
     },
@@ -29,7 +34,7 @@ const expensesSlice = createSlice({
       state.error = action.payload
     },
     createExpense: (state, action: PayloadAction<ExpenseType>) => {
-      state.list.push(action.payload)
+      state.list.unshift(action.payload)
     },
     updateExpenseInList: (state, action: PayloadAction<ExpenseType>) => {
       const index = state.list.findIndex(item => item.id === action.payload.id)
@@ -45,10 +50,21 @@ const expensesSlice = createSlice({
         1,
       )
     },
+    setExpensesPage: (state, action: PayloadAction<number>) => {
+      state.viewedPage = action.payload
+    },
   },
 })
 
-export const { setExpenses, setExpenseLoading, setExpenseError, createExpense, updateExpenseInList, removeExpenseInList } =
-  expensesSlice.actions
+export const {
+  setExpenses,
+  appendExpenses,
+  setExpensesPage,
+  setExpenseLoading,
+  setExpenseError,
+  createExpense,
+  updateExpenseInList,
+  removeExpenseInList,
+} = expensesSlice.actions
 
 export default expensesSlice.reducer
