@@ -8,6 +8,7 @@ export interface CategoryType {
   title: string
   limit: number
   color: string
+  uncategorized: boolean
   createdAt: string
   volume: ExpenseVolume
 }
@@ -26,6 +27,7 @@ export const getDefaultCategory = (): CategoryType => ({
   period: 'month',
   limit: 250,
   color: getRandomColor(),
+  uncategorized: false,
   createdAt: new Date(Date.now()).toISOString(),
   volume: {
     week: 0,

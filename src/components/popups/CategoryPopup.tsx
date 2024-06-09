@@ -6,10 +6,11 @@ import { PopupProps } from './popup.props'
 import { useAppDispatch } from '../../store'
 import { toggleAddingCategory } from '../../store/appSlice'
 import CategoryCard from '../categories/CategoryCard'
+import { getCategoryName } from '../../app/helper'
 
 interface CategoryPopupProps extends PopupProps {
   categories: CategoryType[]
-  preSelectedId: string
+  preSelectedId: string | null
   onSelect: (category: CategoryType) => void
 }
 
@@ -42,7 +43,7 @@ const CategoryPopup: FC<CategoryPopupProps> = ({
               iconName={category.iconName}
               onClick={() => handleSelectCategory(category)}
               className={cn(preSelectedId === category.id && 'bg-primary')}
-              title={category.title}
+              title={getCategoryName(category)}
             />
           ))}
 

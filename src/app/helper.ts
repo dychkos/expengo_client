@@ -1,4 +1,5 @@
 import { StatsDiapason } from './types/stats.type'
+import { CategoryType } from './types/category.type'
 
 export const uiTransformPeriod = (period: StatsDiapason): string => {
   const periodMap = new Map([
@@ -57,4 +58,8 @@ export const getFormattedMonth = (date: string) => {
 export const getRandomColor = (): string => {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16)
   return '#' + '0'.repeat(6 - randomColor.length) + randomColor
+}
+
+export const getCategoryName = (category: CategoryType): string => {
+  return category.uncategorized ? 'Без категорії' : category.title
 }

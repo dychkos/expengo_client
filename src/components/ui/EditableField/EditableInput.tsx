@@ -16,6 +16,7 @@ const EditableInput: FC<EditableInputProps> = ({
   afterText,
   focusDefault = false,
   tipPos = 'right',
+  allowEdit = true,
   ...props
 }) => {
   const [editMode, setEditMode] = useState<boolean>(focusDefault)
@@ -48,6 +49,13 @@ const EditableInput: FC<EditableInputProps> = ({
       inputRef.current.focus()
     }
   }
+
+  const enableEditMode = () => {
+    if (allowEdit) {
+      setEditMode(true)
+    }
+  }
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(event)
@@ -75,8 +83,11 @@ const EditableInput: FC<EditableInputProps> = ({
   return (
     <div
       ref={outsideRef}
-      className={cn('my-2 mr-2 flex items-end gap-4 cursor-pointer', error && 'shake-elem')}
-      onClick={() => setEditMode(true)}
+      className={cn(
+        'my-2 mr-2 flex items-end gap-4 cursor-pointer',
+        error && 'shake-elem',
+      )}
+      onClick={enableEditMode}
     >
       <div>
         {editMode && (
@@ -108,20 +119,23 @@ const EditableInput: FC<EditableInputProps> = ({
               {value}
             </p>
 
-            <span
-              className={clsx(
-                'absolute flex justify-center items-center -top-1 w-3 h-3 rounded-full bg-black',
-                tipPos === 'left' ? '-left-4' : '-right-4',
-              )}
-            >
+            {allowEdit &&
+                <span
+                    className={clsx(
+                        'absolute flex justify-center items-center -top-1 w-3 h-3 rounded-full bg-black',
+                        tipPos === 'left' ? '-left-4' : '-right-4',
+                    )}
+                >
               <AiFillTool color="#fff" size="8px" />
-            </span>
+            </span>}
           </div>
         )}
       </div>
 
       {afterText && !editMode && (
-        <p className={cn(className, 'text-gray-600 text-2xl', error && 'text-red-400')}>{afterText}</p>
+        <p className={cn(className, 'text-gray-600 text-2xl', error && 'text-red-400')}>
+          {afterText}
+        </p>
       )}
     </div>
   )

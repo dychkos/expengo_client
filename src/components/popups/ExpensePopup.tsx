@@ -3,7 +3,7 @@ import { Digits } from '../../app/patterns'
 import { CategoryType } from '../../app/types/category.type'
 import { ExpenseType, getDefaultExpense } from '../../app/types/expense.type'
 import { ExpenseSchema } from '../../app/validation/schemas/ExpenseSchema'
-import { NumericMaxLength } from '../../app/variables'
+import { CATEGORY_NO_SET_ICON, NumericMaxLength } from '../../app/variables'
 import { useValidator } from '../../hooks'
 import { useAppSelector } from '../../store'
 import { Icon } from '../Icon'
@@ -27,10 +27,9 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
   )
   const [showCategory, setShowCategory] = useState<boolean>(false)
 
-  const selectedCategory = useAppSelector(state => {
-    const selectedById = state.categories.list.find(cat => cat.id === current?.categoryId)
-    return selectedById || state.categories.list[0]
-  })
+  const selectedCategory = useAppSelector(state =>
+    state.categories.list.find(cat => cat.id === current?.categoryId),
+  )
 
   const categories = useAppSelector(state => state.categories.list)
   const { validate, clearError, checkError } = useValidator<typeof ExpenseSchema>()
@@ -72,7 +71,10 @@ const ExpensePopup: FC<ExpensePopupProps> = props => {
             className="flex flex-shrink-0 cursor-pointer  items-center justify-center p-4 max-h-full rounded-xl bg-primary"
             onClick={() => setShowCategory(true)}
           >
-            <Icon nameIcon={selectedCategory.iconName} propsIcon={{ size: '36px' }} />
+            <Icon
+              nameIcon={selectedCategory?.iconName ?? CATEGORY_NO_SET_ICON}
+              propsIcon={{ size: '36px' }}
+            />
           </div>
           <div>
             <EditableInput

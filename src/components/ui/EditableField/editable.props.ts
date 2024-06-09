@@ -6,6 +6,7 @@ export interface EditableProps {
   tipPos?: 'left' | 'right'
   onEdit: Function
   className?: string
+  allowEdit?: boolean
 }
 
 export interface EditableInputProps extends EditableProps, InputHTMLAttributes<HTMLInputElement> {

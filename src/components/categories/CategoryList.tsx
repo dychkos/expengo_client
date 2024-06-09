@@ -9,7 +9,11 @@ import { toggleAddingCategory, toggleAddingExpense } from '../../store/appSlice'
 
 const CategoryList = () => {
   const dispatch = useAppDispatch()
-  const categories = useAppSelector(state => state.categories.list)
+  const categories = useAppSelector(state =>
+    state.categories.list.filter(
+      category => !(category.uncategorized && category.volume.month === 0),
+    ),
+  )
 
   const onSelectCategory = (category: CategoryType) => {
     dispatch(selectCategory(category))

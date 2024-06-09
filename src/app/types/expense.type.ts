@@ -3,7 +3,7 @@ import { PaginatedOutputDto } from './app.type'
 
 export interface ExpenseType {
   id: string
-  categoryId: string
+  categoryId: string | null
   title: string
   price: number
   createdAt: string
@@ -20,7 +20,7 @@ export const EXPENSES_PER_PAGE = 40
 
 export const getDefaultExpense = (): ExpenseType => ({
   id: u(),
-  categoryId: '',
+  categoryId: null,
   title: 'Нова витрата',
   price: 0,
   createdAt: new Date(Date.now()).toISOString(),

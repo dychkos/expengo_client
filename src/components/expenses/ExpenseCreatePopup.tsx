@@ -47,6 +47,7 @@ const ExpenseCreatePopup: FC = () => {
       onClose()
     }
   }
+
   const onClose = () => {
     dispatch(toggleAddingExpense())
   }
@@ -63,12 +64,7 @@ const ExpenseCreatePopup: FC = () => {
         <div className="flex gap-4 items-center overflow-x-hidden">
           <div>
             <div
-              className={cn(
-                'flex flex-shrink-0 cursor-pointer items-center justify-center p-4 max-h-full rounded-xl bg-primary',
-                checkError('categoryId')
-                  ? 'shake-elem bg-red-300 border-2 border-red-600 border-spacing-1'
-                  : '',
-              )}
+              className="flex flex-shrink-0 cursor-pointer items-center justify-center p-4 max-h-full rounded-xl bg-primary"
               onClick={onCategoryClick}
             >
               <Icon

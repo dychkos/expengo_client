@@ -5,6 +5,7 @@ import { ExpenseType } from '../../app/types/expense.type'
 import { useAppSelector } from '../../store'
 import ExpensePopup from '../popups/ExpensePopup'
 import { useExpense } from '../../hooks/useExpense'
+import { CATEGORY_NO_SET_ICON } from '../../app/variables'
 
 interface ExpenseItemProps {
   expenseItem: ExpenseType
@@ -18,11 +19,6 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({ expenseItem }) => {
     state.categories.list.find(category => category.id === expenseItem.categoryId),
   )
 
-  if (!expenseCategory) {
-    throw new Error('Invalid category ID')
-  }
-
-
   return (
     <React.Fragment>
       <div
@@ -30,7 +26,7 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({ expenseItem }) => {
         onClick={toggleEditing}
       >
         <div className="flex items-center w-10 h-10 justify-center p-2 rounded-xl bg-primary">
-          <Icon nameIcon={expenseCategory.iconName} propsIcon={{ size: '24px' }} />
+          <Icon nameIcon={expenseCategory?.iconName ?? CATEGORY_NO_SET_ICON} propsIcon={{ size: '24px' }} />
         </div>
         <div className="w-full">
           <h3 className="font-default font-bold text-md text-clip overflow-hidden">

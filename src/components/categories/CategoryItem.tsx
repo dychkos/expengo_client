@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import CategoryProgress from '../CategoryProgress'
 import { CategoryType } from '../../app/types/category.type'
+import { getCategoryName } from '../../app/helper'
 
 export interface CategoryItemProps {
   category: CategoryType
@@ -8,7 +9,7 @@ export interface CategoryItemProps {
 }
 
 const CategoryItem: FC<CategoryItemProps> = ({ onSelect, category }) => {
-  const { period, title, iconName, limit } = category
+  const { period, iconName, limit } = category
   const { week, month } = category.volume
 
   return (
@@ -17,7 +18,7 @@ const CategoryItem: FC<CategoryItemProps> = ({ onSelect, category }) => {
       onClick={onSelect}
     >
       <div className="flex justify-between mb-1">
-        <div className="font-default text-base">{title}</div>
+        <div className="font-default text-base">{getCategoryName(category)}</div>
         <div className="font-default text-right text-base">
           {period === 'week' ? 'на тиждень' : 'на місяць'}
         </div>

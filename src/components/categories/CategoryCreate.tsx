@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { uiTransformPeriod } from '../../app/helper'
+import { getCategoryName, uiTransformPeriod } from '../../app/helper'
 import { Digits } from '../../app/patterns'
 import { Icons } from '../../app/temp'
 import { CategoryType, getDefaultCategory } from '../../app/types/category.type'
@@ -8,7 +8,7 @@ import { PeriodOptions } from '../../app/variables'
 import { useValidator } from '../../hooks'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { useStoreCategoryMutation } from '../../store/api/categories.api'
-import { toggleAddingCategory} from '../../store/appSlice'
+import { toggleAddingCategory } from '../../store/appSlice'
 import { Icon } from '../Icon'
 import DrawerLayout from '../layouts/DrawerLayout'
 import IconPopup from '../popups/IconPopup'
@@ -29,7 +29,7 @@ const CategoryCreate: React.FC = () => {
   const { validate, clearError, checkError } = useValidator<typeof CategorySchema>()
 
   if (!isOpened) {
-    return null;
+    return null
   }
 
   const onClose = () => {
@@ -50,13 +50,8 @@ const CategoryCreate: React.FC = () => {
     setCategory({ ...category, [field as string]: value })
   }
 
-
   return (
-    <DrawerLayout
-      handleClose={onClose}
-      handleSave={onSave}
-      disabled={!!isLoading}
-    >
+    <DrawerLayout handleClose={onClose} handleSave={onSave} disabled={!!isLoading}>
       <div className="grid grid-cols-2-80-one sm:grid-cols-3-96-60-one gap-0 sm:gap-4">
         <div>
           <div
@@ -70,7 +65,7 @@ const CategoryCreate: React.FC = () => {
         <div>
           <EditableInput
             className="font-bold text-2xl"
-            value={category.title}
+            value={getCategoryName(category)}
             focusDefault={true}
             placeholder="Назва категорії витрат"
             onEdit={(val: string) => handleFieldUpdate('title', val)}

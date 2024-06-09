@@ -6,6 +6,7 @@ interface CategoryProgressProps {
   current: number
   limit: number
   icon?: string
+  iconColor?: string
   size?: 'huge' | 'default'
 }
 
@@ -13,6 +14,7 @@ const CategoryProgress: React.FC<CategoryProgressProps> = ({
   current,
   limit,
   icon,
+  iconColor,
   size = 'default',
 }) => {
   const progressPercent = (current / limit) * 100 > 100 ? 100 : (current / limit) * 100
@@ -43,7 +45,10 @@ const CategoryProgress: React.FC<CategoryProgressProps> = ({
   return (
     <>
       {icon && (
-        <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-primary">
+        <div
+          className="flex items-center justify-center w-14 h-14 rounded-xl bg-primary"
+          style={{ backgroundColor: !!iconColor ? iconColor : '' }}
+        >
           <Icon nameIcon={icon} propsIcon={{ size: '36px' }} />
         </div>
       )}

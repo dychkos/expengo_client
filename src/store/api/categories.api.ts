@@ -46,7 +46,53 @@ export const categoriesApi = api.injectEndpoints({
         }
       },
     }),
+    editCategory: builder.mutation<CategoryType, CategoryType>({
+      invalidatesTags: ['Categories'],
+      query({id,  ...data }) {
+        return {
+          url: `categories/${id}`,
+          method: 'PUT',
+          body: data,
+        }
+      },
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setCategoryLoading(true))
+
+          const { data } = await queryFulfilled
+
+          // dispatch(createCategory({ ...data, volume: { week: 0, month: 0 } }))
+        } catch (e) {
+          dispatch(setCategoryError('Не вдалось додати витрату'))
+        } finally {
+          dispatch(setCategoryLoading(false))
+        }
+      },
+    }),
+    destroyCategory: builder.mutation<CategoryType, CategoryType>({
+      invalidatesTags: ['Categories'],
+      query({id,  ...data }) {
+        return {
+          url: `categories/${id}`,
+          method: 'DELETE',
+          body: data,
+        }
+      },
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setCategoryLoading(true))
+
+          const { data } = await queryFulfilled
+
+          // dispatch(createCategory({ ...data, volume: { week: 0, month: 0 } }))
+        } catch (e) {
+          dispatch(setCategoryError('Не вдалось додати витрату'))
+        } finally {
+          dispatch(setCategoryLoading(false))
+        }
+      },
+    }),
   }),
 })
 
-export const { useGetCategoriesQuery, useStoreCategoryMutation } = categoriesApi
+export const { useGetCategoriesQuery, useStoreCategoryMutation, useEditCategoryMutation, useDestroyCategoryMutation } = categoriesApi

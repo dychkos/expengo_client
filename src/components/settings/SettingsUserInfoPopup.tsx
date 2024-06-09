@@ -10,22 +10,30 @@ import {
   UpdateUserInfoSchema,
   UpdateUserInfoType,
 } from '../../app/validation/schemas/UpdateUserInfoSchema'
-import {useUpdateUserMutation} from "../../store/api/user.api";
+import { useUpdateUserMutation } from '../../store/api/user.api'
 
 const SettingsUserInfoPopup: React.FC = () => {
   const dispatch = useAppDispatch()
   const isOpened = useAppSelector(state => state.app.updateUserInfo)
-  const [updateUser, {isLoading}] = useUpdateUserMutation();
+  const userInfo = useAppSelector(state => state.user.userInfo)
+  const [updateUser, { isLoading }] = useUpdateUserMutation()
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<UpdateUserInfoType>({ resolver: zodResolver(UpdateUserInfoSchema) })
+  } = useForm<UpdateUserInfoType>({
+    resolver: zodResolver(UpdateUserInfoSchema),
+    defaultValues: {
+      firstName: userInfo?.firstName ?? '',
+      lastName: userInfo?.lastName ?? '',
+    },
+  })
 
-  const onSubmit: SubmitHandler<UpdateUserInfoType> = data => {
-    updateUser(data)
+  const onSubmit: SubmitHandler<UpdateUserInfoType> = async data => {
+    await updateUser(data)
+    dispatch(toggleUpdateUserInfo())
   }
   const onClose = () => {
     reset()
@@ -51,17 +59,19 @@ const SettingsUserInfoPopup: React.FC = () => {
           disabled={isLoading}
         />
         <Input
-            id="lastName"
-            type="text"
-            placeholder="Введіть прізвище"
-            error={errors?.lastName?.message}
-            name="lastName"
-            autoComplete="off"
-            register={register}
-            className="mt-2"
-            disabled={isLoading}
+          id="lastName"
+          type="text"
+          placeholder="Введіть прізвище"
+          error={errors?.lastName?.message}
+          name="lastName"
+          autoComplete="off"
+          register={register}
+          className="mt-2"
+          disabled={isLoading}
         />
-        <Button className="mt-6" loading={isLoading}>Оновити</Button>
+        <Button className="mt-6" loading={isLoading}>
+          Оновити
+        </Button>
       </form>
     </Popup>
   )
